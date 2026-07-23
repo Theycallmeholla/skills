@@ -1,4 +1,4 @@
-# Claude Skills
+# Skills
 
 A collection of custom skills for Claude (Claude Code / Cowork). Each skill is a self-contained folder under `skills/` with a `SKILL.md` (frontmatter + instructions) plus any `references/`, `assets/`, and `scripts/` it needs.
 
