@@ -1,0 +1,42 @@
+name: Validate skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check SKILL.md frontmatter
+        run: |
+          fail=0
+          for dir in skills/*/; do
+            name=$(basename "$dir")
+            f="$dir/SKILL.md"
+            if [ ! -f "$f" ]; then
+              echo "::error::$name is missing SKILL.md"; fail=1; continue
+            fi
+            if ! head -1 "$f" | grep -q '^---$'; then
+              echo "::error file=$f::missing frontmatter block"; fail=1; continue
+            fi
+            fm=$(awk '/^---$/{n++; next} n==1{print} n==2{exit}' "$f")
+            fmname=$(echo "$fm" | grep -E '^name:' | sed 's/^name:[[:space:]]*//')
+            if [ "$fmname" != "$name" ]; then
+              echo "::error file=$f::frontmatter name '$fmname' != folder '$name'"; fail=1
+            fi
+            if ! echo "$fm" | grep -qE '^description:'; then
+              echo "::error file=$f::missing description"; fail=1
+            fi
+          done
+          exit $fail
+
+      - name: Scan for secrets
+        run: |
+          if grep -rnE "(sk-ant-[A-Za-z0-9_-]{20,}|ghp_[A-Za-z0-9]{36}|xox[baprs]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z_-]{35}|-----BEGIN (RSA |EC )?PRIVATE KEY)" skills/; then
+            echo "::error::possible secret committed"; exit 1
+          fi
+          echo "no secrets found"
