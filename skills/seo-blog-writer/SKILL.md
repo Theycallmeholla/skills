@@ -42,7 +42,7 @@ If web search is unavailable, say so and proceed from the user's inputs and your
 - **Slug:** short, lowercase, hyphenated, keyword-bearing, no stop words.
 - **Opening:** lead with the reader's problem or a concrete payoff — never throat-clearing. Work the primary keyword into the opening naturally if it fits; don't force it.
 - **Headings:** reflect the searcher's major questions, decisions, or subtopics. Primary and related terminology appears where contextually relevant. No heading exists primarily to hold a keyword. A reader skimming only headings should get the argument.
-- **Paragraphs:** 2–4 sentences. Lists, tables, and bolded key phrases where they aid scanning.
+- **Paragraphs:** deliberately uneven — mostly 1–5 sentences, mixing short punchy paragraphs with longer ones. Lists and tables only where genuinely parallel items aid scanning; bold sparingly. Rhythm rules live in `references/voice-and-tells.md`.
 - **FAQ (conditional):** include one only when distinct, unanswered questions remain after the main article. Never repeat what the body already answers clearly, and never add an FAQ for length, keywords, schema, or rich-result targeting — Google no longer shows FAQ rich results.
 - **CTA:** aligned to the business goal from Stage 1, not a generic "contact us".
 
@@ -50,7 +50,7 @@ If web search is unavailable, say so and proceed from the user's inputs and your
 
 Cover the subject the way an expert would: related entities, supporting concepts, industry terminology, query variations, subtopics, and user questions arise naturally from comprehensive coverage — never from a keyword list. If any sentence exists only to hold a keyword, delete it.
 
-Voice rules regardless of brand: ban the reflexive AI tells ("In today's digital landscape", "It's important to note", "delve", "unlock", "elevate", "game-changer", rhetorical-question openers, "In conclusion"). Vary sentence length. Make claims confidently — an expert says "sealant fails in 3–5 years", not "sealant may potentially degrade over time". Address the reader as "you" unless the voice dictates otherwise.
+Voice rules regardless of brand — the full rulebook is `references/voice-and-tells.md`; read it before drafting and run its checklist in Stage 4. The load-bearing rules: take at least one defensible stance a competitor's article wouldn't publish; replace hedges with conditions ("if your lot is under a quarter acre, skip this" — not "results typically vary"); prefer specifics (numbers, dates, prices, tool names, edge cases) over adjectives; write with deliberately uneven rhythm — paragraph lengths vary, section depth follows value rather than symmetry; no signposted transitions ("Moreover", "Let's dive in") and no conclusion that restates the article. Ration the tics: at most one rule-of-three triad per article, em dashes and bold used sparingly, and never the "It's not just X — it's Y" frame. The banned-phrase list lives in the reference file, but the durable rule is stronger than any list: any sentence that could appear unchanged in any article on any topic gets cut or made specific. Make claims confidently — an expert says "sealant fails in 3–5 years", not "sealant may potentially degrade over time". Address the reader as "you" unless the voice dictates otherwise. Never fake humanity: no deliberate typos, no invented anecdotes, no AI-detector tricks — the target is writing that survives close reading by an expert, not fooling a classifier.
 
 ### Experience, authority, and anti-fabrication
 
@@ -77,7 +77,7 @@ For health, medical, legal, financial, safety, or similarly consequential conten
 
 ## Stage 4: Verify and deliver
 
-Score the draft against `references/quality-rubric.md` — weighted categories, not a flat checklist. Intent satisfaction and accuracy dominate; technical on-page details matter least. Actually evaluate each category and fix what's weak before delivering.
+Score the draft against `references/quality-rubric.md` — weighted categories, not a flat checklist. Intent satisfaction and accuracy dominate; technical on-page details matter least. Actually evaluate each category and fix what's weak before delivering. As part of the voice pass, run the tells checklist at the end of `references/voice-and-tells.md` — including the 500-companies test: if the article would work for any competitor after swapping the company name, rewrite it.
 
 Deliver as a markdown file:
 

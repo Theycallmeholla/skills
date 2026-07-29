@@ -16,6 +16,7 @@ A collection of custom skills for Claude (Claude Code / Cowork). Each skill is a
 - **cover-story** — write the spoiler-free context brief a first-time tester gets (fresh-eyes companion)
 - **ux-audit** — reconstruct a product flow and audit its usability with a severity-weighted findings report
 - **ui-oddity-scan** — scan a page for duplicated copy, stray text, placeholder content, and other UI oddities
+- **conversion-audit** — audit a landing page through one lens: the ONE action it wants visitors to take, with cold-read persona agents
 
 ### Documentation
 
@@ -26,11 +27,14 @@ A collection of custom skills for Claude (Claude Code / Cowork). Each skill is a
 ### Content
 
 - **seo-blog-writer** — research-driven SEO articles built on search intent, verified claims, and original value
+- **ai-writing-detector** — score writing for AI-generation tells with a weighted 0–100 scorecard and ranked fixes
 
 ### Prompting & Workflow
 
 - **genie-proof-prompts** — rewrite any prompt so a maliciously literal genie couldn't misinterpret it
 - **handoff** — compact a working session into a handoff doc a fresh agent can pick up cold
+- **elihadhd** — restructure any response for an ADHD brain: TL;DR first, punchy steps, one clear next action
+- **skills-repo-sync** — check for custom skills missing from this repo, add them in the expected format, and push
 
 ## Using a skill
 
