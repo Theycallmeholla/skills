@@ -56,6 +56,31 @@ A collection of custom skills for Claude (Claude Code / Cowork). Each skill is a
 
 Copy the skill folder into your skills directory (`~/.claude/skills/` for Claude Code) or upload the folder as a skill in the Claude app.
 
+To sync this whole repo into a local `~/.claude/skills`, use the `skills-repo-push` skill — it dry-runs by default, leaves local-only skills alone, and preserves files that accumulate local state. The `skills-repo-sync` skill does the reverse, and asks before adding anything new.
+
+## Adding a skill
+
+Every skill is validated in CI. Before opening a PR, run:
+
+```bash
+pip install pyyaml
+python3 scripts/validate_skills.py .
+```
+
+It enforces the constraints that actually stop a skill loading:
+
+- `description` under 1024 characters, `name` under 64 and matching the folder
+- frontmatter limited to `name`, `description`, `license`, `compatibility`, `metadata`, `allowed-tools`
+- `SKILL.md` body under 500 lines
+- every `scripts/`, `references/`, or `assets/` path named in the body actually exists
+- one README bullet per skill folder, and no extras
+
+CI also runs `shellcheck` over every script and the `swipe-deck` regression suite.
+
+### Never-publish list
+
+`.publish-denylist` names skills that must never appear in this repo. CI fails the build if one does. It's a hard block, not a convention — it holds even if a sync tool is told to add them. Add a line there before anything private goes near a sync.
+
 ## License
 
-MIT
+[MIT](LICENSE)
