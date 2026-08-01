@@ -102,6 +102,20 @@ def check_skill(root, name):
             err(name, f"{rel}: references `{ref}` which does not exist")
 
 
+def check_denylist(root, skills):
+    """Hard block: named skills must never appear in this repo."""
+    path = os.path.join(root, ".publish-denylist")
+    if not os.path.isfile(path):
+        return
+    banned = set()
+    for line in open(path, encoding="utf-8"):
+        line = line.split("#", 1)[0].strip()
+        if line:
+            banned.add(line)
+    for name in sorted(skills & banned):
+        err(name, "is on .publish-denylist and must NEVER be published to this repo")
+
+
 def check_readme(root, skills):
     path = os.path.join(root, "README.md")
     if not os.path.isfile(path):
@@ -123,6 +137,7 @@ def main():
                    if os.path.isdir(os.path.join(skills_dir, d)))
     for name in names:
         check_skill(root, name)
+    check_denylist(root, set(names))
     check_readme(root, set(names))
 
     for w in warnings:

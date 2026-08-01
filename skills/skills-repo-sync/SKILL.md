@@ -63,15 +63,26 @@ contents (more files / newer material); when in doubt, prefer the Mac copy and n
   heading, in the style: `- **skill-name** — lowercase one-line summary`.
   Fit new skills into existing categories (Code Quality & Testing, UX & Product Testing,
   Documentation, Content, Prompting & Workflow); create a new `###` category only when
-  nothing fits (e.g. "Agents & Automation" for agent-swarm skills, "Design & Visuals",
-  "Productivity"). Base the one-liner on the skill's frontmatter description, compressed.
+  nothing fits (e.g. "Design & Visuals", "Productivity"). Base the one-liner on the skill's frontmatter description, compressed.
 
 ## Sync procedure
 
 1. **Enumerate** skill folder names from both sources; apply exclusions.
 2. **Diff** against `ls /Users/cursivemedia/skills/skills/`.
-3. **Report the plan** before writing: which skills will be added and from which source.
-   In an interactive session, confirm with the user if the list is surprisingly large.
+3. **Confirm every new skill, one at a time.** Never batch, never assume, never infer
+   from the skill's contents that it is meant to be public. Publishing is the user's
+   decision and only the user's. For each skill not already in the repo, show its name
+   and one-line description and ask whether it should be published. Default is NO — if
+   the user does not clearly say yes to that specific skill, it is not added. This holds
+   however small the list is, however obviously "safe" a skill looks, and however clearly
+   it fits an existing README category.
+
+   Anything named in `.publish-denylist` is never offered at all — do not ask about it,
+   do not add it. CI fails the build if a denylisted skill reaches `skills/`, so adding
+   one breaks the repo as well as the user's trust.
+
+   Skills that are stages of an internal business pipeline are the specific thing this
+   gate exists to stop. Do not create a category to accommodate them.
 4. **Copy** each missing skill folder into `skills/<name>/` preserving structure.
    - Skills already on the Mac: `cp -RL` (dereference!) on the device. Entries in
      `~/.claude/skills` are often symlinks into `~/.agents/skills/` — a plain `cp -R`

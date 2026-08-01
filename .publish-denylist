@@ -1,0 +1,10 @@
+# Skills that must NEVER be published to this repo.
+# CI fails if any name here appears under skills/. This is a hard block:
+# it holds even if a sync agent is told to add them, misreads intent, or
+# sweeps a directory automatically.
+#
+# One skill name per line. Comments and blank lines ignored.
+
+cursive-agent-1-prospect
+cursive-agent-2-content-parse
+cursive-agent-3-structure-map
