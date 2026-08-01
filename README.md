@@ -79,7 +79,7 @@ CI also runs `shellcheck` over every script and the `swipe-deck` regression suit
 
 ### Never-publish list
 
-`.publish-denylist` names skills that must never appear in this repo. CI fails the build if one does. It's a hard block, not a convention — it holds even if a sync tool is told to add them. Add a line there before anything private goes near a sync.
+`.publish-denylist` names skills that must never appear in this repo. CI fails the build if one does. It's a hard block, not a convention — it holds even if a sync tool is told to add them. Entries are shell globs, so a prefix like `some-prefix-*` covers future additions without naming them individually. Add a line there before anything private goes near a sync.
 
 ## License
 

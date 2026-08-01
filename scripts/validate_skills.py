@@ -4,6 +4,7 @@
 Exits 1 on any error. Warnings never fail the build.
 Usage: python3 scripts/validate_skills.py [repo_root]
 """
+import fnmatch
 import os
 import re
 import sys
@@ -112,8 +113,12 @@ def check_denylist(root, skills):
         line = line.split("#", 1)[0].strip()
         if line:
             banned.add(line)
-    for name in sorted(skills & banned):
-        err(name, "is on .publish-denylist and must NEVER be published to this repo")
+    for name in sorted(skills):
+        for pattern in sorted(banned):
+            if fnmatch.fnmatch(name, pattern):
+                err(name, f"matches .publish-denylist entry '{pattern}' and must NEVER "
+                          "be published to this repo")
+                break
 
 
 def check_readme(root, skills):
