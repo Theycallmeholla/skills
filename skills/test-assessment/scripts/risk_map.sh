@@ -107,8 +107,8 @@ if [[ -n "$RISKY_DIRS" ]]; then
 
     # Also look for sibling test directory
     parent=$(dirname "$d")
-    sibling_tests=$(find "$parent" -maxdepth 3 -type d \( -name '__tests__' -o -name 'tests' -o -name 'test' -o -name 'spec' \) 2>/dev/null \
-      | xargs -r -I{} find {} -type f 2>/dev/null \
+    sibling_tests=$(find "$parent" -maxdepth 3 -type d \( -name '__tests__' -o -name 'tests' -o -name 'test' -o -name 'spec' \) -print0 2>/dev/null \
+      | xargs -0 -r -I{} find {} -type f 2>/dev/null \
       | grep -E "$(basename "$d")" | wc -l)
 
     total_tests=$((test_count + sibling_tests))

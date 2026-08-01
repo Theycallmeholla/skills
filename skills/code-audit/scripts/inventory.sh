@@ -205,7 +205,7 @@ check_file "Code of conduct" "CODE_OF_CONDUCT*"
 echo
 
 echo "Test / coverage:"
-TEST_DIRS=$(find . -maxdepth 3 -type d 2>/dev/null \( -name test -o -name tests -o -name spec -o -name __tests__ -o -name '*_test*' \) | grep -Ev "(/($IGNORE_DIRS)/)" | head -5)
+TEST_DIRS=$(find . -maxdepth 3 -type d \( -name test -o -name tests -o -name spec -o -name __tests__ -o -name '*_test*' \) 2>/dev/null | grep -Ev "(/($IGNORE_DIRS)/)" | head -5)
 if [[ -n "$TEST_DIRS" ]]; then
   echo "  Test directories found:"
   echo "$TEST_DIRS" | sed 's/^/    /'
