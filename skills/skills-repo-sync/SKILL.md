@@ -50,8 +50,9 @@ contents (more files / newer material); when in doubt, prefer the Mac copy and n
 - **Infrastructure files**: `manifest.json`, `session-start-hook`, hidden files.
 - **Do-not-sync list** (user-decided; the repo is PUBLIC): `adhd-mode` (stale duplicate of
   `elihadhd` still lingering in the account — if seen, remind the user to delete it from
-  their account skills), and any skill matching `cursive-agent-*` (private/internal —
-  never sync to the public repo). Add future private skills here rather than syncing them.
+  their account skills), plus every pattern in the repo's `.publish-denylist`. Read that
+  file and treat each entry as a glob; never sync anything matching one. Add future
+  private skills to `.publish-denylist` rather than naming them here.
 
 ## Repo format (follow exactly)
 

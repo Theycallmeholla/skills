@@ -64,6 +64,6 @@ Severity in brackets. Deterministic items (D) come from `audit.mjs` / curl; judg
 - [CRITICAL] (D) All forms submit successfully (test with obviously-fake data flagged as test)
 - [CRITICAL] (D) No links to staging/localhost/dev URLs
 - [MAJOR] (D) Analytics/tracking installed and firing
-- [MAJOR] (J) Every page matches the approved structure_packet sitemap — no orphaned or missing pages
+- [MAJOR] (J) Every page matches the approved sitemap — no orphaned or missing pages
 - [MINOR] (D) Redirects from the old site's top URLs in place (relaunches)
 - [MINOR] (J) Legal pages present (privacy policy at minimum)
