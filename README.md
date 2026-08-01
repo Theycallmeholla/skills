@@ -35,6 +35,7 @@ A collection of custom skills for Claude (Claude Code / Cowork). Each skill is a
 ### Content
 
 - **seo-blog-writer** — research-driven SEO articles built on search intent, verified claims, and original value
+- **who-let-the-blogs-out** — end-to-end blog system with per-client memory: plan, interview, brief, draft, verify, score, revise, publish, refresh
 - **ai-writing-detector** — score writing for AI-generation tells with a weighted 0–100 scorecard and ranked fixes
 - **case-study-builder** — build client case studies through a low-overwhelm multiple-choice interview, with web-ready copy and a media plan
 
