@@ -7,11 +7,10 @@ description: >
   frontend code in a repo, a live running app driven via a browser, or a written flow / spec /
   screenshots. Use this skill whenever the user asks for a UX review, usability audit, "is this
   flow confusing", "does this signup/onboarding/checkout make sense", "why are people dropping
-  off", "review the user experience of X", "audit this form", "where's the friction", or hands
-  over a flow and asks whether it's user-friendly. Trigger even on casual phrasings ("is my
-  checkout any good?", "eyeball this onboarding for me") — this skill imposes the structure that
-  ad-hoc UX opinions miss. This skill audits flow usability and friction — for visual polish and
-  interface-quality issues, the impeccable audit/critique skills apply instead.
+  off", "audit this form", "where's the friction", or hands over a flow and asks whether it's
+  user-friendly. Trigger even on casual phrasings ("is my checkout any good?") — it imposes the
+  structure ad-hoc UX opinions miss. Audits flow usability and friction; for visual polish and
+  interface quality the impeccable audit/critique skills apply instead.
 ---
 
 # UX Audit

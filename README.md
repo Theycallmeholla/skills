@@ -44,6 +44,7 @@ A collection of custom skills for Claude (Claude Code / Cowork). Each skill is a
 - **handoff** — compact a working session into a handoff doc a fresh agent can pick up cold
 - **elihadhd** — restructure any response for an ADHD brain: TL;DR first, punchy steps, one clear next action
 - **skills-repo-sync** — check for custom skills missing from this repo, add them in the expected format, and push
+- **skills-repo-push** — the reverse direction: push repo skills back out to your local `~/.claude/skills`, with a dry run first and local-only skills left alone
 - **skill-system-architect** — design the architecture for a multi-command skill system before any skill files get written
 - **whiteboard** — plan work too big for one session as a map of investigation tickets on GitHub Issues
 - **whiteboard-help** — quick-reference guide for the whiteboard planning system

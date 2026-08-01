@@ -11,28 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check SKILL.md frontmatter
-        run: |
-          fail=0
-          for dir in skills/*/; do
-            name=$(basename "$dir")
-            f="$dir/SKILL.md"
-            if [ ! -f "$f" ]; then
-              echo "::error::$name is missing SKILL.md"; fail=1; continue
-            fi
-            if ! head -1 "$f" | grep -q '^---$'; then
-              echo "::error file=$f::missing frontmatter block"; fail=1; continue
-            fi
-            fm=$(awk '/^---$/{n++; next} n==1{print} n==2{exit}' "$f")
-            fmname=$(echo "$fm" | grep -E '^name:' | sed 's/^name:[[:space:]]*//')
-            if [ "$fmname" != "$name" ]; then
-              echo "::error file=$f::frontmatter name '$fmname' != folder '$name'"; fail=1
-            fi
-            if ! echo "$fm" | grep -qE '^description:'; then
-              echo "::error file=$f::missing description"; fail=1
-            fi
-          done
-          exit $fail
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install deps
+        run: pip install pyyaml
+
+      - name: Validate skill spec compliance
+        run: python3 scripts/validate_skills.py .
 
       - name: Scan for secrets
         run: |
@@ -40,3 +27,21 @@ jobs:
             echo "::error::possible secret committed"; exit 1
           fi
           echo "no secrets found"
+
+      - name: Shellcheck
+        run: |
+          sudo apt-get install -y shellcheck
+          find skills scripts -name '*.sh' -print0 | xargs -0 -r shellcheck -S warning
+
+  swipe-deck-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install playwright
+        run: npm install playwright && npx playwright install --with-deps chromium
+      - name: Run swipe-deck regression suite
+        working-directory: skills/swipe-deck
+        run: node tests/run.js

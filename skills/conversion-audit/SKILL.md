@@ -3,16 +3,15 @@ name: conversion-audit
 description: >
   Audit a landing page or marketing site through one lens: what is the ONE thing this page wants
   the visitor to do, and does every element on the page move them toward it? Reconstructs who
-  lands on the page and why, spawns parallel visitor-persona agents to react to it cold, maps the
-  belief chain a visitor must climb before acting, inventories CTAs and everything competing with
-  them, then delivers a prioritized cut/move/add/rewrite plan. Use whenever the user asks "what
-  do we want people to do on this page", "is this page converting", "critique this landing page",
-  "does the page make sense from a visitor's perspective", "why would someone book/buy/sign up
-  here", "audit the funnel on X page", or wants strategic critique of page content and structure
-  (not visual polish). Works from frontend code in a repo, a live URL via browser tools, or
-  pasted copy/screenshots. This skill judges persuasion and intent-alignment — for flow
-  usability/friction mechanics use ux-audit; for visual/aesthetic quality use impeccable
-  critique/audit.
+  lands on the page and why, spawns visitor-persona agents to react to it cold, maps the belief
+  chain a visitor must climb before acting, inventories CTAs and everything competing with them,
+  then delivers a prioritized cut/move/add/rewrite plan. Use whenever the user asks "what do we
+  want people to do on this page", "is this page converting", "critique this landing page", "why
+  would someone book/buy/sign up here", "audit the funnel on X page", or wants strategic critique
+  of page content and structure (not visual polish). Works from frontend code in a repo, a live
+  URL via browser tools, or pasted copy/screenshots. Judges persuasion and intent-alignment; for
+  flow usability and friction use ux-audit, for visual and aesthetic quality use the impeccable
+  critique/audit skills.
 ---
 
 # Conversion Audit
