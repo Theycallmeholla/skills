@@ -1,0 +1,541 @@
+<div id="sd-root">
+  <script id="sd-data" type="application/json">__DECK_JSON__</script>
+  <h2 class="sd-sr">A stack of question cards. Swipe or press arrow keys: right for yes, left for no, up for absolutely, down for not sure. Tap any word on the top card to rewrite it before answering. Press Z to undo the last swipe (one step only). Press N to add a note.</h2>
+
+  <div class="sd-panel">
+    <div class="sd-top">
+      <div class="sd-topL">
+        <span class="sd-round" id="sd-count">0 swiped</span>
+        <span class="sd-topic" id="sd-topic"></span>
+      </div>
+      <button type="button" class="sd-enough" id="sd-enough">That's enough &nearr;</button>
+    </div>
+
+    <div class="sd-meter">
+      <div class="sd-mtrack"><div class="sd-mfill" id="sd-mfill"></div><div class="sd-mtick"></div></div>
+      <span class="sd-mlabel" id="sd-mlabel">still learning</span>
+    </div>
+
+    <div class="sd-cov" id="sd-cov"></div>
+
+    <div class="sd-stage" id="sd-stage">
+      <div class="sd-stack" id="sd-stack"></div>
+      <div class="sd-end" id="sd-end" hidden></div>
+    </div>
+
+    <div class="sd-undoRow"><button type="button" id="sd-undo" class="sd-undoBtn" hidden>↺ take back that swipe <kbd>Z</kbd></button></div>
+
+    <div class="sd-bar" id="sd-bar">
+      <button type="button" class="sd-b sd-no"     data-v="no"     title="Wrong direction (←)"><span>✕</span><em>no</em></button>
+      <button type="button" class="sd-b sd-narrow" data-v="narrow" title="Not sure — get more specific (↓)"><span>↓</span><em>not sure</em></button>
+      <button type="button" class="sd-b sd-hot"    data-v="hot"    title="Absolutely — more of this (↑)"><span>★</span><em>absolutely</em></button>
+      <button type="button" class="sd-b sd-yes"    data-v="yes"    title="Yes (→)"><span>✓</span><em>yes</em></button>
+    </div>
+
+    <div class="sd-fallback" id="sd-fallback" hidden>
+      <p>Paste this back into chat to keep going:</p>
+      <textarea id="sd-fbtext" readonly rows="6"></textarea>
+      <button type="button" id="sd-copy">Copy</button>
+    </div>
+  </div>
+</div>
+
+<style>
+#sd-root{--sd-bg:#171614;--sd-card:#232120;--sd-card2:#1e1c1b;--sd-line:rgba(255,255,255,.10);--sd-line2:rgba(255,255,255,.18);--sd-fg:#F5F2EE;--sd-fg2:#A29B92;--sd-fg3:#6E6862;--sd-yes:#3FB950;--sd-no:#F0603D;--sd-hot:#58A6FF;--sd-narrow:#E3B341;font-family:var(--font-sans,ui-sans-serif,system-ui,sans-serif);-webkit-user-select:none;user-select:none}
+#sd-root *{box-sizing:border-box}
+#sd-root .sd-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#sd-root .sd-panel{background:var(--sd-bg);border-radius:16px;padding:14px;color:var(--sd-fg);overflow:hidden}
+
+/* header is three calm rows — status, meter, coverage — instead of one crowded one */
+#sd-root .sd-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
+#sd-root .sd-topL{display:flex;align-items:baseline;gap:8px;min-width:0;flex:1}
+#sd-root .sd-topic{font-size:12px;color:var(--sd-fg3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+#sd-root .sd-round{font-size:13px;font-weight:600;letter-spacing:.02em;white-space:nowrap}
+/* coverage: bright label with its progress bar directly underneath, spanning its width */
+#sd-root .sd-cov{display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:center;margin:12px 0 6px}
+#sd-root .sd-fac{display:flex;flex-direction:column;align-items:stretch;gap:5px;min-width:0}
+#sd-root .sd-facN{font-size:12px;color:var(--sd-fg);text-transform:lowercase;letter-spacing:.01em;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+#sd-root .sd-fac.full .sd-facN{color:var(--sd-yes)}
+#sd-root .sd-pips{display:flex;gap:3px}
+#sd-root .sd-pip{flex:1;min-width:12px;height:4px;border-radius:2px;background:rgba(255,255,255,.18)}
+#sd-root .sd-pip.on{background:#DCD6CE}
+#sd-root .sd-fac.full .sd-pip.on{background:var(--sd-yes)}
+#sd-root .sd-enough{background:none;border:.5px solid var(--sd-line2);color:var(--sd-fg2);font:inherit;font-size:11px;padding:5px 9px;border-radius:7px;cursor:pointer;white-space:nowrap}
+#sd-root .sd-enough:hover{color:var(--sd-fg);border-color:var(--sd-fg3)}
+
+#sd-root .sd-meter{display:flex;align-items:center;gap:9px;margin:0 0 12px}
+#sd-root .sd-mtrack{position:relative;flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.09);overflow:hidden}
+#sd-root .sd-mfill{height:100%;width:0;border-radius:3px;background:var(--sd-fg3);transition:width .45s ease,background .45s ease}
+#sd-root .sd-mtrack.warm .sd-mfill{background:var(--sd-narrow)}
+#sd-root .sd-mtrack.hot .sd-mfill{background:var(--sd-hot)}
+#sd-root .sd-mtrack.full .sd-mfill{background:var(--sd-yes)}
+#sd-root .sd-mtick{position:absolute;top:-2px;bottom:-2px;left:85%;width:1px;background:rgba(255,255,255,.28)}
+#sd-root .sd-mlabel{font-size:10.5px;color:var(--sd-fg3);white-space:nowrap;min-width:112px;text-align:right}
+#sd-root .sd-stage{position:relative;height:336px;perspective:900px}
+#sd-root .sd-stack{position:absolute;inset:0}
+/* Cards Against Humanity look: stark white portrait card, heavy black type set
+   top-left, tiny branding footer, floating over the dark table on real shadows. */
+#sd-root .sd-card{position:absolute;top:0;bottom:0;left:0;right:0;margin:0 auto;width:288px;max-width:94%;background:#FEFDFB;color:#0d0d0d;border-radius:16px;padding:20px 20px 16px;display:flex;flex-direction:column;overflow:hidden;transform-origin:50% 120%;will-change:transform;box-shadow:0 1px 2px rgba(0,0,0,.55),0 8px 18px rgba(0,0,0,.42),0 22px 44px rgba(0,0,0,.38)}
+#sd-root .sd-card.d1,#sd-root .sd-card.d2{box-shadow:0 1px 2px rgba(0,0,0,.5),0 6px 14px rgba(0,0,0,.38)}
+#sd-root .sd-card.top{cursor:grab}
+#sd-root .sd-card.top.drag{cursor:grabbing;box-shadow:0 2px 3px rgba(0,0,0,.45),0 16px 32px rgba(0,0,0,.5),0 42px 80px rgba(0,0,0,.42)}
+#sd-root .sd-card.anim{transition:transform .34s cubic-bezier(.2,.8,.3,1),opacity .34s ease}
+#sd-root .sd-badge{position:absolute;top:14px;right:14px;background:#111;color:#fff;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:20px}
+#sd-root .sd-body{flex:1;min-height:0;overflow:hidden}
+#sd-root .sd-card.hasb .sd-body{padding-top:24px}  /* text starts below the style badge */
+#sd-root .sd-q{font-family:'Helvetica Neue',Helvetica,Arial,var(--font-sans,sans-serif);font-size:21px;line-height:1.24;font-weight:700;margin:0;letter-spacing:-.005em;overflow-wrap:anywhere}
+/* tap-to-rewrite: any word on the top card is a counter-offer waiting to happen */
+#sd-root .top .sd-w{border-radius:3px;cursor:text}
+#sd-root .top .sd-w:hover{background:#FFF2AE;box-shadow:0 1.5px 0 #d9b800}
+#sd-root .sd-w.m{background:#FFF2AE;border-radius:3px;padding:0 2px;box-shadow:0 1.5px 0 #d9b800}
+#sd-root .sd-wIn{display:inline-block;font:inherit;font-weight:700;font-size:21px;border:none;border-bottom:2.5px solid #111;background:#FFF9DB;outline:none;color:#0d0d0d;padding:0 2px;border-radius:3px 3px 0 0;min-width:3ch}
+#sd-root .sd-hint{font-size:12.5px;color:#6d6d6d;margin:10px 0 0;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-weight:400}
+#sd-root .sd-foot{margin-top:auto;padding-top:12px;display:flex;align-items:center;gap:8px;flex:0 0 auto}
+#sd-root .sd-brand{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#3a3a3a;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#sd-root .sd-brand i{flex:0 0 auto;width:9px;height:13px;border:1.7px solid #111;border-radius:2.5px;transform:rotate(-10deg)}
+#sd-root .sd-note{margin-left:auto;background:none;border:1.5px dashed #c2c2bd;color:#8b8b86;font:inherit;font-size:10.5px;padding:4px 9px;border-radius:20px;cursor:pointer;white-space:nowrap}
+#sd-root .sd-note:hover{color:#444;border-color:#999}
+#sd-root .sd-note.has{border-style:solid;color:#1d4ed8;border-color:#1d4ed8}
+#sd-root .sd-noteIn{flex:1;background:#f4f3ef;border:1.5px solid #d5d4cf;border-radius:8px;color:#111;font:inherit;font-size:12px;padding:6px 9px;outline:none;min-width:0}
+#sd-root .sd-noteIn::placeholder{color:#9b9b96}
+/* rubber stamps: sit opposite the exit direction, inked over the white card */
+#sd-root .sd-tag{position:absolute;top:44px;left:16px;font-size:15px;font-weight:800;letter-spacing:.08em;padding:6px 12px;border-radius:8px;border:2.5px solid;background:rgba(255,255,255,.94);opacity:0;pointer-events:none;z-index:3}
+#sd-root .sd-tag.yes{color:#2b9348;border-color:#2b9348;transform:rotate(-9deg)}
+#sd-root .sd-tag.no{color:#d94a2b;border-color:#d94a2b;left:auto;right:16px;transform:rotate(9deg)}
+#sd-root .sd-tag.hot{color:#2563eb;border-color:#2563eb;top:auto;bottom:52px;left:50%;transform:translateX(-50%) rotate(-4deg)}
+#sd-root .sd-tag.narrow{color:#b45309;border-color:#b45309;top:44px;left:50%;transform:translateX(-50%) rotate(4deg)}
+
+/* the closing card flips to the black card */
+#sd-root .sd-end[hidden]{display:none!important}
+#sd-root .sd-end{position:absolute;top:0;bottom:0;left:0;right:0;margin:0 auto;width:288px;max-width:94%;background:#111;color:#fff;border-radius:16px;padding:24px 22px;display:flex;flex-direction:column;justify-content:center;text-align:left;box-shadow:0 1px 2px rgba(0,0,0,.6),0 10px 22px rgba(0,0,0,.5),0 26px 52px rgba(0,0,0,.42)}
+#sd-root .sd-endT{font-family:'Helvetica Neue',Helvetica,Arial,var(--font-sans,sans-serif);font-size:21px;font-weight:700;margin:0 0 10px;line-height:1.24}
+#sd-root .sd-endS{font-size:13px;color:#b9b9b9;margin:0;line-height:1.5}
+#sd-root .sd-dots{display:flex;gap:5px;justify-content:flex-start;margin-top:16px}
+#sd-root .sd-dot{width:6px;height:6px;border-radius:50%;background:#777;animation:sd-pulse 1.3s infinite}
+#sd-root .sd-dot:nth-child(2){animation-delay:.18s}
+#sd-root .sd-dot:nth-child(3){animation-delay:.36s}
+@keyframes sd-pulse{0%,100%{opacity:.25}50%{opacity:1}}
+#sd-root .sd-tally{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-start;margin-top:16px;font-size:12px;color:#b9b9b9}
+#sd-root .sd-tally b{font-weight:600}
+
+/* undo lives outside the verdict bar and only exists while it can act — appearing
+   right after a swipe is what makes it discoverable */
+#sd-root .sd-undoRow{position:relative;z-index:20;height:26px;display:flex;justify-content:center;align-items:center;margin-top:16px}
+#sd-root .sd-undoBtn{background:var(--sd-bg);border:.5px solid var(--sd-line2);color:var(--sd-fg2);font:inherit;font-size:11px;padding:4px 11px;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;animation:sd-in .25s ease}
+#sd-root .sd-undoBtn[hidden]{display:none!important}
+#sd-root .sd-undoBtn:hover{color:var(--sd-fg);border-color:var(--sd-fg3)}
+#sd-root .sd-undoBtn kbd{font-family:var(--font-mono,ui-monospace,monospace);font-size:9px;border:.5px solid var(--sd-line2);border-radius:4px;padding:1px 4px;color:var(--sd-fg3)}
+@keyframes sd-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+#sd-root .sd-bar{display:flex;gap:7px;justify-content:center;margin-top:8px}
+#sd-root .sd-b{background:none;border:.5px solid var(--sd-line);border-radius:11px;color:var(--sd-fg2);font:inherit;cursor:pointer;padding:8px 0;width:72px;display:flex;flex-direction:column;align-items:center;gap:3px}
+#sd-root .sd-b span{font-size:16px;line-height:1}
+#sd-root .sd-b em{font-style:normal;font-size:9.5px;letter-spacing:.03em}
+#sd-root .sd-b:hover{border-color:var(--sd-line2);color:var(--sd-fg)}
+#sd-root .sd-b:active{transform:scale(.96)}
+#sd-root .sd-b.sd-yes:hover{color:var(--sd-yes);border-color:var(--sd-yes)}
+#sd-root .sd-b.sd-no:hover{color:var(--sd-no);border-color:var(--sd-no)}
+#sd-root .sd-b.sd-hot:hover{color:var(--sd-hot);border-color:var(--sd-hot)}
+#sd-root .sd-b.sd-narrow:hover{color:var(--sd-narrow);border-color:var(--sd-narrow)}
+#sd-root .sd-b:disabled{opacity:.3;cursor:default}
+
+#sd-root .sd-fallback{margin-top:12px;border-top:.5px solid var(--sd-line);padding-top:10px}
+#sd-root .sd-fallback p{font-size:12px;color:var(--sd-fg2);margin:0 0 6px}
+#sd-root .sd-fallback textarea{width:100%;background:rgba(0,0,0,.3);color:var(--sd-fg);border:.5px solid var(--sd-line2);border-radius:8px;font-family:var(--font-mono,ui-monospace,monospace);font-size:11px;padding:8px;resize:vertical}
+#sd-root .sd-fallback button{margin-top:6px;background:none;border:.5px solid var(--sd-line2);color:var(--sd-fg2);font:inherit;font-size:12px;padding:5px 12px;border-radius:8px;cursor:pointer}
+@media (max-width:440px){#sd-root .sd-b{width:60px}#sd-root .sd-q{font-size:20px}#sd-root .sd-cov{display:none}}
+</style>
+
+<script>
+(function(){
+  // Several decks can share one document (round 1 stays on screen when round 2 arrives),
+  // so bind to the newest uninitialised instance and scope every lookup to it.
+  var roots=document.querySelectorAll('#sd-root'), root=null;
+  for(var i=roots.length-1;i>=0;i--){ if(!roots[i].dataset.on){ root=roots[i]; break } }
+  if(!root)return; root.dataset.on='1';
+  function $(sel){ return root.querySelector(sel) }
+
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+
+  // ---- the channel back to Claude
+  var fbShown=false;
+  function push(msg){
+    if(typeof sendPrompt==='function'){sendPrompt(msg);return}
+    var fb=$('#sd-fallback'), ta=$('#sd-fbtext');
+    ta.value = fbShown ? (ta.value+'\n\n'+msg) : msg;
+    fb.hidden=false; fbShown=true;
+    $('#sd-copy').onclick=function(){
+      var b=this;
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1400)};
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(ta.value).then(done,function(){ta.select()});
+      }else{ta.select();try{document.execCommand('copy');done()}catch(e){}}
+    };
+  }
+  function fatal(title,detail,report){
+    $('#sd-stack').innerHTML=''; $('#sd-bar').style.display='none';
+    var e=$('#sd-end'); e.hidden=false;
+    e.innerHTML='<p class="sd-endT">'+esc(title)+'</p><p class="sd-endS">'+esc(detail)+'</p>';
+    push(report);
+  }
+
+  // A literal closing script tag anywhere in the deck text truncates the data block
+  // above, so parse failure is real. Fail loudly and self-heal instead of hanging.
+  var D=null;
+  try{ D=JSON.parse($('#sd-data').textContent) }
+  catch(err){
+    return fatal('This deck didn\'t load','Claude is rebuilding it — one moment.',
+      'SWIPE DECK FAILED TO LOAD — the embedded JSON did not parse ('+String(err&&err.message).slice(0,120)+').\n'+
+      'Almost always this means a card contained a literal <\/script>, which truncates the data block.\n'+
+      '→ Re-emit the same deck with every "<\/" inside the JSON written as "<\\/", and do not comment on this.');
+  }
+
+  var CARDS=(D.cards||[]).slice(), TOPIC=D.topic||'this';
+  var CARRY=D.carry||{}, COV=Object.assign({},CARRY.coverage||{}), PRIOR=CARRY.swiped||0;
+  // an unlisted facet would otherwise vanish from the coverage meter
+  var FACETS=(D.facets||[]).slice();
+  CARDS.forEach(function(c){ if(c.facet&&FACETS.indexOf(c.facet)<0)FACETS.push(c.facet) });
+
+  if(!CARDS.length){
+    return fatal('No cards in this deck','Claude is rebuilding it — one moment.',
+      'SWIPE DECK WAS EMPTY — the deck arrived with zero cards, so there is nothing to swipe.\n'+
+      '→ Re-emit with a full pool of cards.');
+  }
+
+  var LABEL={yes:'YES',no:'NOPE',hot:'ABSOLUTELY',narrow:'NOT SURE'};
+  var stack=$('#sd-stack'), endEl=$('#sd-end'), covEl=$('#sd-cov'), barEl=$('#sd-bar');
+  var ORD={}; CARDS.forEach(function(c,i){ORD[c.id]=i});
+
+  var queue=CARDS.slice(), done=[], notes={}, edits={};
+  var sent=false, tailSent=false, stopped=false, busy=false, sentAt=0, undone=false;
+  function qOf(c){return edits[c.id]?edits[c.id].now:c.q}
+  var focusFacet=null, focusDepth=0, streak={f:null,n:0}, score={};
+  // Saturation is measured, not asserted. Claude commits to a predicted swipe on each
+  // card before sending the deck; how often it is WRONG is the honest measure of how
+  // much is left to learn. The meter only fills when Claude has stopped being surprised
+  // AND every facet is genuinely covered.
+  var HITS=CARRY.hits||0, DECIDED=CARRY.decided||0, DEEP=CARRY.deep||0;
+  var SAT=85;   // percent — the same integer the user sees on the meter
+
+  function meterParts(){
+    var n=PRIOR+done.length;
+    var covered=FACETS.filter(function(f){return (COV[f]||0)>=3}).length;
+    var coverage=FACETS.length?covered/FACETS.length:0;
+    var pred=DECIDED>=8?HITS/DECIDED:0.5;                       // neutral until there is a sample
+    var deep=n?Math.min(1,(DEEP/n)/0.4):0;                      // 40% past surface level reads as full
+    var s=0.45*coverage+0.40*pred+0.15*deep;
+    // Two hard gates, because a weighted average lets a good score in one term paper over
+    // a bad one — and both of these mean "there is definitely more to learn here".
+    if(coverage<0.8)s=Math.min(s,0.70);                          // a facet you never asked about
+    if(DECIDED>=8&&pred<0.75)s=Math.min(s,0.80);                 // still getting swipes you didn't expect
+    if(n<10)s=Math.min(s,(n/10)*0.4);                            // no confidence from a handful of swipes
+    s=Math.max(0,Math.min(1,s));
+    return {s:s,pct:Math.round(s*100),coverage:coverage,covered:covered,pred:pred,deep:deep,n:n};
+  }
+  function full(){return meterParts().pct>=SAT}
+  function meterLabel(pct){
+    return pct>=SAT?'I think I\'ve got it':pct>=60?'getting dialed in':pct>=35?'warming up':'still learning';
+  }
+
+  // ---- adaptive re-ordering: the deck reacts to the last swipe without waiting on a round trip
+  function reorder(){
+    var dead={}; done.forEach(function(a){if(a.v==='no')dead[a.card.id]=1});
+    queue=queue.filter(function(c){return !(c.needs&&dead[c.needs])});
+    queue.sort(function(a,b){return rank(b)-rank(a)});
+  }
+  function rank(c){
+    var s=0, sc=score[c.facet]||0;
+    if(c.facet===focusFacet){s+=40; if(c.depth>=focusDepth)s+=25}
+    if(!(COV[c.facet]>0))s+=35;              // an untouched facet outranks a warm one
+    if(sc<0)s-=28;                            // cold facet, back off
+    if(streak.f===c.facet&&streak.n>=2&&c.facet!==focusFacet)s-=45;
+    s-=(c.depth||1)*4;
+    return s-(ORD[c.id]||0)*0.3;              // your authored order breaks ties — signal overrides it
+  }
+  // replay `done` so undo can't leave the engine in a stale state
+  function recompute(){
+    score={}; streak={f:null,n:0}; focusFacet=null; focusDepth=0;
+    done.forEach(function(a){
+      var c=a.card, v=a.v;
+      score[c.facet]=(score[c.facet]||0)+(v==='hot'?3:v==='yes'?1:v==='no'?-1:0);
+      streak=(streak.f===c.facet)?{f:c.facet,n:streak.n+1}:{f:c.facet,n:1};
+      if(v==='hot'||v==='narrow'){focusFacet=c.facet;focusDepth=(c.depth||1)+1}
+      else if(v==='no'&&focusFacet===c.facet){focusFacet=null;focusDepth=0}
+    });
+  }
+
+  function render(){
+    $('#sd-count').textContent=(PRIOR+done.length)+' swiped';
+    $('#sd-topic').textContent=TOPIC;
+    covEl.innerHTML=FACETS.map(function(f){
+      var v=Math.min(3,COV[f]||0);
+      return '<div class="sd-fac'+(v>=3?' full':'')+'"><span class="sd-facN">'+esc(f)+'</span><span class="sd-pips">'+
+        [0,1,2].map(function(i){return '<span class="sd-pip'+(i<v?' on':'')+'"></span>'}).join('')+
+        '</span></div>';
+    }).join('');
+    var m=meterParts();
+    $('#sd-mfill').style.width=m.pct+'%';
+    $('#sd-mfill').parentNode.className='sd-mtrack'+(m.pct>=SAT?' full':m.pct>=60?' hot':m.pct>=35?' warm':'');
+    $('#sd-mlabel').textContent=meterLabel(m.pct)+' · '+m.pct+'%';
+    // undo is one step only — re-answer the last card, not rewind the deck — and never
+    // past a swipe that was already transmitted (that would silently desync Claude's copy)
+    $('#sd-undo').hidden = !done.length || done.length<=sentAt || undone || stopped;
+
+    if(!queue.length){showEnd();return}
+    endEl.hidden=true; barEl.style.visibility='visible';
+    stack.innerHTML='';
+    queue.slice(0,3).reverse().forEach(function(c,i,arr){
+      var depth=arr.length-1-i;
+      var el=document.createElement('div');
+      var hasBadge=c.style&&c.style!==c.facet;
+      el.className='sd-card'+(depth?' d'+depth:' top')+(hasBadge?' hasb':'');
+      // under-cards fan out with a little rotation, like a real stack on a table
+      var rot=depth===1?-2.4:depth===2?1.8:0;
+      el.style.transform='translateY('+(depth*10)+'px) scale('+(1-depth*0.03)+') rotate('+rot+'deg)';
+      el.style.zIndex=String(10-depth);
+      var qText=qOf(c), qHtml;
+      if(!depth){
+        var marks=(edits[c.id]&&edits[c.id].marks)||[];
+        qHtml=qText.split(/\s+/).map(function(w,wi){
+          return '<span class="sd-w'+(marks.indexOf(wi)>=0?' m':'')+'">'+esc(w)+'</span>';
+        }).join(' ');
+      }else qHtml=esc(qText);
+      el.innerHTML=
+        (hasBadge?'<div class="sd-badge">'+esc(c.style)+'</div>':'')+
+        '<div class="sd-body"><p class="sd-q">'+qHtml+'</p>'+
+        (c.hint?'<p class="sd-hint">'+esc(c.hint)+'</p>':'')+'</div>'+
+        '<div class="sd-foot"><span class="sd-brand"><i></i>'+esc(c.facet||'')+'</span>'+
+        '<button type="button" class="sd-note'+(notes[c.id]?' has':'')+'">'+
+          (notes[c.id]?'note added':'+ note')+'</button></div>'+
+        '<div class="sd-tag yes">YES</div><div class="sd-tag no">NOPE</div>'+
+        '<div class="sd-tag hot">ABSOLUTELY</div><div class="sd-tag narrow">NOT SURE</div>';
+      stack.appendChild(el);
+      if(!depth)wire(el,c);
+    });
+  }
+
+  function wire(el,c){
+    el.querySelector('.sd-note').addEventListener('pointerdown',function(e){e.stopPropagation()});
+    el.querySelector('.sd-note').addEventListener('click',function(e){e.stopPropagation();openNote(el,c)});
+    var tags={yes:el.querySelector('.sd-tag.yes'),no:el.querySelector('.sd-tag.no'),hot:el.querySelector('.sd-tag.hot'),narrow:el.querySelector('.sd-tag.narrow')};
+    var sx=0,sy=0,dx=0,dy=0,on=false,dT=null;
+    el.addEventListener('pointerdown',function(e){
+      if(busy||e.target.tagName==='INPUT')return;
+      window.__sdActive=root;                 // clicking an older deck hands it the keyboard
+      dT=e.target;                            // remembered before capture retargets events
+      on=true;sx=e.clientX;sy=e.clientY;el.classList.add('drag');el.classList.remove('anim');
+      try{el.setPointerCapture(e.pointerId)}catch(_){}
+    });
+    el.addEventListener('pointermove',function(e){
+      if(!on)return;
+      dx=e.clientX-sx;dy=e.clientY-sy;
+      el.style.transform='translate('+dx+'px,'+dy+'px) rotate('+(dx*0.05)+'deg)';
+      var v=dirOf(dx,dy,55);
+      for(var k in tags)tags[k].style.opacity=(v===k)?String(Math.min(1,(Math.max(Math.abs(dx),Math.abs(dy))-55)/45)):'0';
+    });
+    function up(){
+      if(!on)return;on=false;el.classList.remove('drag');
+      var v=dirOf(dx,dy,95);
+      if(v){fly(el,v,c)}
+      else{
+        el.classList.add('anim');el.style.transform='translateY(0) scale(1)';for(var k in tags)tags[k].style.opacity='0';
+        // a press that never became a drag is a tap — on a word, that opens the rewrite
+        if(Math.abs(dx)<7&&Math.abs(dy)<7&&dT&&dT.classList&&dT.classList.contains('sd-w'))editWord(el,c,dT);
+      }
+      dx=dy=0;dT=null;
+    }
+    el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up);
+  }
+  function dirOf(dx,dy,t){
+    if(Math.abs(dx)<t&&Math.abs(dy)<t)return null;
+    if(Math.abs(dx)>Math.abs(dy))return dx>0?'yes':'no';
+    return dy<0?'hot':'narrow';
+  }
+
+  // tap a word → it becomes an input → the card now says what THEY meant, and their
+  // swipe answers that corrected statement. A counter-offer, not a form field.
+  function editWord(el,c,span){
+    var p=el.querySelector('.sd-q'); if(!p)return;
+    var spans=[].slice.call(p.querySelectorAll('.sd-w'));
+    var idx=spans.indexOf(span); if(idx<0)return;
+    var inp=document.createElement('input');
+    inp.className='sd-wIn'; inp.value=span.textContent;
+    inp.style.width=Math.max(3,inp.value.length+1)+'ch';
+    span.replaceWith(inp); inp.focus(); try{inp.select()}catch(_){}
+    var closed=false;
+    function fin(commit){
+      if(closed)return; closed=true;
+      if(commit)commitEdit(c,idx,inp.value.trim());
+      else render();
+    }
+    inp.addEventListener('input',function(){inp.style.width=Math.max(3,inp.value.length+1)+'ch'});
+    inp.addEventListener('pointerdown',function(e){e.stopPropagation()});
+    inp.addEventListener('keydown',function(e){
+      e.stopPropagation();
+      if(e.key==='Enter')fin(true);
+      else if(e.key==='Escape')fin(false);
+    });
+    inp.addEventListener('blur',function(){fin(true)});
+  }
+  function commitEdit(c,idx,val){
+    if(!val){render();return}                       // deleting a word outright isn't an edit
+    var cur=qOf(c), orig=edits[c.id]?edits[c.id].orig:c.q;
+    var words=cur.split(/\s+/);
+    if(idx>=words.length){render();return}
+    var ins=val.split(/\s+/), k=ins.length;
+    var old=(edits[c.id]&&edits[c.id].marks)||[], nm=[];
+    old.forEach(function(m){ if(m<idx)nm.push(m); else if(m>idx)nm.push(m+k-1); });
+    if(val!==words[idx]){ for(var j=0;j<k;j++)nm.push(idx+j); }
+    else if(old.indexOf(idx)>=0)nm.push(idx);
+    words.splice.apply(words,[idx,1].concat(ins));
+    var now=words.join(' ');
+    if(now===orig)delete edits[c.id];
+    else edits[c.id]={orig:orig,now:now,marks:nm};
+    render();
+  }
+
+  function openNote(el,c){
+    var foot=el.querySelector('.sd-foot');
+    if(foot.querySelector('input'))return;
+    foot.innerHTML='<input class="sd-noteIn" placeholder="a few words the swipe can\'t say — enter to save">';
+    var inp=foot.querySelector('input'); inp.value=notes[c.id]||''; inp.focus();
+    inp.addEventListener('keydown',function(e){
+      e.stopPropagation();
+      if(e.key==='Enter'){notes[c.id]=inp.value.trim();if(!notes[c.id])delete notes[c.id];render()}
+      if(e.key==='Escape')render();
+    });
+  }
+
+  function fly(el,v,c){
+    var X={yes:900,no:-900,hot:0,narrow:0}[v], Y={yes:0,no:0,hot:-700,narrow:700}[v];
+    el.classList.add('anim'); el.style.transform='translate('+X+'px,'+Y+'px) rotate('+(X*0.03)+'deg)'; el.style.opacity='0';
+    commit(v,c);
+  }
+
+  // busy-lock: without it, holding an arrow key records verdicts on cards that never
+  // finished animating in — the user would be rating things they never actually read.
+  function swipe(v){
+    if(busy||stopped||!queue.length)return;
+    var el=stack.querySelector('.sd-card.top');
+    if(el)fly(el,v,queue[0]);
+  }
+
+  function commit(v,c){
+    busy=true;
+    done.push({card:c,v:v});
+    queue=queue.filter(function(x){return x.id!==c.id});
+    if(v!=='narrow')COV[c.facet]=(COV[c.facet]||0)+1;
+    // an edited card voids the prediction as a miss: whatever I predicted, it was about
+    // a statement the user just told me was wrong — that IS the surprise
+    if(c.predict){DECIDED++; if(!edits[c.id]&&c.predict===v)HITS++}
+    if((c.depth||1)>=2)DEEP++;
+    undone=false;
+    recompute(); reorder();
+    setTimeout(function(){
+      busy=false;
+      // The deck is one continuous run, not a series of rounds. It ends exactly once —
+      // when the meter fills, when the user says enough, or (rarely) when a pool this
+      // large actually runs dry before either happens.
+      if(!sent&&full()){sent=true;tailSent=true;stopped=true;queue=[];handoff('full')}
+      else if(!sent&&queue.length<=12){sent=true;handoff(false)}
+      else if(sent&&!tailSent&&!queue.length){tailSent=true;tail()}
+      render();
+    },230);
+  }
+
+  function undo(){
+    if(busy||undone||!done.length||done.length<=sentAt)return;
+    var last=done.pop(), c=last.card;
+    if(last.v!=='narrow')COV[c.facet]=Math.max(0,(COV[c.facet]||1)-1);
+    if(c.predict){DECIDED=Math.max(0,DECIDED-1); if(!edits[c.id]&&c.predict===last.v)HITS=Math.max(0,HITS-1)}
+    if((c.depth||1)>=2)DEEP=Math.max(0,DEEP-1);
+    undone=true;                    // one step only — re-answer this card, not rewind the deck
+    queue.unshift(c); stopped=false; endEl.hidden=true;
+    recompute(); render();
+  }
+
+  function showEnd(){
+    stack.innerHTML=''; barEl.style.visibility='hidden'; endEl.hidden=false;
+    var t={yes:0,no:0,hot:0,narrow:0}; done.forEach(function(a){t[a.v]++});
+    var isFull=full();
+    endEl.innerHTML= stopped
+      ? '<p class="sd-endT">Got it — wrapping up.</p><p class="sd-endS">Writing up what you told me about '+esc(TOPIC)+'.</p>'
+      : isFull
+      ? '<p class="sd-endT">I\'ve got it.</p><p class="sd-endS">The meter filled — I stopped being surprised by your swipes. Writing up '+esc(TOPIC)+' below.</p>'+
+        '<div class="sd-tally"><span><b>'+t.hot+'</b> absolutely</span><span><b>'+t.yes+'</b> yes</span><span><b>'+t.no+'</b> no</span><span><b>'+t.narrow+'</b> unsure</span></div>'
+      : '<p class="sd-endT">More coming…</p><p class="sd-endS">You out-swiped the pool before the meter filled. Fresh cards land below in a second.</p>'+
+        '<div class="sd-tally"><span><b>'+t.hot+'</b> absolutely</span><span><b>'+t.yes+'</b> yes</span><span><b>'+t.no+'</b> no</span><span><b>'+t.narrow+'</b> unsure</span></div>'+
+        '<div class="sd-dots"><i class="sd-dot"></i><i class="sd-dot"></i><i class="sd-dot"></i></div>';
+  }
+
+  function group(v,from){
+    var r=from.filter(function(a){return a.v===v});
+    if(!r.length)return '';
+    return '\n'+{hot:'ABSOLUTELY (lock this direction in)',yes:'YES',no:'NO (wrong direction)',narrow:'NOT SURE (ask something more specific here)'}[v]+'\n'+
+      r.map(function(a){return '- ['+a.card.facet+'] '+qOf(a.card)+(edits[a.card.id]?' (edited)':'')}).join('\n')+'\n';
+  }
+  function build(list,head,foot){
+    var m='SWIPE DECK — '+(PRIOR+list.length)+' swiped on "'+TOPIC+'"'+(head?'\n'+head:'')+'\n';
+    ['hot','yes','no','narrow'].forEach(function(v){m+=group(v,list)});
+    var ed=list.filter(function(a){return edits[a.card.id]});
+    if(ed.length)m+='\nEDITED CARDS (the user rewrote the premise, then answered THEIR version — each rewrite corrects an assumption of yours)\n'+
+      ed.map(function(a){return '- "'+edits[a.card.id].orig+'" → "'+edits[a.card.id].now+'" → '+LABEL[a.v]}).join('\n')+'\n';
+    var ns=list.filter(function(a){return notes[a.card.id]});
+    if(ns.length)m+='\nNOTES (typed by the user — treat as direct statements)\n'+
+      ns.map(function(a){return '- '+qOf(a.card)+' → <<'+notes[a.card.id]+'>>'}).join('\n')+'\n';
+    var g=meterParts();
+    m+='\nCOVERAGE: '+FACETS.map(function(f){return f+' '+(COV[f]||0)}).join(' · ');
+    m+='\nSIGNAL METER: '+g.pct+'% ('+meterLabel(g.pct)+')'+
+       '\n  facets at full depth: '+g.covered+'/'+FACETS.length+
+       '\n  swipes you predicted correctly: '+HITS+'/'+DECIDED+(DECIDED<8?' (too few to count yet)':'')+
+       '\n  share of swipes below the surface: '+Math.round((g.n?DEEP/g.n:0)*100)+'%';
+    m+='\nTOTAL SWIPED: '+g.n+'\n'+foot;
+    return m;
+  }
+  function handoff(mode){
+    var n=queue.length;
+    var head = mode==='stop' ? '(I hit "that\'s enough" — stop asking and write it up.)'
+             : mode==='full' ? '(The meter filled. I\'m done swiping.)'
+             : (n?'('+n+' card'+(n===1?'':'s')+' still in flight — I\'ll report '+(n===1?'it':'those')+' in a moment.)':'');
+    var foot = mode==='stop' ? '→ STOP. Write the brief now. Do not send more cards.'
+             : mode==='full' ? '→ METER IS FULL — you stopped being surprised and every facet is covered. '+
+                               'Write the brief now. Do not send more cards.'
+                             : '→ The pool ran low before the meter filled. Send ONE more batch of 60+ cards, '+
+                               'no announcement, no recap — just the widget so the swiping continues uninterrupted.\n'+
+                               '  Carry forward: "carry": {"swiped": '+(PRIOR+done.length)+', "hits": '+HITS+', "decided": '+DECIDED+
+                               ', "deep": '+DEEP+', "coverage": '+JSON.stringify(COV)+'}';
+    push(build(done.slice(),head,foot));
+    sentAt=done.length;             // everything up to here is now Claude's copy of the truth
+  }
+  function tail(){
+    var late=done.slice(sentAt);    // only what was swiped AFTER the handoff went out
+    if(!late.length)return;
+    push('SWIPE DECK — '+late.length+' more card'+(late.length>1?'s':'')+' swiped after the last message:\n'+
+      late.map(function(a){return '- ['+a.card.facet+'] '+qOf(a.card)+' → '+LABEL[a.v]+(edits[a.card.id]?' (edited from: "'+edits[a.card.id].orig+'")':'')+(notes[a.card.id]?' (<<'+notes[a.card.id]+'>>)':'')}).join('\n')+
+      '\n→ Fold into the deck you are building. Do not send an extra deck for this.');
+    sentAt=done.length;
+  }
+
+  barEl.addEventListener('click',function(e){
+    var b=e.target.closest('.sd-b'); if(!b)return;
+    window.__sdActive=root;
+    swipe(b.dataset.v);
+  });
+  $('#sd-undo').addEventListener('click',function(){window.__sdActive=root;undo()});
+  $('#sd-enough').addEventListener('click',function(){
+    if(stopped)return; stopped=true; queue=[]; sent=true; tailSent=true; render(); handoff('stop');
+  });
+  // one keyboard owner per document: the newest deck claims it, clicking an older one takes it back
+  window.__sdActive=root;
+  document.addEventListener('keydown',function(e){
+    if(window.__sdActive!==root||!root.isConnected)return;
+    if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;
+    var m={ArrowRight:'yes',ArrowLeft:'no',ArrowUp:'hot',ArrowDown:'narrow'};
+    if(m[e.key]){e.preventDefault();swipe(m[e.key])}
+    else if(e.key==='z'||e.key==='Z'){e.preventDefault();undo()}
+    else if(e.key==='n'||e.key==='N'){var el=stack.querySelector('.sd-card.top');if(el&&queue.length&&!busy){e.preventDefault();openNote(el,queue[0])}}
+  });
+
+  reorder(); render();
+})();
+</script>
