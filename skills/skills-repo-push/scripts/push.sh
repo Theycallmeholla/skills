@@ -33,8 +33,9 @@ preserved_files() {
     [[ -d "$LOCAL_DIR/$skill" ]] || return 0
     while IFS= read -r f; do
         rel="${f#"$LOCAL_DIR/$skill/"}"
-        is_preserved "$rel" && printf '%s\n' "$rel"
+        if is_preserved "$rel"; then printf '%s\n' "$rel"; fi
     done < <(find "$LOCAL_DIR/$skill" -type f -not -name '.*' 2>/dev/null)
+    return 0
 }
 
 # Colors for output
@@ -180,14 +181,17 @@ if [[ ${#CHANGED_SKILLS[@]} -gt 0 ]]; then
 
         # Show brief diff summary
         if [[ -f "$REPO_DIR/skills/$skill/SKILL.md" ]] && [[ -f "$LOCAL_DIR/$skill/SKILL.md" ]]; then
-            diff_lines=$(diff -u "$LOCAL_DIR/$skill/SKILL.md" "$REPO_DIR/skills/$skill/SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+            diff_lines=$( { diff -u "$LOCAL_DIR/$skill/SKILL.md" \
+                "$REPO_DIR/skills/$skill/SKILL.md" 2>/dev/null || true; } | wc -l | tr -d ' ')
             if [[ "$diff_lines" -gt 0 ]]; then
                 echo -e "    SKILL.md differs ($diff_lines diff lines)"
             fi
         fi
 
         while IFS= read -r rel; do
-            [[ -n "$rel" ]] && echo -e "    ${GREEN}keeping local${RESET} $rel (local state, not overwritten)"
+            if [[ -n "$rel" ]]; then
+                echo -e "    ${GREEN}keeping local${RESET} $rel (local state, not overwritten)"
+            fi
         done < <(preserved_files "$skill")
     done
     echo
