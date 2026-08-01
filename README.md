@@ -14,7 +14,6 @@ A collection of custom skills for Claude (Claude Code / Cowork). Each skill is a
 
 - **swipe-deck** — Tinder-style swipe interview that pulls requirements out of someone's head, with a live saturation meter that decides when to stop
 - **hot-seat** — one question at a time until a plan, decision, or idea actually holds up
-- **opinion-interview** — capture the author's real opinions and stances before any content is written on their behalf
 - **blog-topic-interview** — pre-writing interview for blog topics; produces an Opinion Packet for seo-blog-writer
 
 ### UX & Product Testing
