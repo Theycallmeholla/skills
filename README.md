@@ -46,6 +46,7 @@ A collection of custom skills for Claude (Claude Code / Cowork). Each skill is a
 - **skills-repo-sync** — check for custom skills missing from this repo, add them in the expected format, and push
 - **skills-repo-push** — the reverse direction: push repo skills back out to your local `~/.claude/skills`, with a dry run first and local-only skills left alone
 - **skill-system-architect** — design the architecture for a multi-command skill system before any skill files get written
+- **nick-saban** — build, score, and fix your Claude Code playbook (CLAUDE.md, rules, skills, hooks, permissions, verification loop)
 - **whiteboard** — plan work too big for one session as a map of investigation tickets on GitHub Issues
 - **whiteboard-help** — quick-reference guide for the whiteboard planning system
 - **napkin** — throwaway prototypes that answer exactly one design question
