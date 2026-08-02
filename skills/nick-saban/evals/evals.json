@@ -1,0 +1,17 @@
+{
+  "skill_name": "nick-saban",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "This is a brand new repo I just started (a small TypeScript widget API, uses npm/jest/tsc) — there's nothing in it for Claude Code yet, no CLAUDE.md, no .claude folder. Can you set me up with a proper Claude Code configuration for it before I start building this out with an agent?",
+      "expected_output": "A scaffolded CLAUDE.md sized to a small repo, sane .claude/settings.json permissions, and a baseline audit record — without inventing unnecessary rules/agents/hooks for a project this small.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I feel like Claude keeps ignoring half of what's in our CLAUDE.md, and I just noticed our .claude/settings.json barely restricts anything. Can you take a real look at our Claude Code setup in this repo and tell me what's actually wrong with it, not just vibes?",
+      "expected_output": "A scored audit identifying the bloated/inferable CLAUDE.md content, the advisory-only Prettier instruction, the unrestricted Bash/git permissions, the misplaced deployment procedure and frontend rule, and the missing verification discipline — each with a concrete consequence, not just a list of style complaints.",
+      "files": []
+    }
+  ]
+}
