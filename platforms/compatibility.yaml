@@ -9,20 +9,24 @@ defaults:
 skills:
   swipe-deck:
     chatgpt:
-      status: unsupported
-      reason: Requires the host-specific show_widget HTML runtime. A real ChatGPT port needs a native widget or a replacement interaction body.
+      status: adapted
+      body_mode: replace
+      overlay: platforms/chatgpt.md
   skills-repo-push:
     chatgpt:
-      status: unsupported
-      reason: Installs directly into ~/.claude/skills and manages Claude-local state.
+      status: adapted
+      body_mode: replace
+      overlay: platforms/chatgpt.md
   skills-repo-sync:
     chatgpt:
-      status: unsupported
-      reason: Discovers and synchronizes Claude's local skill directory.
+      status: adapted
+      body_mode: replace
+      overlay: platforms/chatgpt.md
   whiteboard:
     chatgpt:
-      status: unsupported
-      reason: The current workflow references Claude's local skills directory and needs a ChatGPT-specific state and orchestration design.
+      status: adapted
+      body_mode: replace
+      overlay: platforms/chatgpt.md
   code-audit:
     chatgpt:
       status: adapted
