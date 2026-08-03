@@ -1,0 +1,37 @@
+version: 1
+
+defaults:
+  claude:
+    status: native
+  chatgpt:
+    status: native
+
+skills:
+  swipe-deck:
+    chatgpt:
+      status: unsupported
+      reason: Requires the host-specific show_widget HTML runtime. A real ChatGPT port needs a native widget or a replacement interaction body.
+  skills-repo-push:
+    chatgpt:
+      status: unsupported
+      reason: Installs directly into ~/.claude/skills and manages Claude-local state.
+  skills-repo-sync:
+    chatgpt:
+      status: unsupported
+      reason: Discovers and synchronizes Claude's local skill directory.
+  whiteboard:
+    chatgpt:
+      status: unsupported
+      reason: The current workflow references Claude's local skills directory and needs a ChatGPT-specific state and orchestration design.
+  code-audit:
+    chatgpt:
+      status: adapted
+  website-audit:
+    chatgpt:
+      status: adapted
+  walkthrough-gif:
+    chatgpt:
+      status: adapted
+  who-let-the-blogs-out:
+    chatgpt:
+      status: adapted
