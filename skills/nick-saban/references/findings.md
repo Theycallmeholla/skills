@@ -15,22 +15,50 @@ Strong: "No command runs `npm test` automatically, and nothing tells the agent t
 
 `evidence` should let someone verify the finding in ten seconds without re-doing your work: a file and line number, a `grep` result, the absence of a specific file. "The permissions look loose" is not evidence. "`settings.json` has no `deny` block and `Bash(*)` is present under `allow`" is.
 
-## mechanicalCheck: attach one whenever the finding is objectively checkable
+## verification: every finding says how it will be checked
 
-This is the one field on a finding that isn't for the user — it's for the skill's own integrity. An adversarial test of this system found the real gap: `merge_pass.py` guarantees no ID reuse, no direct status writes, and formula-driven scoring, but none of that stops a finding from resolving just because a future pass's raw-findings list quietly leaves it out, even though the actual problem is untouched. `scripts/verify_resolution.py` closes that gap, but only for findings that carry a `mechanicalCheck` — so attach one whenever you can.
+This is the one field on a finding that isn't for the user — it's for the skill's own integrity. An adversarial test of this system found the real gap: `merge_pass.py` guarantees no ID reuse, no direct status writes, and formula-driven scoring, but none of that stops a finding from resolving just because a future pass's raw-findings list quietly leaves it out, even though the actual problem is untouched.
 
-Three types, matched to what's actually checkable without judgment:
+**Every finding must declare one of two modes.** `merge_pass.py` rejects a finding that declares neither. The requirement is not that every finding be mechanically checkable — most aren't, by design. The requirement is that the choice is *explicit*, because a missing check used to mean "closes whenever a later pass forgets about it," and silence is not a decision.
 
 ```json
-{"type": "command_exit_zero", "command": "npm test"}
-{"type": "claude_md_contains", "pattern": "Always run Prettier after editing"}
-{"type": "settings_contains", "pattern": "Bash(*)"}
+"verification": {
+  "mode": "mechanical",
+  "check": {"type": "file_contains", "path": "CLAUDE.md", "pattern": "Always run Prettier"}
+}
 ```
 
-- `command_exit_zero` — for `verification`-category findings tied to a specific command from `verificationSurface`. This was the exact failure mode the adversarial test proved: a broken test command, silently dropped from a later pass's raw findings while still broken.
-- `claude_md_contains` / `settings_contains` — for anything whose whole claim is "this specific text is still sitting in this specific file." Most `context`, `mechanism`, and `enforcement` findings qualify, since they're fundamentally about a passage of text existing where it shouldn't (or an instruction existing with nothing backing it).
+```json
+"verification": {
+  "mode": "judgment",
+  "reason": "Whether this MCP server is acceptably scoped is a risk decision, not a string match."
+}
+```
 
-**When to skip it:** genuinely judgment-based findings — is this MCP server actually "unvetted," is this rung actually the wrong one, is this content actually inferable rather than genuinely useful. Forcing a mechanical check onto something that needs a read and a judgment call just produces a check that rubber-stamps whatever pattern happens to match, which is worse than no check at all. Leave `mechanicalCheck` off entirely rather than write a fake one.
+### The four check types
+
+```json
+{"type": "command_exit_zero", "argv": ["npm", "test"], "timeoutSeconds": 120}
+{"type": "file_contains", "path": "CLAUDE.md", "pattern": "Always run Prettier after editing"}
+{"type": "instruction_surfaces_contain", "pattern": "Never commit directly to main"}
+{"type": "registered_hook_missing", "event": "PreToolUse", "toolMatcher": "Bash",
+ "command": ".claude/hooks/guard-paid-calls.sh"}
+```
+
+- `command_exit_zero` — for `verification`-category findings tied to a command from `verificationSurface`. `argv` is a list and runs without a shell. Legacy records carrying `"command": "npm test"` still work; anything with shell syntax in it comes back **unverifiable** rather than being guessed at.
+- `file_contains` — "this specific text is still sitting in **this specific file**." The path is load-bearing. For a finding whose remedy is *relocation* — move a rule out of `CLAUDE.md` into `.claude/rules/` — the text existing elsewhere afterwards is the fix working. A check that scanned everywhere would reinstate that finding forever.
+- `instruction_surfaces_contain` — "this instruction still exists **anywhere the agent reads**, with nothing executing it." The right type for `advisory-formatting` and `advisory-prohibition`, where moving the sentence between files changes nothing about the absence of a mechanism. Defaults to `CLAUDE.md`, `.claude/*.md`, `.claude/rules/**`, skills, and agents; pass `paths` to narrow it.
+- `registered_hook_missing` — proves a mechanism is **connected**: registered, on the right event, against the right matcher. A hook file existing on disk proves none of that. It also doesn't prove the hook *works* — that's what the coverage matrix in `drill` is for. Registration and coverage are different questions and neither substitutes for the other.
+
+**Choosing between `file_contains` and `instruction_surfaces_contain`** is the same question as the finding's category: is the problem *where the text lives* (`context`, `mechanism` → `file_contains`) or *that nothing executes it* (`enforcement` → `instruction_surfaces_contain`)?
+
+### When to use judgment mode
+
+Genuinely judgment-based findings — is this MCP server actually "unvetted," is this rung actually wrong, is this content actually inferable rather than genuinely useful. Forcing a mechanical check onto one produces a check that rubber-stamps whatever pattern happens to match, which is worse than no check at all. Write the mode as `judgment` with a real `reason` naming what the judgment is.
+
+The cost of judgment mode is that closing it later requires an explicit resolution claim — signal, basis, evidence — passed to `merge_pass.py --resolutions`. It will not close by simply not being mentioned. That's the point: "the agent verified it was fixed" and "the agent forgot" must not look identical to the merge.
+
+**Be honest about the limit even in mechanical mode.** A pattern match isn't understanding — someone could reword a bad sentence just enough to dodge the exact string while leaving the real problem intact, and the check would wrongly call it fixed. That's a known, acceptable gap. Don't present a mechanical check as a stronger guarantee than it is.
 
 **Be honest about the limit even when you do attach one.** A pattern match isn't understanding — someone could reword a bad sentence just enough to dodge the exact string while leaving the real problem intact, and the check would wrongly call it fixed. That's a known, acceptable gap (catching *that* would require re-running full judgment every pass, which defeats the point of a cheap spot-check) — but don't present the mechanical check as a stronger guarantee than it is.
 

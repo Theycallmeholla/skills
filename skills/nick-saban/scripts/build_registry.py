@@ -32,7 +32,12 @@ def main():
             latest = json.load(f)
         current_audit = latest["pass"]
         last_audit_at = latest["created"]
-        score = latest["score"]["overall"]
+        # score is null on a scaffold pass — carry the null through rather than
+        # substituting a number. Consumers must distinguish "unassessed" from
+        # any real score, including a perfect one.
+        latest_score = latest.get("score")
+        score = latest_score["overall"] if isinstance(latest_score, dict) else None
+        status = latest.get("status", "assessed")
         open_high = sum(
             1 for finding in latest["findings"]
             if finding["status"] == "open" and finding["severity"] == "high"
@@ -41,6 +46,7 @@ def main():
         current_audit = 0
         last_audit_at = None
         score = None
+        status = "unassessed"
         open_high = 0
 
     orders = []
@@ -65,6 +71,7 @@ def main():
         "currentAudit": current_audit,
         "lastAuditAt": last_audit_at,
         "score": score,
+        "status": status,
         "openHigh": open_high,
         "orders": orders,
     }
@@ -76,7 +83,8 @@ def main():
         f.write("\n")
 
     print(f"wrote {out_path}")
-    print(f"currentAudit={current_audit} score={score} openHigh={open_high} orders={len(orders)}")
+    print(f"currentAudit={current_audit} score={score if score is not None else 'UNASSESSED'} "
+          f"openHigh={open_high} orders={len(orders)}")
 
 
 def _read_frontmatter(md_path):

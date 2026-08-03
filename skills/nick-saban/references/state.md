@@ -28,6 +28,7 @@ This whole directory is state, not source. `check-playbook` never scans it, scor
   "currentAudit": 3,
   "lastAuditAt": "2026-08-02T14:22:00Z",
   "score": 58,
+  "status": "assessed",
   "openHigh": 2,
   "orders": [
     { "slug": "resumable-imports", "title": "Resumable CSV imports",
@@ -44,6 +45,8 @@ Derived, not authored by hand — any command that writes a new `audits/NNN.json
 {
   "schema": 1,
   "pass": 3,
+  "passType": "detection",
+  "status": "assessed",
   "created": "2026-08-02T14:22:00Z",
   "categoriesScanned": ["context", "mechanism", "enforcement", "verification", "permissions", "bounds"],
   "verificationSurface": {
@@ -71,7 +74,10 @@ Derived, not authored by hand — any command that writes a new `audits/NNN.json
       "consequence": "Formatting is applied inconsistently across sessions and reviewers spend review time on whitespace.",
       "evidence": "CLAUDE.md:34 · no PostToolUse hook in settings.json · no lint-staged config",
       "remedy": "PostToolUse hook running prettier --write on the edited path; delete CLAUDE.md:34",
-      "mechanicalCheck": {"type": "claude_md_contains", "pattern": "Always run Prettier after editing"},
+      "verification": {
+        "mode": "mechanical",
+        "check": {"type": "instruction_surfaces_contain", "pattern": "Always run Prettier after editing"}
+      },
       "status": "open",
       "firstSeen": 1,
       "resolvedIn": null,
@@ -87,10 +93,11 @@ Derived, not authored by hand — any command that writes a new `audits/NNN.json
 
 You (the agent running `check-playbook` or `kickoff`) do the part that requires judgment — reading the repo and deciding what's wrong, using the detector registry below to know what to look for. You do **not** hand-compute IDs, resolved status, or scores. Instead:
 
-1. For each thing you find, produce a raw finding object: `{signal, detector, category, rung, severity, location, claim, consequence, evidence, remedy}`, plus a `mechanicalCheck` wherever the finding is objectively checkable (see `findings.md`). No `id`, no `status`, no `firstSeen` — those come from the merge.
-2. Run `scripts/verify_resolution.py` against your raw findings file. This independently re-checks any previously-open, mechanically-checkable finding your draft doesn't mention, and reinstates it if the underlying problem is still there — see `findings.md` for why this exists (an adversarial test proved a pass could otherwise omit a still-broken finding and have it silently resolve).
-3. Run `scripts/merge_pass.py` with the prior record (if any), your (now spot-checked) raw findings list, `waived.json`, and the list of categories you actually scanned. It handles ID inheritance by signal, marks resolved findings whose signal stopped firing, applies waivers, and computes every score. It writes the final `audits/NNN.json`.
-4. Run `scripts/build_registry.py` to refresh `registry.json` from the files now on disk.
+1. For each thing you find, produce a raw finding object: `{signal, detector, category, rung, severity, location, claim, consequence, evidence, remedy, verification}`. The `verification` block is required and declares `mode: "mechanical"` (with a `check`) or `mode: "judgment"` (with a `reason`) — see `findings.md`. No `id`, no `status`, no `firstSeen` — those come from the merge.
+2. Run `scripts/verify_resolution.py` against your raw findings file. It independently re-checks any previously-open, mechanically-verified finding your draft doesn't mention, reinstating it if the problem is still there or if the check couldn't be evaluated. It also lists open **judgment**-mode findings you didn't mention, which need explicit resolution claims.
+3. Write a resolutions file for any judgment-mode finding you're closing: `{signal, basis, evidence}` each. Judgment findings never close by omission.
+4. Run `scripts/merge_pass.py` with the prior record (if any), your (now spot-checked) raw findings list, `waived.json`, the categories you actually scanned, and `--resolutions`. It handles ID inheritance by signal, resolves findings per the rules below, applies waivers, and computes every score. It refuses to run if the verify gate hasn't.
+5. Run `scripts/build_registry.py` to refresh `registry.json` from the files now on disk.
 
 If the scripts aren't usable for some reason (missing Python, sandboxed environment), fall back to doing the merge by hand using the matching rule below — but say so, since it's the least reliable part of this skill to do without the script.
 
@@ -115,6 +122,8 @@ Every finding you raise must map to exactly one row below. If you find a real pr
 | `gameable-tests` | `verification` | `prose` | No instruction against weakening, skipping, or deleting tests, or hard-coding to pass a specific fixture |
 | `no-evidence-requirement` | `verification` | `prose` | Nothing requires naming commands-and-results before claiming a task done |
 | `git-destructive-open` | `permissions` | `permission` | `git reset --hard`, `clean -fd`, force-push, or similar destructive operations with no restriction |
+| `enforcement-bypass-surface` | `permissions` | `permission` | A guard registered against one tool (almost always `Bash`) while an equivalent unguarded surface is available — an MCP shell, an MCP filesystem server, a browser terminal. The guard is real; the *claim* that it enforces anything is what's false, since the agent only has to pick the other tool |
+| `broad-staging-unrestricted` | `permissions` | `hook` | `git add -A` / `git add .` unrestricted in a repo that holds untracked or gitignored sensitive artifacts — exports, database files, generated reports containing production or client data. Distinct from `secrets-writable`, which is about credentials; this is about business data a credential regex will never match |
 | `secrets-writable` | `permissions` | `permission` | No deny-rule protecting production config, `.env` files, or credentials from being read or edited |
 | `bash-overbroad` | `permissions` | `permission` | A blanket `Bash` allow with no narrowing to the commands actually needed |
 | `mcp-unvetted` | `permissions` | `permission` | Connected MCP servers with no stated review or scope limitation |
@@ -140,7 +149,20 @@ The matching rule (implemented by `merge_pass.py`, described here so you underst
 
 1. A finding whose signal matches the prior pass inherits that finding's `id`, `status`, and `firstSeen`.
 2. A new signal gets the next monotonic id (`HN-` prefix), allocated once, never reused or renumbered.
-3. A previously-open finding whose signal doesn't fire this pass becomes `status: "resolved"`, with `resolvedIn` set to this pass number.
+3. A previously-open finding whose signal doesn't fire this pass resolves **only with evidence**, and what counts as evidence depends on its verification mode:
+
+   | Mode | Signal fired | Explicit claim | Result |
+   |---|---|---|---|
+   | mechanical | yes | — | open |
+   | mechanical | no, check says condition present | — | open, reinstated |
+   | mechanical | no, check says condition absent | — | **resolved** |
+   | mechanical | no, check unevaluable | — | open, `unverifiable` |
+   | judgment | yes | — | open |
+   | judgment | no, category not scanned | — | open, carried forward |
+   | judgment | no, category scanned | no | open, omission warning |
+   | judgment | no, category scanned | yes | **resolved** |
+
+   The two "resolved" rows are the only ways a finding closes. Everything else keeps it open, because silence about a finding is not information about the finding.
 4. A signal present in `waived.json` becomes `status: "waived"` regardless of whether it still fires, and contributes nothing to score.
 5. Rule 3 only applies within `categoriesScanned` — a partial or targeted pass must never resolve a finding in a category it didn't even look at.
 
@@ -170,6 +192,8 @@ overall       = round(mean of the six category scores)
 
 Resolved and waived findings contribute nothing. `merge_pass.py` computes this — don't estimate it in prose.
 
+**`passType: "scaffold"` scores `null`, not 100.** `kickoff`'s baseline record ran no detectors, so the formula above has nothing to operate on. A scaffold pass records `"score": null, "status": "unassessed"`, and every consumer — `registry.json`, `scouting-report`'s delta, the user-facing summary — must render that as UNASSESSED rather than substituting a number. A scaffold pass has no delta against it either: the first real `check-playbook` is the first point of comparison, so say "first assessment" rather than showing a drop from nothing to 62 as if the harness got worse.
+
 ## Write rules
 
 1. A command touches only the paths it declares in its own reference file. Nothing else.
@@ -177,4 +201,5 @@ Resolved and waived findings contribute nothing. `merge_pass.py` computes this �
 3. IDs are allocated once, monotonically, per project, never reused: `HN-` for playbook findings, `AT-` for attestation findings, `AC-` for acceptance criteria.
 4. `registry.json` is always derived from the files on disk after any write — run `scripts/build_registry.py` rather than hand-editing it.
 5. Reporting drift is not repairing it. If you find a malformed or stale state file while doing something else, say so and continue — don't silently reformat it as a side effect. Repair is its own explicit action.
-6. **Detected, never asserted.** `adjust` and `drill` never write a finding's `status`. Only `check-playbook` (via `merge_pass.py`) closes a finding, by observing its signal stop firing. The only other legitimate way a finding stops counting is `decline`, and only with a written reason attached. This rule's weak point is that "observing" still means an agent looked and reported honestly — `scripts/verify_resolution.py` exists specifically to spot-check that assumption for the subset of findings where it's mechanically possible, rather than trusting it unconditionally. It's a partial guard, not a full one; say so if you're ever explaining this system's limits.
+6. **Schema changes are backward-readable before new writers emit the new shape.** Add the reader first, then switch the writer. A legacy record that the new reader can't parse must fail closed — treated as unverified and kept open — never as "unknown, therefore fine." Both of this system's migrations had the same failure mode available to them: `claude_md_contains` → `file_contains` and `command` → `argv` would each have turned every pre-existing check into an unrecognized type, and an unrecognized check that resolves is a false closure produced *by the very change meant to prevent false closures*. Normalize on read (`normalize_check`, `normalize_verification`); never delete a legacy shape you can still translate.
+7. **Detected, never asserted.** `adjust` and `drill` never write a finding's `status`. Only `check-playbook` (via `merge_pass.py`) closes a finding, by observing its signal stop firing. The only other legitimate way a finding stops counting is `decline`, and only with a written reason attached. This rule's weak point is that "observing" still means an agent looked and reported honestly — `scripts/verify_resolution.py` exists specifically to spot-check that assumption for the subset of findings where it's mechanically possible, rather than trusting it unconditionally. It's a partial guard, not a full one; say so if you're ever explaining this system's limits.

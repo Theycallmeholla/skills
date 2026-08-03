@@ -86,6 +86,43 @@ def validate_raw_finding(rf, index):
             f"raw finding #{index} signal '{rf['signal']}' doesn't match "
             f"'<detector-id>:<subject-slug>' (lowercase, hyphens only)"
         )
+    validate_verification(rf, index)
+
+
+def validate_verification(rf, index):
+    """Every finding must declare HOW its resolution will be verified.
+
+    The requirement is not "every finding needs a mechanical check" — most
+    findings in this system are judgment calls by design, and forcing a pattern
+    match onto one produces a check that rubber-stamps whatever string happens to
+    match. The requirement is that the choice is explicit. A missing verification
+    block used to mean "resolves whenever a later pass forgets to mention it,"
+    which is silent absence rather than a decision.
+    """
+    v = rf.get("verification")
+
+    if v is None and isinstance(rf.get("mechanicalCheck"), dict):
+        # Legacy raw finding — accept and upgrade in place rather than rejecting.
+        v = {"mode": "mechanical", "check": rf["mechanicalCheck"], "legacy": True}
+        rf["verification"] = v
+
+    if not isinstance(v, dict) or v.get("mode") not in ("mechanical", "judgment"):
+        raise ValueError(
+            f"raw finding #{index} ({rf['signal']}) must declare "
+            f"verification.mode as 'mechanical' or 'judgment'. "
+            f"Mechanical needs a 'check'; judgment needs a 'reason' saying what "
+            f"human judgment closing it depends on."
+        )
+    if v["mode"] == "mechanical" and not isinstance(v.get("check"), dict):
+        raise ValueError(
+            f"raw finding #{index} ({rf['signal']}) declares verification.mode "
+            f"'mechanical' but carries no 'check' object"
+        )
+    if v["mode"] == "judgment" and not (v.get("reason") or "").strip():
+        raise ValueError(
+            f"raw finding #{index} ({rf['signal']}) declares verification.mode "
+            f"'judgment' but gives no 'reason' — name what the judgment actually is"
+        )
 
 
 def next_id(prior_findings, prefix="HN-"):
@@ -97,10 +134,31 @@ def next_id(prior_findings, prefix="HN-"):
     return max_n + 1
 
 
-def merge(prior_record, raw_findings, waived, categories_scanned, this_pass):
+def normalize_verification(finding):
+    """Upgrade a stored finding's verification block. Mirrors verify_resolution.py.
+
+    A legacy finding with no recorded check normalizes to judgment mode, NOT to
+    "freely resolvable." Otherwise introducing this schema would quietly weaken
+    every finding written before it — a migration that disarms the protection it
+    was meant to strengthen.
+    """
+    v = finding.get("verification")
+    if isinstance(v, dict) and v.get("mode") in ("mechanical", "judgment"):
+        return v
+    if isinstance(finding.get("mechanicalCheck"), dict):
+        return {"mode": "mechanical", "check": finding["mechanicalCheck"], "legacy": True}
+    return {"mode": "judgment",
+            "reason": "Legacy finding with no recorded verification method.",
+            "legacy": True}
+
+
+def merge(prior_record, raw_findings, waived, categories_scanned, this_pass,
+          resolutions=None, warnings=None):
     prior_findings = (prior_record or {}).get("findings", [])
     prior_by_signal = {f["signal"]: f for f in prior_findings}
     seen_signals = set()
+    resolutions = resolutions or {}
+    warnings = warnings if warnings is not None else []
 
     merged = []
     next_available_id = next_id(prior_findings)
@@ -137,7 +195,11 @@ def merge(prior_record, raw_findings, waived, categories_scanned, this_pass):
             "consequence": rf["consequence"],
             "evidence": rf["evidence"],
             "remedy": rf["remedy"],
-            "mechanicalCheck": rf.get("mechanicalCheck"),
+            "verification": rf.get("verification"),
+            # Set by verify_resolution.py when it re-checked this finding:
+            # condition_present | unverifiable. Absent means this pass detected
+            # the finding directly rather than reinstating it.
+            "verificationStatus": rf.get("verificationStatus"),
             "status": status,
             "firstSeen": first_seen,
             "resolvedIn": None,
@@ -164,13 +226,43 @@ def merge(prior_record, raw_findings, waived, categories_scanned, this_pass):
             # not scanned this pass -- leave completely untouched, still open
             merged.append(f)
             continue
-        # genuinely resolved
-        merged.append({
-            **f,
-            "status": "resolved",
-            "resolvedIn": this_pass,
-            "resolvedBy": "signal no longer detected as of this pass",
-        })
+
+        verification = normalize_verification(f)
+
+        # Mechanical findings: verify_resolution.py already re-ran the check and
+        # would have pushed this signal back into raw_findings if the condition
+        # were still present or unevaluable. Reaching here means the check said
+        # the condition is genuinely gone.
+        if verification["mode"] == "mechanical":
+            merged.append({
+                **f,
+                "status": "resolved",
+                "resolvedIn": this_pass,
+                "resolvedBy": "mechanical check confirms the condition is gone",
+            })
+            continue
+
+        # Judgment findings: nothing re-ran, so silence is not evidence. Closing
+        # one requires this pass to say so explicitly, with a basis and evidence.
+        # Without that, "the agent forgot to re-raise it" and "the agent verified
+        # it was fixed" are indistinguishable — which is the original bug.
+        claim = resolutions.get(f["signal"])
+        if claim:
+            merged.append({
+                **f,
+                "status": "resolved",
+                "resolvedIn": this_pass,
+                "resolvedBy": f"judgment: {claim['basis']}",
+                "resolutionEvidence": claim["evidence"],
+            })
+            continue
+
+        warnings.append(
+            f"{f['id']} ({f['signal']}) is judgment-verified, its category WAS scanned, "
+            f"but this pass neither re-raised it nor submitted a resolution claim. "
+            f"Kept OPEN — closing it by silent omission is the failure mode this gate exists for."
+        )
+        merged.append({**f, "omittedWithoutClaim": this_pass})
 
     return merged
 
@@ -195,12 +287,28 @@ def main():
     ap.add_argument("--categories-scanned", required=True, help="Comma-separated list, e.g. context,mechanism,enforcement")
     ap.add_argument("--verification-surface", default=None, help="Path to a verificationSurface JSON object")
     ap.add_argument("--pass-number", type=int, default=None, help="Override auto-detected pass number")
+    ap.add_argument("--resolutions", default=None,
+                    help="Path to a JSON array of {signal, basis, evidence} objects: explicit "
+                         "claims that a judgment-verified finding is fixed. Required to close "
+                         "any judgment-mode finding — those never close by silent omission.")
+    ap.add_argument("--skip-verify-gate", action="store_true",
+                    help="Proceed without verify_resolution.py having run. Only for a first pass "
+                         "or a genuinely script-less environment; it disables the false-resolution "
+                         "guard, so say so in the summary if you use it.")
+    ap.add_argument("--pass-type", choices=["detection", "scaffold"], default="detection",
+                    help="'scaffold' is kickoff's baseline record: structure only, no detection ran. "
+                         "It scores null/UNASSESSED rather than 100, because an empty findings list "
+                         "means nothing was looked for, not that nothing is wrong.")
     args = ap.parse_args()
 
     project_dir = args.project_dir
     raw_findings = load_json(args.raw_findings, default=[])
     for i, rf in enumerate(raw_findings):
-        validate_raw_finding(rf, i)
+        try:
+            validate_raw_finding(rf, i)
+        except ValueError as e:
+            print(f"error: {e}", file=sys.stderr)
+            sys.exit(1)
 
     categories_scanned = [c.strip() for c in args.categories_scanned.split(",") if c.strip()]
     for c in categories_scanned:
@@ -216,12 +324,48 @@ def main():
 
     verification_surface = load_json(args.verification_surface, default={}) if args.verification_surface else {}
 
-    findings = merge(prior_record, raw_findings, waived, categories_scanned, this_pass)
-    computed_score = score(findings)
+    # The verify_resolution gate is only a guarantee if it actually ran. Skipping
+    # it silently would let every mechanically-checkable finding resolve on the
+    # agent's say-so — the exact assumption that gate exists to stop trusting.
+    marker = Path(args.raw_findings).with_suffix(".verified.json")
+    if prior_record and args.pass_type == "detection" and not marker.exists() and not args.skip_verify_gate:
+        print(f"error: verify_resolution.py has not run against {args.raw_findings} "
+              f"(no {marker.name}). Run it first, or pass --skip-verify-gate and say "
+              f"plainly in your summary that the false-resolution guard was bypassed.",
+              file=sys.stderr)
+        sys.exit(1)
+
+    resolutions_list = load_json(args.resolutions, default=[]) if args.resolutions else []
+    resolutions = {}
+    for i, r in enumerate(resolutions_list):
+        for k in ("signal", "basis", "evidence"):
+            if not (r.get(k) or "").strip():
+                print(f"error: resolution claim #{i} missing '{k}'. A claim needs the signal, "
+                      f"the basis for closing it, and evidence someone can check in ten seconds.",
+                      file=sys.stderr)
+                sys.exit(1)
+        resolutions[r["signal"]] = r
+
+    warnings = []
+    findings = merge(prior_record, raw_findings, waived, categories_scanned, this_pass,
+                     resolutions=resolutions, warnings=warnings)
+
+    if args.pass_type == "scaffold":
+        # A scaffold pass looked for nothing, so it scores nothing. Emitting 100
+        # here would mean "perfect" and "unexamined" share a number, and every
+        # consumer downstream — registry, scouting-report delta, the user — would
+        # have to be told that 100 actually means its opposite.
+        computed_score = None
+        status = "unassessed"
+    else:
+        computed_score = score(findings)
+        status = "assessed"
 
     record = {
         "schema": 1,
         "pass": this_pass,
+        "passType": args.pass_type,
+        "status": status,
         "created": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "categoriesScanned": categories_scanned,
         "verificationSurface": verification_surface,
@@ -242,7 +386,25 @@ def main():
 
     open_high = sum(1 for f in findings if f["status"] == "open" and f["severity"] == "high")
     print(f"wrote {out_path}")
-    print(f"overall score: {computed_score['overall']}  |  open high-severity: {open_high}")
+
+    if warnings:
+        print(f"\n⚠ {len(warnings)} finding(s) stayed open for lack of an explicit resolution claim:")
+        for w in warnings:
+            print(f"  {w}")
+        print("Either re-raise them in your raw findings, or submit a claim via --resolutions "
+              "with the basis and evidence for closing each one.\n")
+
+    mech = sum(1 for f in findings
+               if normalize_verification(f)["mode"] == "mechanical" and f["status"] == "open")
+    judg = sum(1 for f in findings
+               if normalize_verification(f)["mode"] == "judgment" and f["status"] == "open")
+    if mech or judg:
+        print(f"verification coverage of open findings: {mech} mechanical, {judg} judgment")
+
+    if computed_score is None:
+        print("overall score: UNASSESSED (scaffold pass — no detection has run yet)")
+    else:
+        print(f"overall score: {computed_score['overall']}  |  open high-severity: {open_high}")
 
 
 if __name__ == "__main__":
