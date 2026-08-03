@@ -19,6 +19,10 @@ skills:
     chatgpt:
       status: unsupported
       reason: Discovers and synchronizes Claude's local skill directory.
+  whiteboard:
+    chatgpt:
+      status: unsupported
+      reason: The current workflow references Claude's local skills directory and needs a ChatGPT-specific state and orchestration design.
   code-audit:
     chatgpt:
       status: adapted
