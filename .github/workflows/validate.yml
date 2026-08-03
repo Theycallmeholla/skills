@@ -30,6 +30,21 @@ jobs:
       - name: Build ChatGPT packages
         run: python3 scripts/build_skills.py --target chatgpt --all
 
+      - name: Require complete ChatGPT coverage
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path('dist/chatgpt-report.json').read_text())
+          skipped = [item for item in report if item['status'] != 'built']
+          if skipped:
+              for item in skipped:
+                  print(f"::error::{item['skill']} was not built: {item.get('reason', 'unknown reason')}")
+              raise SystemExit(1)
+          print(f"all {len(report)} skills built for ChatGPT")
+          PY
+
       - name: Build Claude packages
         run: python3 scripts/build_skills.py --target claude --all
 
