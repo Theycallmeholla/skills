@@ -21,6 +21,18 @@ jobs:
       - name: Validate skill spec compliance
         run: python3 scripts/validate_skills.py .
 
+      - name: Validate cross-platform declarations
+        run: python3 scripts/validate_cross_platform.py .
+
+      - name: Test cross-platform packager
+        run: python3 scripts/test_cross_platform.py
+
+      - name: Build ChatGPT packages
+        run: python3 scripts/build_skills.py --target chatgpt --all
+
+      - name: Build Claude packages
+        run: python3 scripts/build_skills.py --target claude --all
+
       - name: Scan for secrets
         run: |
           if grep -rnE "(sk-ant-[A-Za-z0-9_-]{20,}|ghp_[A-Za-z0-9]{36}|xox[baprs]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z_-]{35}|-----BEGIN (RSA |EC )?PRIVATE KEY)" skills/; then
@@ -32,6 +44,18 @@ jobs:
         run: |
           sudo apt-get install -y shellcheck
           find skills scripts -name '*.sh' -print0 | xargs -0 -r shellcheck -S warning
+
+      - name: Upload ChatGPT skill packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: chatgpt-skills
+          path: dist/chatgpt/*/skill.zip
+
+      - name: Upload Claude skill packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-skills
+          path: dist/claude/*/skill.zip
 
   swipe-deck-tests:
     runs-on: ubuntu-latest
