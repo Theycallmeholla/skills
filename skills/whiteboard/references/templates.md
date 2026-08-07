@@ -48,6 +48,35 @@ if resolving it needs 3+ distinct sub-answers, it should be several tickets.>
 
 The answer never goes in the body — it's a resolution comment at close time. Assets produced while resolving (research summaries, napkins) are linked from comments, not pasted in.
 
+### Task tickets add one line
+
+```markdown
+Runs: agent | human
+
+## Question
+
+<...>
+```
+
+`Runs:` says who executes it — the only thing that can't be read off the label. `agent` means a session can do it alone and unattended. `human` means it needs hands, credentials, a machine, or eyes that aren't the agent's ("run this command and tell me what it prints"). Decide it while writing the ticket, not while running the board. Absent → read as `human`.
+
+## Run sign-off
+
+Printed when a session stops. See [run-loop.md](run-loop.md) for when it stops.
+
+```markdown
+**Board:** <X> closed / <Y> open
+**This session:** <ticket name> — <gist>            <!-- one line per ticket closed -->
+**Created:** <ticket name> — <why it appeared>      <!-- omit the line if none -->
+**Stopped because:** <the human is the blocker | fanout: N created vs M closed |
+                     drift: <ticket> vs destination | context: compacted mid-run>
+**Waiting on you:** <ticket name> — <what it needs from them>
+**Next up:** <ticket name> — <why it's the pick>
+**Say:** "run the board"   (or "snapshot the board" when nothing is left to decide)
+```
+
+*Waiting on you* is the payload — everything skipped or raised while they were gone, each with what it wants from them. A run that stopped on context says so plainly: their next move is `run the board`, not answering anything.
+
 ## Resolution comment
 
 ```markdown
