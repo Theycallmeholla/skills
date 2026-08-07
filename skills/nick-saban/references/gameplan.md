@@ -80,8 +80,16 @@ commands, <K> marked unverifiable (name them if any).
 
 Out of scope: <list>
 
-Build this in a fresh session, then run `watch-film <slug>` against the diff
-when it's done.
+### Next
+
+**Do this:** start a fresh session and build against `orders/<slug>.md`, then
+run `watch-film <slug>` on the diff.
+A fresh session is the point — this order is the contract, and a session that
+just watched it being written has too much context to be checked honestly by it.
+
+**Instead, if <K criteria came back unverifiable>:** `check-playbook`
+<name them> — a criterion with no runnable command means the repo has a
+verification gap that will make `watch-film` unable to prove this work is done.
 ```
 
 ## Confirm and stop

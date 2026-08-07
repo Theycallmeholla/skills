@@ -24,7 +24,8 @@ State the age of the data up front — how long ago the last `check-playbook` ra
 ## Scouting Report
 
 Last checked: <when>, pass <N>
-**Score: <overall> (<delta>)**
+**Score: <overall> (<delta>)**   ← if the last pass was a scaffold, this reads
+**State: UNASSESSED** instead, with no delta and no invented number.
 
 ### Since last pass
 Resolved: <list, or "none">
@@ -43,7 +44,19 @@ Persisting <k>+ passes without action: <list, if any — this is worth flagging>
 | Slug | Criteria unmet | Last watch-film |
 |---|---|---|
 [rows, or "none open"]
+
+### Next
+
+**Do this:** `<command> <id or slug>`
+<the reason, from the backlog above — highest severity, or the order with unmet
+criteria, or check-playbook if this data is stale>
+
+**Instead, if <the second-most-plausible move>:** `<command>`
 ```
+
+Because this command writes nothing, its `Next` block is the entire point of running it. A scouting report that ends with a table and no recommendation has done half its job — the user came here to find out where they stand *so they'd know what to do*. Pick the move.
+
+If the data is stale (older than the last commit touching `CLAUDE.md` or `.claude/`), the recommendation is `check-playbook`, and say plainly that the numbers above describe a harness that has since changed.
 
 ## Confirm and stop
 
