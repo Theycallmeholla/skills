@@ -21,6 +21,23 @@ EOF
 
 Update the board body (Decisions so far, parking lot, out of scope): `gh issue edit <board> --body-file <file>`. Fetch current body first (`gh issue view <board> --json body --jq .body`), edit, write back — never reconstruct from memory, another session may have appended since you loaded it.
 
+**Verify the edit landed before writing it back.** A section-anchored insert into a body whose headings have drifted — hand-edited board, a body that never got the template, a renamed section — matches nothing and returns success. `sed`/`perl` exit 0 on zero substitutions. The decision line vanishes with no error, and the board is an index: a lost line is a lost decision.
+
+So diff before and after in the same step, and treat no-change as a failure:
+
+```bash
+gh issue view <board> --json body --jq .body > /tmp/board.md
+before=$(grep -c '^- \[' /tmp/board.md)
+# ...insert the decision line...
+after=$(grep -c '^- \[' /tmp/board.md)
+[ "$after" -gt "$before" ] || { echo "board write failed: anchor missing"; exit 1; }
+gh issue edit <board> --body-file /tmp/board.md
+```
+
+Anchor genuinely missing? Stop and tell the human the board body has drifted from the template — don't rebuild the board from memory to make the write fit.
+
+Note for board creation: `gh issue create` has **no `--json` flag**. It prints the new issue's URL; take the number off the end (`| sed 's|.*/||'`). Piping it into `--json number --jq .number` fails, and a `||` fallback behind it will quietly create the board with the wrong body.
+
 ## Child tickets (sub-issues)
 
 Create the ticket, then attach it to the board as a native sub-issue:
@@ -49,17 +66,25 @@ Fallback where dependencies aren't available: a `Blocked by: #n, #n` line at the
 
 ## Up-next query
 
-Open children of the board, minus blocked, minus claimed, in board order:
+Open children of the board, minus blocked, minus claimed, in board order. Pull `labels` too — that's what decides whether a session can take the ticket alone, and fetching it here saves a call per ticket:
 
 ```bash
 gh api repos/{owner}/{repo}/issues/<board-number>/sub_issues --jq '
   [ .[] | select(.state == "open")
         | select((.assignees | length) == 0)
         | select((.issue_dependencies_summary.blocked_by // 0) == 0)
-        | {number, title} ]'
+        | {number, title, type: (.labels | map(.name) | map(select(startswith("whiteboard:"))) | first)} ]'
 ```
 
 (Task-list fallback: `gh issue list --state open` filtered to numbers in the board's task list, then apply the same assignee/blocked filters.)
+
+For a `whiteboard:task` ticket, eligibility also needs the `Runs:` line from its body — the label can't carry it:
+
+```bash
+gh issue view <n> --json body --jq '.body | capture("(?i)^Runs:\\s*(?<who>agent|human)"; "m").who // "human"'
+```
+
+No match → `human`. See [run-loop.md](run-loop.md) for what the loop does with these.
 
 ## Claim / resolve / close
 

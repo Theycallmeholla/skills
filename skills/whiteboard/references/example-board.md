@@ -33,7 +33,7 @@ Express app, auth in src/auth/. Consult the connotation-cop skill — "session",
 - `Pick the token lifetime strategy` — hot-seat. **Up next.**
 - `What does the mobile client actually use for auth today?` — research (AFK). **Up next.**
 - `Where do refresh tokens live — httpOnly cookie or body?` — hot-seat. **Blocked by** lifetime strategy.
-- `Sign up for the Auth0 tenant so its token API can be judged` — task. **Up next.**
+- `Sign up for the Auth0 tenant so its token API can be judged` — task, `Runs: human` (needs a credit card and an email nobody else owns). **Up next.**
 
 Note what stayed parked: revocation is *known to be coming* but fails the sticky test — it can't be phrased until the refresh-token ticket resolves. Tempting to create a "Figure out revocation" ticket now, but that's a paragraph of maybes, not a sticky. It parks.
 
@@ -57,7 +57,32 @@ Ticket closed. Board's *Decisions so far* gains:
 - [Pick the token lifetime strategy](link) — 15-min access / 30-day rolling refresh
 ```
 
-Tending the board: the answer unblocks `Where do refresh tokens live` (it joins up-next automatically — its only blocker is now closed). Revocation *still* fails the sticky test — it needed the refresh-token *location* too. It stays parked. One ticket resolved → session ends.
+Tending the board: the answer unblocks `Where do refresh tokens live` (it joins up-next automatically — its only blocker is now closed). Revocation *still* fails the sticky test — it needed the refresh-token *location* too. It stays parked.
+
+**Then the continue check.** Re-fetch the board, re-query up-next — three takeable tickets now:
+
+| Ticket | Type | Loop takes it? |
+|---|---|---|
+| `Where do refresh tokens live` | hot-seat | No — that's a question |
+| `What does the mobile client actually use for auth today?` | research | **Yes** |
+| `Sign up for the Auth0 tenant` | task, `Runs: human` | No — credit card |
+
+Something's takeable, so no sign-off. One line — `✓ Pick the token lifetime strategy — 15-min access / 30-day rolling refresh · taking What does the mobile client actually use for auth today?` — and it keeps going. The mobile-client research resolves alone: the client uses the same cookie endpoint, so the migration breaks it.
+
+*Now* up-next is hot-seat + a human task, and nothing else. The human is the blocker, so it signs off:
+
+```markdown
+**Board:** 2 closed / 3 open
+**This session:** Pick the token lifetime strategy — 15-min access / 30-day rolling refresh
+                  What does the mobile client use for auth — same cookie endpoint; migration breaks it
+**Stopped because:** the human is the blocker
+**Waiting on you:** Where do refresh tokens live — a call between httpOnly cookie and response body
+                     Sign up for the Auth0 tenant — needs a card and an email
+**Next up:** Where do refresh tokens live — it unblocks the revocation question still parked
+**Say:** "run the board"
+```
+
+Two tickets closed, zero keystrokes in between. The old rule would have stopped after the first one and asked the human to type "work the board" so it could read some docs.
 
 ## A later Work session — a parked item promotes, scope gets ruled
 
