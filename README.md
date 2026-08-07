@@ -67,6 +67,8 @@ flowchart LR
         UX1[ux-audit]
         UO[ui-oddity-scan]
         CV[conversion-audit]
+        GS[gap-scan]
+        WWBD[what-would-bezos-do]
         FE[fresh-eyes]
         CS[cover-story]
     end
@@ -199,6 +201,8 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **website-audit** — end-to-end crawl and scored report in two modes: PROSPECT (outreach evidence plus a portable `audit_packet.json`) and QA (pre-launch ship gate)
 - **ux-audit** — reconstructs a flow from code, a live app, or a spec, then audits it across 11 phases for confusion, friction, and drop-off
 - **ui-oddity-scan** — per-page scan for repeated facts, restated sections, stray text, placeholder copy, and mismatched imagery, with pinned screenshot crops
+- **gap-scan** — finds the features a product is obviously missing (no export, no bulk, no search, dead-end workflows) in PROSPECT or QA mode, evidence-gated and capped at 10 findings, with a portable `gap_packet.json`
+- **what-would-bezos-do** — mines a codebase for underexploited existing assets and platform primitives, gated by an evidence chain and capability-maturity ladder, capped at 5 opportunities with a mandatory kill list and a portable `wwbd_packet.json`
 - **conversion-audit** — audits a page against the ONE action it wants, using five cold-read persona agents and a belief-chain map
 - **fresh-eyes** — genuine first-time-user test that protects its own ignorance and logs every confusion at the moment of impact
 - **cover-story** — writes the spoiler-free brief a fresh-eyes tester is handed, plus a sealed envelope of everything deliberately withheld
