@@ -190,7 +190,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **hot-seat** — one question per message, each shipped with Claude's own pick, until a plan holds up; emits a decision log
 - **napkin** — throwaway code that answers exactly one written design question, then gets deleted
 - **connotation-cop** — polices project vocabulary, keeps a `CONTEXT.md` glossary sharp, and books qualifying decisions as numbered ADRs
-- **whiteboard** — plans work too big for one session as a map of investigation tickets on GitHub Issues, one ticket per session
+- **whiteboard** — plans work too big for one session as a map of investigation tickets on GitHub Issues; works tickets back-to-back and stops only when you're the blocker
 - **whiteboard-help** — display-only cheat sheet for the whiteboard system: the flow, the exact phrases, the rules, where artifacts live
 - **blog-topic-interview** — pre-writing interview that captures the author's real stances and stories, producing an Opinion Packet
 
@@ -235,10 +235,12 @@ Skills designed to run in sequence. Each arrow is a real artifact handoff.
 **Plan something too big for one session**
 
 ```
-whiteboard (draw)  →  whiteboard (work — one ticket per session)
-                        ├─ hot-seat ticket   → decision log
-                        ├─ napkin ticket     → QUESTION / ANSWER / EVIDENCE
-                        └─ research ticket   → resolution comment
+whiteboard (draw)  →  whiteboard (work / run — loops until you're the blocker)
+                        ├─ hot-seat ticket   → decision log          ── stops for you
+                        ├─ napkin ticket     → QUESTION / ANSWER     ── builds alone, you judge
+                        ├─ task  Runs: human → resolution comment    ── stops for you
+                        ├─ task  Runs: agent → resolution comment    ── keeps going
+                        └─ research ticket   → resolution comment    ── keeps going
                    →  connotation-cop (ADRs + CONTEXT.md glossary)
                    →  whiteboard (snapshot)  →  spec / handoff
 ```
@@ -491,10 +493,12 @@ surprising without context, and a real trade-off.
 <summary><b>whiteboard</b> — multi-session planning as a map of tickets on GitHub Issues</summary>
 
 **What it does** — Breaks work too big for one agent session into one open decision per GitHub issue
-under a `whiteboard:map` board, worked one ticket per session, then synthesized.
+under a `whiteboard:map` board, then works them until you're the blocker and synthesizes the result.
+Tickets needing nobody (research, `Runs: agent` tasks, napkin builds) run back-to-back unattended;
+hot-seat tickets and anything needing your hands stop the session with a sign-off saying what it wants.
 
-**Say something like** — "whiteboard this: [idea]", "work the board", "work the board, ticket
-[name]", "snapshot the board".
+**Say something like** — "whiteboard this: [idea]", "work the board", "run the board" (walking away),
+"work one ticket", "snapshot the board".
 
 **Input** — Explicit invocation, a git repo with GitHub Issues and the `gh` CLI, and — in later
 sessions — the board number.
