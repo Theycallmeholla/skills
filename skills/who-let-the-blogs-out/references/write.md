@@ -2,8 +2,9 @@
 
 Drafts the full article from the brief and returns a versioned markdown file — YAML front-matter carrying the brief's title set, the article body, and a publish checklist naming every image, link, and piece of client evidence still outstanding.
 
-**Reads:** `posts/<slug>/brief.md` · `posts/<slug>/packet.md` · `clients/<c>/brand.md` · `clients/<c>/facts.json` · `posts/<slug>/claims.json` · `posts/<slug>/media.json` *(read-only, for the checklist)*
-**Writes:** `posts/<slug>/draft-v(N+1).md` · `posts/<slug>/post.json` (status → `drafted`) · `registry.json`
+**Reads:** `posts/<slug>/brief.md` · `posts/<slug>/research-vN.md` · `posts/<slug>/packet.md` · `clients/<c>/brand.md` · `clients/<c>/opinion-bank.md` · `clients/<c>/facts.json` · `posts/<slug>/claims.json` · `posts/<slug>/media.json` *(read-only, for the checklist)*
+**Writes:** `posts/<slug>/draft-v(N+1).md` · `posts/<slug>/post.json` · `registry.json`
+**Then runs:** `review`, automatically. A draft never reaches the author unscored.
 **Stops at:** Never implies experience absent from the packet or the vault. Never invents credentials, quotes, results, or case studies. Never runs without a brief. Never scores itself. Never changes the brief's `titleSet`.
 
 ## Phase 1 — Load the brief, the voice rules, and the headline contract
@@ -20,7 +21,13 @@ Then load and follow, without restating them here:
 - `references/evidence-rules.md` — the three tiers of assertion and what may never be invented. This is the anti-fabrication mechanism, and tier drift is the failure it catches.
 - `references/headline-contract.md` — heading craft, the skim test, and the six title fields you are honoring rather than deciding.
 
-**Do not re-run the research.** `brief` already did the SERP analysis, the format-fit challenge, the cannibalization check, and the claim list. Re-deriving them here produces a second opinion that silently disagrees with the committed one. If the brief looks wrong, say why and stop — that is a reason to re-run `brief`, not a reason to draft around it.
+**Read the research file the brief names.** `brief.md`'s frontmatter carries a `research` key pointing at `research-vN.md` — the SERP teardown, the table-stakes subtopics, the reader questions found in the wild, the practitioner terminology, the entity list, and the weaknesses that produced the gap.
+
+This is the evidence behind the brief's conclusions, and it is the reason this command can write with any specificity at all. The brief tells you the angle; the research tells you what the ranking pages actually said, at what depth, and what they ducked — which is what lets a section land as "the four guides on page one all stop at the template and none of them says what happens on the 40th page" rather than as a generic claim of novelty.
+
+Read its `connectors` block too. Research gathered while a connector was `degraded` or `unavailable` is thinner than it looks, and a draft resting on it should say less confidently what the SERP contains.
+
+**Do not re-run the research.** `brief` already did the SERP analysis, the teardown, the discourse pass, the format-fit challenge, the cannibalization check, and the claim list. Re-deriving them here produces a second opinion that silently disagrees with the committed one. If the brief looks wrong, say why and stop — that is a reason to re-run `brief`, not a reason to draft around it.
 
 Before drafting, build a working map (in your head or in scratch, not on disk): every numbered reader question in the brief → the outline section that answers it → the specific evidence that makes the answer true → its tier. Evidence comes from the packet (tier 1), a `facts.json` entry by ID (`F-007`, tier 1 or 2 depending on its `source`), a `claims.json` entry by ID (`C-003`, tier 2), or your own reasoning (tier 3). A reader question with nothing in the evidence column is a gap, and you now know it before you've written a paragraph around it rather than after.
 
@@ -40,9 +47,19 @@ Before drafting, build a working map (in your head or in scratch, not on disk): 
 - **FAQ, conditional:** only when distinct questions remain that the body genuinely didn't answer. Never for length, keywords, or rich results — Google no longer shows FAQ rich results, so an FAQ added for schema is pure padding with a false justification attached.
 - **CTA** aligned to the business goal in `brand.md`, not a generic "contact us."
 
-### Language and coverage
+### Sections that stand on their own
+
+Each H2 section should make sense read alone. Its central claim should not depend on "as we saw above" or "building on the previous section" to be recoverable — a reader who lands mid-page from a search result, or skims to the section that matches their question, should get a complete answer there.
+
+This is a reader-first rule that happens to survive passage-level retrieval. It is **not** chunking, not question-shaped headings, and not a word band. Google's own guidance says there is no requirement to break content into small pieces and no need to write in a particular way for generative search; sections that stand alone are simply better for the person reading them, and that is the whole justification.
+
+Cross-references are fine where they add something. What breaks the rule is a section whose point is *unavailable* without the one before it.
+
+### Language, entities, and coverage
 
 Cover the subject the way a practitioner would: related entities, supporting concepts, real terminology, the questions that come after the obvious one. All of that arrives through comprehensive coverage, never from a keyword list. If a sentence exists only to hold a phrase, delete it.
+
+**One canonical entity, named consistently.** The brief's `canonicalEntity` is what this page is about; the research file's `entities` list is what a knowledgeable author would inevitably mention alongside it. Use the field's real terminology from the research — including terms whose meaning has shifted, used the way the field currently uses them — and don't rotate synonyms for the same thing across the draft. Synonym rotation reads as padding to a person and as ambiguity to anything parsing the page.
 
 **Every coverage target gets answered, not gestured at.** An answer means a reader with that question closes the tab satisfied — a specific recommendation, the condition under which it changes, and what happens if they get it wrong. A heading that names the question and then circles it is worse than omitting the question, because the brief promised it and the reader now believes it was handled. This is where depth actually happens: the brief committed to seven questions because seven is what the reader has, and `review` fails the draft once per unanswered one.
 
@@ -68,7 +85,28 @@ Place inline markers where the brief's image concepts belong — `[IMAGE: M-002 
 
 ### Schema
 
-Recommend structured data only where it fits what's visibly on the page: `Article`/`BlogPosting` for a standard post, `HowTo` for genuine numbered instructions, `LocalBusiness` where the brand profile supports it, `BreadcrumbList` where the site uses breadcrumbs, or `none`. Never default to FAQ schema. Put the recommendation and a one-line rationale in the front-matter, not markup in the body.
+Choose structured data only where it fits what's visibly on the page: `Article`/`BlogPosting` for a standard post, `HowTo` for genuine numbered instructions, `LocalBusiness` where the brand profile supports it, `BreadcrumbList` where the site uses breadcrumbs, or `none`. Never default to FAQ schema.
+
+The recommendation and a one-line rationale go in the front-matter. The **markup itself** goes in the paste-ready block at the bottom of the file, never inline in the body — see Output.
+
+Validate the JSON-LD with `mcp__schema-org__validate_jsonld` before emitting it. A typo'd property or wrong nesting produces markup that parses as nothing, silently. If the validator is unavailable, emit the markup anyway and say it went out unvalidated.
+
+The validator checks schema.org vocabulary. It cannot check that the markup describes what is actually visible on the page — that judgment is yours and it is the rule that matters more.
+
+### Do not implement these
+
+Every item below is either explicitly rejected by [Google's AI optimization guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) or is a vendor correlation being sold as a rule. They recur constantly in SEO advice, including in otherwise-good tooling, and each one costs the reader something:
+
+- **llms.txt** — Google states it neither harms nor helps
+- **Fixed answer word bands** ("definitions in 25-50 words", "answers in 40-60 words") — no provider documents a length threshold for citation
+- **FAQPage schema as a citation play** — Google no longer shows FAQ rich results; an FAQ added for markup is padding with a false justification
+- **Chunking content into small pieces** — "There's no requirement to break your content into tiny pieces"
+- **Rewriting specifically for AI** — "You don't need to write in a specific way just for generative AI"
+- **Flesch-score or readability targets** — vendor-reported association, never a calibrated effect
+- **Source quotas** ("cite N sources per section") — cite what the claims need
+- **Treating vendor citation-share datasets as causal**
+
+The durable levers are the ones this command already enforces: a genuine point of view, claims traceable to named dated sources, sections that stand alone, substantive freshness, and structured data that matches visible content.
 
 ### YMYL
 
@@ -89,7 +127,21 @@ Then run the tells checklist at the bottom of `voice-and-tells.md` and fix what 
 
 Read `currentVersion` from `post.json` and write `draft-v(N+1).md`. Leave `draft-vN.md` byte-identical — `refresh` and `revise` read history as a diff, and an edited prior version makes that diff a lie. Then set `post.json`'s `currentVersion` to N+1, `status` to `drafted`, and `updated` to today, and update this post's row in `registry.json` in the same operation: `status`, `currentVersion`, `title` (the H1), `updated`. Leave `openFindings` alone — that's `review`'s field.
 
+`drafted` is what you set and it is momentary: `review` runs next and moves it to `reviewed`. Set it honestly anyway rather than anticipating the chain — if `review` fails to run, the record should say what actually happened.
+
+**Record what the draft used.** `uses_claims` lists every claim ID that made it into the prose; `uses_bank` lists every opinion-bank entry (`S-004`, `P-002`) you drew on. Both go in the front matter of the draft you just wrote.
+
+These are not bookkeeping. `verify`, `publish`, and `refresh` all read them to know what the live article actually asserts — the staleness count depends on the first, and tracing a superseded position to the posts still arguing it depends on the second. You are the only command that knows what survived the writing, and the lists live in the draft precisely so the prose and the record can never disagree.
+
 If anything you read was malformed or stale — a claim ledger with IDs the brief never mentions, a `facts.json` entry past its `reverifyBy` — report it and keep drafting. Don't repair it.
+
+## Phase 5 — Hand off to `review`
+
+Run `review` on the version you just wrote. Always, with no flag to skip it.
+
+This is a chained command, not a mode of this one: `review` reads the rubric and the tells model, writes `review-v(N+1).json`, and moves `post.json` to `reviewed`. Both commands keep their own declared paths, and the rule that a writer never grades its own work is preserved — `review` has no stake in the draft.
+
+The point is that the author reads the article and its findings together, instead of forming an opinion about a draft before anything has scored it. **Lead your report with any `boundary` or `fabrication` findings the review raised.** Those two are severity-locked, cannot be accepted, and block `publish` — better learned now than at publish time.
 
 ## Output
 
@@ -105,12 +157,16 @@ meta_description: "Learn how to create useful, differentiated location pages wit
 slug: local-seo-location-pages
 title_alternates: ["Alt search title 2", "Alt search title 3"]
 primary_keyword: "local seo location pages"
+canonical_entity: "local SEO location pages"
 search_intent: informational
 unique_value: "One sentence: what this article gives the reader that page one doesn't."
 schema_recommendation: "BlogPosting — standard editorial post, no step sequence to mark up."
 reviewer: "YMYL only — the kind of qualified expert who should sign off. Omit otherwise."
 review_date: "2027-08-01 — time-sensitive claims only. Omit otherwise."
 word_count: 1840
+research: research-v1.md
+uses_claims: [C-001, C-003, C-007]
+uses_bank: [S-004, P-002]
 ---
 
 # How to Build Location Pages That Do Not Look Mass-Produced
@@ -125,12 +181,41 @@ word_count: 1840
 - [ ] Replace INTERNAL link placeholders with real URLs
 - [ ] Image concepts: M-002 diagram after H2 "Why Google rewrites titles" — status `needed`
 - [ ] Client evidence needed: the actual turnaround range for a 40-page city rollout
-- [ ] [post-specific: schema validation, expert review, an unanswered coverage target]
+- [ ] Retrievability: primary content is crawlable text, not JS-gated; robots.txt doesn't block the crawlers this client cares about
+- [ ] [post-specific: expert review, an unanswered coverage target]
+
+---
+
+## CMS fields — paste block
+
+**Excerpt**
+[2-3 sentences. What the post is and what the reader leaves with.]
+
+**Category**
+[one value from brand.md's taxonomy]
+
+**Tags**
+[values from brand.md's taxonomy, never invented]
+
+**JSON-LD** — validated, or `none` with a one-line reason
+```json
+{ "@context": "https://schema.org", "@type": "BlogPosting", ... }
+```
 ```
 
-Front-matter fields are copied from the brief's `titleSet` verbatim. `word_count` counts the body, not the front-matter or the checklist. Omit `reviewer` and `review_date` entirely when they don't apply — an empty field reads as an unanswered question.
+Front-matter title fields are copied from the brief's `titleSet` verbatim. `canonical_entity` comes from the brief. `word_count` counts the body — not the front-matter, checklist, or paste block. Omit `reviewer` and `review_date` entirely when they don't apply; an empty field reads as an unanswered question.
 
-Then, in chat, three or four lines: the version you wrote, the angle you took, any coverage target you could not answer and why, and anything the draft did that the brief did not anticipate. Not a recap of the article. Point at `images` if assets are still `needed`, and at `review` for scoring.
+### The paste block
+
+Everything a CMS editor asks for that the front-matter doesn't already carry, delimited so it can be copied without dragging the article along. It exists here rather than in `publish` because `publish` runs *after* the post is live — fields delivered then arrive after they were needed.
+
+**Category and tags come from `brand.md`'s `taxonomy` block and are never invented.** Invented tags produce forty near-synonyms across a client's blog inside a few months, after which nothing can be grouped or filtered. If the client has no taxonomy recorded, propose values and say plainly that no vocabulary exists yet — that's a gap for `brand`, not a licence to freestyle.
+
+**`none` is a valid JSON-LD output.** When nothing on the page warrants markup, say so with the reason. Do not emit `BlogPosting` because a field looked empty, and never emit `FAQPage`.
+
+Then, in chat: **any `boundary` or `fabrication` findings from the chained review, first and by ID**, then three or four lines — the version you wrote, the angle you took, any coverage target you could not answer and why, and anything the draft did that the brief did not anticipate. Then the review's headline scores.
+
+Not a recap of the article. Point at `images` if assets are still `needed`, and at `revise` when findings are open. Don't point at `review` — it already ran.
 
 ## Confirm and stop
 
