@@ -1,12 +1,12 @@
 # Skills
 
 [![Validate skills](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml/badge.svg)](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml)
-[![Skills](https://img.shields.io/badge/skills-30-6f42c1)](#skill-index)
+[![Skills](https://img.shields.io/badge/skills-31-6f42c1)](#skill-index)
 [![Spec](https://img.shields.io/badge/spec-Agent%20Skills-0b7285)](#authoring-a-skill)
 [![CI](https://img.shields.io/badge/CI-validator%20%2B%20secret%20scan%20%2B%20shellcheck%20%2B%20playwright-2b8a3e)](#continuous-integration)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-**30 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
+**31 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
 UX and conversion reviews, requirements interviews, documentation generation, content production,
 and the meta-work of building and maintaining skills themselves.
 
@@ -17,11 +17,11 @@ at a time.
 
 | | |
 |---|---|
-| **Skills** | 30 |
+| **Skills** | 31 |
 | **Bundled reference files** | 79 |
 | **Templates & assets** | 8 |
 | **Executable scripts** | 21 (12 shell, 8 Python, 1 Node) |
-| **Total files** | 140 |
+| **Total files** | 141 |
 | **Enforced in CI** | spec validator, secret scan, `shellcheck`, Playwright regression suite |
 | **License** | MIT |
 
@@ -202,6 +202,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **conversion-audit** — audits a page against the ONE action it wants, using five cold-read persona agents and a belief-chain map
 - **fresh-eyes** — genuine first-time-user test that protects its own ignorance and logs every confusion at the moment of impact
 - **cover-story** — writes the spoiler-free brief a fresh-eyes tester is handed, plus a sealed envelope of everything deliberately withheld
+- **gap-scan** — finds the features that obviously should exist but don't, as a ranked punch list with a status-carrying `gap_packet.json` that can be rechecked later
 
 ### Documentation
 
@@ -746,6 +747,38 @@ term definition, sequencing, warning, or capability explanation.
 **Bundle** — `SKILL.md` only.
 
 **Not for** — Running the test (`fresh-eyes`) or writing real docs (`eli5-features`).
+</details>
+
+<details>
+<summary><b>gap-scan</b> — the features that obviously should exist but don't, as a ranked punch list</summary>
+
+**What it does** — Builds one capability map of a repo or live app, then reasons six gap lenses
+against it to find what's absent: missing exports and bulk actions, data collected but never
+surfaced, endpoints with no UI, and features that stopped partway.
+
+**Say something like** — "what features are missing", "what's this app lacking", "find gaps",
+"feature audit", "what's left to do" (recheck), "recheck the gaps".
+
+**Input** — A repo path, or a live app/site to walk. Plus which mode applies — PROSPECT for a lead's
+product, QA for your own — usually inferable from context.
+
+**Output** — A ranked report capped at 10 findings, each with evidence, why it matters, effort, and
+an MVP; a required `## Start here` section naming ONE gap and its first concrete action; and
+`gap_packet.json` (v2) carrying per-gap `status` (open / closed / superseded), `closed_at`, and
+`closed_by`.
+
+**Mechanics** — Inventory once, reason many times: the six lenses (CRUD symmetry, dark data,
+orphans, half-built, table stakes, workflow dead ends) never re-crawl. Every finding must cite an
+evidence anchor or it gets cut, and anchors point at symbols rather than line numbers so a later
+recheck can tell "moved" from "gone". RECHECK mode reloads the packet instead of re-scanning:
+"what's left" is a status filter, then each open finding is re-verified, stale ones are marked
+`superseded`, and only then does it look for gaps introduced since.
+
+**Bundle** — `SKILL.md` only.
+
+**Not for** — Things that exist but are broken (`code-audit`), confusing (`ux-audit`), or
+unpersuasive (`conversion-audit`), or underexploited assets worth productizing (WWBD-style
+analysis).
 </details>
 
 ### Documentation
