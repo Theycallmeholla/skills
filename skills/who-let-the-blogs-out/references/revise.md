@@ -4,7 +4,8 @@ Applies the open findings from a review to produce the next draft version, and r
 
 **Reads:** `posts/<slug>/review-vN.json` · `posts/<slug>/draft-vN.md` · `posts/<slug>/packet.md` · `posts/<slug>/brief.md` *(read-only, for what was promised)* · `clients/<c>/facts.json` · `clients/<c>/opinion-bank.md` · `posts/<slug>/claims.json` *(read-only, for citations)*
 **Writes:** `posts/<slug>/draft-v(N+1).md` · `posts/<slug>/review-vN.json` (finding status fields only) · `posts/<slug>/post.json` · `registry.json` (`openFindings`, `currentVersion`, `updated`)
-**Stops at:** Never re-scores — that's `review` again. Never introduces a new tell while fixing an old one. Never fabricates to close a `fabrication` finding.
+**Then runs:** `review`, automatically, on the version just written.
+**Stops at:** Never scores the draft itself — the chained `review` does that, with the rubric and no stake in the prose. Never introduces a new tell while fixing an old one. Never fabricates to close a `fabrication` finding.
 
 ## Phase 0 — Locate the review and the draft it scored
 
@@ -129,7 +130,7 @@ Tightened two paragraphs in the intro while rewriting around BL-011.
 Written: posts/local-seo-location-pages/draft-v3.md ·
          review-v2.json (finding status fields only) ·
          post.json (currentVersion 3) · registry.json (openFindings: 2)
-Next: `who-let-the-blogs-out review local-seo-location-pages` — revise never scores its own output.
+Then: review ran automatically on draft-v3 — see its scores above.
 ```
 
 The changelog is the deliverable, not the draft. A revision nobody can audit is a revision nobody trusts, and "applied the feedback" is not auditable. Every ID gets a line, including the ones that didn't move — a finding that silently vanishes from the report is indistinguishable from one that was quietly ignored.

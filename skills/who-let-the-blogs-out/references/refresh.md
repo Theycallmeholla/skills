@@ -4,6 +4,7 @@ Returns a keep/update/remove/add change plan — every line carrying a location 
 
 **Reads:** `.blog/registry.json` · `.blog/posts/<slug>/claims.json` · `.blog/clients/<c>/facts.json` · `.blog/posts/<slug>/draft-vN.md` · `.blog/posts/<slug>/brief.md` · SERP (web search)
 **Writes:** `.blog/posts/<slug>/draft-v(N+1).md` · `.blog/posts/<slug>/claims.json` · `.blog/posts/<slug>/post.json` · `.blog/registry.json`
+**Then runs:** `review`, automatically, whenever a new draft version was written.
 **Stops at:** Never rewrites wholesale — accurate material survives verbatim. Never publishes: the live page keeps showing the old text until a human ships the new version.
 
 If `.blog/` doesn't exist, say so, point at `who-let-the-blogs-out brand`, and stop. Refresh is the one command with nothing to fall back on — it exists to read a history that hasn't been written yet.
@@ -164,7 +165,7 @@ blog refresh gbp-optimization-guide   published 2024-09-11, no stale claims — 
 7. **`## Claim ledger`** — reverified / qualified / removed / awaiting-client / new, with IDs.
 8. **`## Written`** — literal paths. If no new draft was warranted, `No new draft version — see change plan` and one line on why.
 
-Then point at `who-let-the-blogs-out review <slug>` — a refreshed draft is still a draft, and this command does not score its own work.
+`review` then runs automatically on the new version — a refreshed draft is still a draft, and this command does not score its own work. Report its findings alongside the change plan, leading with any `boundary` or `fabrication` results. When the plan was all `KEEP` and no new version was written, nothing is scored and nothing chains.
 
 ## Confirm and stop
 
