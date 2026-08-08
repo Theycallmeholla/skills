@@ -52,7 +52,7 @@ If `.blog/` does not exist, say so and point at `brand`. Do not create a partial
 | `plan` | Setup | Pick what to write next; keyword, intent, format fit, cannibalization | `registry.json`, `clients/<c>/brand.md` | `posts/<slug>/post.json`, `registry.json` | `references/plan.md` |
 | `interview` | Capture | Capture the author's stance, stories, specifics, boundaries | `opinion-bank.md`, `brand.md`, `facts.json` | `posts/<slug>/packet.md`, `opinion-bank.md`, `facts.json` | `references/interview.md` |
 | `verify` | Capture | Verify claims; promote durable facts to the vault; set expiries | `claims.json`, `facts.json`, `draft-vN.md` | `claims.json`, `facts.json`, `registry.json` | `references/verify.md` |
-| `brief` | Draft | Angle, information gain, coverage targets, outline, title set | `packet.md`, `brand.md`, `facts.json`, `registry.json` | `brief.md`, `claims.json`, `media.json` | `references/brief.md` |
+| `brief` | Draft | Research and teardown, angle, information gain, coverage targets, outline, title set | `packet.md`, `brand.md`, `facts.json`, `registry.json` | `research-vN.md`, `brief.md`, `claims.json`, `media.json` | `references/brief.md` |
 | `write` | Draft | Draft the article from the brief | `brief.md`, `packet.md`, `brand.md`, `facts.json` | `draft-v(N+1).md`, `post.json` | `references/write.md` |
 | `images` | Draft | Concrete asset plan: what each image shows, where, and its status | `brief.md`, `draft-vN.md`, `media.json` | `media.json` | `references/images.md` |
 | `review` | Ship | Score on rubric + AI tells; boundary, fabrication, coverage, headings | `draft-vN.md`, `brief.md`, `packet.md`, `brand.md` | `review-vN.json`, `post.json`, `registry.json` | `references/review.md` |
@@ -64,7 +64,7 @@ Read the Reads and Writes columns as the wiring diagram: one command's Writes is
 
 One thing the table can't show: every command that produces a draft version writes `uses_claims` and `uses_bank` into its front matter, and those two lists are what `verify`, `publish`, and `refresh` read to know what the article actually says.
 
-> **v2 in progress.** `references/state.md` now carries the v2 schema — `research-vN.md`, `voice-baseline.json`, opinion-bank IDs, cluster fields — ahead of the commands that use them. The table above describes what the commands do *today*; rows change as each one lands. Build order and rationale: [`docs/wltbo-v2-spec.md`](../../docs/wltbo-v2-spec.md).
+> **v2 in progress.** `brief` now writes `research-vN.md` and `write` will read it. Still ahead of their commands: `voice-baseline.json`, the opinion-bank IDs, and the cluster fields — all defined in `references/state.md`, none yet produced. The table above describes what the commands do *today*; rows change as each one lands. Build order and rationale: [`docs/wltbo-v2-spec.md`](../../docs/wltbo-v2-spec.md).
 
 ## Routing
 
