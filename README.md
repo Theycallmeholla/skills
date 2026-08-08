@@ -1,12 +1,12 @@
 # Skills
 
 [![Validate skills](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml/badge.svg)](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml)
-[![Skills](https://img.shields.io/badge/skills-31-6f42c1)](#skill-index)
+[![Skills](https://img.shields.io/badge/skills-32-6f42c1)](#skill-index)
 [![Spec](https://img.shields.io/badge/spec-Agent%20Skills-0b7285)](#authoring-a-skill)
 [![CI](https://img.shields.io/badge/CI-validator%20%2B%20secret%20scan%20%2B%20shellcheck%20%2B%20playwright-2b8a3e)](#continuous-integration)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-**31 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
+**32 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
 UX and conversion reviews, requirements interviews, documentation generation, content production,
 and the meta-work of building and maintaining skills themselves.
 
@@ -17,11 +17,11 @@ at a time.
 
 | | |
 |---|---|
-| **Skills** | 31 |
-| **Bundled reference files** | 79 |
+| **Skills** | 32 |
+| **Bundled reference files** | 80 |
 | **Templates & assets** | 8 |
 | **Executable scripts** | 21 (12 shell, 8 Python, 1 Node) |
-| **Total files** | 141 |
+| **Total files** | 143 |
 | **Enforced in CI** | spec validator, secret scan, `shellcheck`, Playwright regression suite |
 | **License** | MIT |
 
@@ -193,6 +193,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **whiteboard** — plans work too big for one session as a map of investigation tickets on GitHub Issues; works tickets back-to-back and stops only when you're the blocker
 - **whiteboard-help** — display-only cheat sheet for the whiteboard system: the flow, the exact phrases, the rules, where artifacts live
 - **blog-topic-interview** — pre-writing interview that captures the author's real stances and stories, producing an Opinion Packet
+- **what-would-bezos-do** — mines a codebase for assets already built that could produce far more value, gated at five opportunities with a mandatory kill list
 
 ### Site, UX & conversion
 
@@ -568,6 +569,34 @@ research-only sections.
 **Bundle** — `references/interview-guide.md`, `references/opinion-bank.md`.
 
 **Not for** — Emails, proposals, social posts, or writing the article itself.
+</details>
+
+<details>
+<summary><b>what-would-bezos-do</b> — what you already built that's worth more than it's currently producing</summary>
+
+**What it does** — Inventories what a codebase already possesses — capabilities, infrastructure,
+accumulated data, paid-for integrations, internal tooling — and asks which of them have a larger
+economic surface than the one narrow job they were built for.
+
+**Say something like** — "WWBD", "what would Bezos do", "what are we sitting on", "what did we
+accidentally build", "is there a product hiding in here", "anything valuable buried in this repo".
+
+**Input** — A repo you have code access to. Business context helps but isn't required — the report
+is built from code evidence either way.
+
+**Output** — A report capped at five opportunities, each evidence-gated, plus a mandatory kill list
+of what was considered and rejected, one forced answer, and `wwbd_packet.json`.
+
+**Mechanics** — The primitive test is the filter: if usage of this went up 100×, would the rest of
+the business get stronger? A password-reset flow fails it; the event-routing engine underneath it
+passes. Opportunities are scored on adjacency distance from what already exists, and the kill list
+is mandatory precisely because a report that rejects nothing has no credibility.
+
+**Bundle** — `references/primitives.md` (primitive catalog, economic shapes, adjacency distance,
+common false positives).
+
+**Not for** — Features that are missing (`gap-scan`), code that's broken (`code-audit`), flows that
+confuse (`ux-audit`), or pages that don't persuade (`conversion-audit`).
 </details>
 
 ### Site, UX & conversion
