@@ -125,7 +125,8 @@ Alongside the report, always emit `gap_packet.json` so other skills and swarm ag
       "first_seen_at": "ISO date",
       "closed_at": null,
       "closed_by": null,
-      "supersedes": null
+      "supersedes": null,
+      "superseded_reason": null
     }
   ],
   "handoffs": [{"skill": "ux-audit", "note": "checkout flow confusing"}]
@@ -140,6 +141,7 @@ Field rules:
   - `superseded` — the finding no longer holds for a reason other than being built: the evidence moved, the surrounding code was rewritten, or the premise turned out to be wrong. **`superseded` is not a soft `closed`** — nothing shipped.
 - `closed_at` / `closed_by` — ISO date, and `"recheck"` | `"user"` | `"<skill or agent name>"`. Set on both `closed` and `superseded`; null while open.
 - `supersedes` — when a recheck replaces a stale finding with a corrected one, the new gap points at the old gap's `id`.
+- `superseded_reason` — **required whenever `status` is `superseded`**, null otherwise. One or two sentences on why the finding no longer holds: which anchor moved, what was rewritten, or — for a retraction — what the premise got wrong and what evidence disproved it. A superseded gap with no reason is indistinguishable from a finding that quietly vanished, which is the exact failure this status exists to prevent.
 - Never delete a gap from the array. Status transitions only — the history is the point.
 
 ## Recheck mode
@@ -160,7 +162,9 @@ For each `open` gap, check its evidence anchors still exist and still demonstrat
 - Symbol present, gap still absent → stays `open`.
 - Symbol present, feature now exists → `closed`, `closed_by: "recheck"`.
 - Symbol gone / file gone / surrounding code rewritten → the finding can no longer be verified. Mark `superseded`. If the gap still holds under the new structure, add a NEW gap with a new `id` and `supersedes` pointing at the old one.
-- Premise was wrong (the capability existed elsewhere all along) → `superseded`, and say so plainly in the report. A wrong finding retracted is worth more than a wrong finding left standing.
+- Premise was wrong (the capability existed elsewhere all along, or the evidence was misread) → `superseded`, and say so plainly in the report. A wrong finding retracted is worth more than a wrong finding left standing.
+
+Every transition out of `open` writes `superseded_reason` (for supersedes) and `closed_by`. If the fix was attempted and then reverted, say that — "implemented, produced N false positives and zero true findings, reverted" is the most useful sentence a recheck can leave behind.
 
 ### 3. Scan for gaps introduced since
 
