@@ -2,7 +2,7 @@
 
 Records a post as live and returns the closed checklist plus the re-verification schedule for every claim in it.
 
-**Reads:** `posts/<slug>/post.json` · `posts/<slug>/claims.json` · `posts/<slug>/media.json` · `posts/<slug>/review-vN.json` · `posts/<slug>/brief.md`
+**Reads:** `posts/<slug>/post.json` · `posts/<slug>/claims.json` · `posts/<slug>/media.json` · `posts/<slug>/review-vN.json` · `posts/<slug>/brief.md` · `posts/<slug>/draft-vN.md` *(read-only, front matter only, for `uses_claims`)*
 **Writes:** `posts/<slug>/post.json` (status → `published`) · `posts/<slug>/claims.json` · `registry.json` · `posts/<slug>/notes.md` *(drawer entries only — redirects, reviewer names, proceed-anyway acknowledgments)*
 **Stops at:** Never pushes to a CMS. Never publishes over an open `boundary` or `fabrication` finding.
 
@@ -87,7 +87,7 @@ Claims with `status: "removed"` are not in the article and get no expiry. Settin
 
 ## Phase 4 — Index
 
-Update the post's entry in `registry.json` in the same operation as the `post.json` write: `status`, `url`, `publishedAt`, `currentVersion`, `title` (the `h1`), `primaryKeyword`, `intent`, `updated`, and the two summary counts — `openFindings` from the review file, `staleClaims` counted as claims whose `reverifyBy` is already in the past (normally zero at publish; non-zero means a vault-inherited expiry lapsed before the post went live, which is worth saying out loud).
+Update the post's entry in `registry.json` in the same operation as the `post.json` write: `status`, `url`, `publishedAt`, `currentVersion`, `title` (the `h1`), `primaryKeyword`, `intent`, `updated`, and the two summary counts — `openFindings` from the review file, `staleClaims` counted by the state contract's three-part definition — not `removed`, present in the shipping draft's `uses_claims` list, and either past its effective expiry or `awaiting-client`. `verify`, `publish`, and `refresh` must all count it identically or the menu starts recommending work that isn't there. Normally low at publish; a non-zero expiry count means a vault-inherited date lapsed before the post went live, which is worth saying out loud.
 
 This step is not bookkeeping. The registry is the only thing future commands read before they open a record, so an unindexed published post is invisible to the entire system going forward: `plan`'s cannibalization check will happily approve a near-duplicate keyword, `brief` will never suggest an internal link to it, and `refresh` will never find its aging claims. The post exists on the web and not in the system's memory, which is the specific failure this whole state directory was built to prevent.
 

@@ -43,7 +43,7 @@ Staleness has two sources and checking only one is the common miss.
 
 **Source two — the client's vault.** Any claim with a `factRef` inherits that vault entry's expiry, so a claim can read `verified` in `claims.json` and still be stale because `F-012` in `facts.json` went past `reverifyBy` in May. Check every `factRef`. If a vault fact is expired or `retired`, note its `usedIn` list — other posts cite the same number and are stale for the same reason. Report those slugs; do not open or edit them. They aren't in this command's Writes, and one command quietly amending four posts is the failure the append-only rule exists to prevent.
 
-**Then check `appearsIn`.** A stale claim whose `appearsIn` doesn't include the current draft version was already edited out — the ledger row needs resolving, the article needs no touch at all. This is the single most useful field in the schema for this command, and skipping it produces edits to text that no longer exists.
+**Then check `uses_claims`.** A stale claim absent from the current draft's `uses_claims` front-matter list was already edited out — the ledger row needs resolving, the article needs no touch at all. This is the single most useful field in the schema for this command, and skipping it produces edits to text that no longer exists.
 
 **Then read the draft for what the ledger never captured.** Posts written before the ledger existed, or briefed loosely, carry time-sensitive material with no claim row behind it. Scan for: a year in the body or title · prices and ranges · "currently," "as of," "recently" · platform and product behavior ("Google shows FAQ rich results") · competitor feature claims · named tools that may have been renamed, acquired, or shut down · screenshots of interfaces that have since been redesigned · outbound links that may now 404. Each one becomes a new claim row in Phase 6 with a fresh monotonic ID.
 
@@ -124,7 +124,7 @@ Update `claims.json` in place — this file is a ledger, not a version, and rows
 - Changed claims move to `qualified` with the qualifying language recorded, or to `removed` when the text came out.
 - Claims the client must answer become `awaiting-client`.
 - New claims found in Phase 1 get new IDs, allocated monotonically from the highest `C-NNN` already in the file. Never renumber, never reuse — `C-003` means one thing forever.
-- **Append N+1 to `appearsIn`** for every claim still in the new draft, and don't for the ones you removed. The next refresh depends on this being right.
+- **Write `uses_claims` in the new draft's front matter**, listing every claim still in the prose and omitting the ones you removed. Same for `uses_bank`. The next refresh depends on this being right, and you are the only command that knows what survived the edit.
 
 Then, in the same operation:
 
@@ -133,7 +133,7 @@ Then, in the same operation:
 
 `facts.json` is read, never written. A vault fact that needs a new expiry is `verify`'s job — that's the command that owns the vault, and its edits ripple into every post citing the fact. Name the expired fact IDs and point at `who-let-the-blogs-out verify <client>`.
 
-Anything malformed you hit along the way — a claim ID the brief never mentions, an `appearsIn` listing a version that doesn't exist on disk — gets reported in one line and left alone. Refresh reports drift; it doesn't repair it.
+Anything malformed you hit along the way — a claim ID the brief never mentions, a `uses_claims` entry pointing at a claim absent from the ledger — gets reported in one line and left alone. Refresh reports drift; it doesn't repair it. A legacy `appearsIn` key still sitting in `claims.json` is not drift and is not reported: it is deprecated and ignored, per the state contract.
 
 ---
 
