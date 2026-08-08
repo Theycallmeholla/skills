@@ -60,7 +60,7 @@ Where an author byline, a named reviewer, or an About-page improvement would mat
 
 Cite every material claim that needs verification, using the `claims.json` entry's `source` URL — prefer the primary source over anyone's summary of it. Internal links go in only where they help the reader continue a real journey: use the real slugs the brief pulled from the registry, or `[anchor text](INTERNAL: description of target page)` where the brief only identified a destination type. No quotas in either direction — don't add links to hit a number and don't cap the sources a technical piece genuinely needs. Competing SEO articles are positioning intel, never a factual backbone.
 
-Track which claim IDs you actually used. `verify` and `refresh` both depend on `claims.json`'s `appearsIn` reflecting reality, and you are the only command that knows what made it into the prose.
+Record which claim IDs you actually used in the draft's `uses_claims` front-matter list, and which opinion-bank entries in `uses_bank`. `verify`, `review`, and `refresh` all depend on those lists reflecting reality, and you are the only command that knows what made it into the prose. They live in the draft rather than in `claims.json` or the bank precisely so the prose and the list can never disagree — same file, same write.
 
 ### Images
 
