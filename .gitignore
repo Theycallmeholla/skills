@@ -3,3 +3,9 @@ __pycache__/
 .DS_Store
 node_modules/
 dist/
+.claude/worktrees/
+
+# Scan artifacts — regenerated on demand, never the source of truth
+gap_packet.json
+wwbd_packet.json
+audit_packet.json
