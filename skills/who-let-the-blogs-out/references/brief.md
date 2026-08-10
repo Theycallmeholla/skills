@@ -32,6 +32,8 @@ Otherwise:
 
 **Teardown.** Fetch the top five to eight ranking pages and analyse them properly. Snippets tell you a page exists; they don't tell you how deep it goes or what it ducks. More pages for high-stakes or technical topics, fewer when the SERP is thin.
 
+Each teardown is a full fetch plus a full read, so eight of them is the most expensive thing this command does. That cost is the point — it is what the brief's information-gain claim rests on — but **write down what you actually did.** `teardown: { planned, fetched, failed }` in the frontmatter. A brief built on two of eight pages is a different artifact from one built on eight of eight, and a reader can only tell if the number is there. Reducing the count deliberately is fine; reducing it silently is how a thin brief passes for a thorough one.
+
 This is the one part of the command that fans out to subagents, and the rule is **parallelize gathering, never parallelize judgment**:
 
 - One agent per URL. Each gets **only the URL and the primary keyword** — not the angle, not the packet, not what the other agents found. An agent told what gap you expect will find that gap.
@@ -56,7 +58,7 @@ Authority-first research tells you what the ranking pages say. It doesn't tell y
 
 `WebSearch` with platform-targeted `site:` operators plus a recency constraint. Pick surfaces per topic rather than running a fixed list — Reddit, Hacker News, X, YouTube, dev.to, Stack Overflow, and whichever trade forums this client's field actually uses. `brand.md`'s audience and competitor sections tell you which.
 
-**Window:** 30 days by default. Widen to 90 for slow-moving topics. **Skip entirely** when the topic is genuinely evergreen and nothing has moved — and record `discourseRun: skipped` with the reason. A pass that ran and found nothing is a different fact from one that never ran, and only one of them means "there's nothing there."
+**Window:** 30 days by default. Widen to 90 for slow-moving topics. **Skip entirely** when the topic is genuinely evergreen and nothing has moved — and record `discourseRun: skipped — <reason>` in the frontmatter, reason included, not buried in the prose body. A pass that ran and found nothing is a different fact from one that never ran, and only one of them means "there's nothing there."
 
 Capture into the research file's prose body: how practitioners phrase the problem, verbatim and uncleaned · recurring complaints · contrarian takes circulating now · terminology in live use, including terms whose meaning has shifted · questions being asked that the ranking pages don't answer.
 
@@ -80,7 +82,15 @@ When calculators, comparison tables, or forum threads dominate the first page, a
 
 If no sitemap is recorded, fall back to `site:<domain> "<topic>"` search and say the crawl wasn't possible — that's a gap for `brand` to close, not something to paper over.
 
-**Cannibalization.** Compare the primary keyword and intent against every published post for this client, from the registry and the crawl both. Record `cannibalization: none`, or the competing URL plus a decision — `create`, `merge`, `redirect`, or `refresh`. When the honest answer is "updating `local-seo-location-pages` would beat publishing a second page on the same intent," say that plainly and stop for a decision. A system that never recommends killing its own work isn't a gate.
+**Cannibalization, in two passes — because a sitemap gives you URLs, not intent.**
+
+The registry knows keyword and intent for the posts this system created. The crawl knows only slugs, and a client with a hundred published posts is a hundred slugs you have to judge. Reading intent off a slug works for the obvious cases and is guesswork at the margins, so don't pretend one pass is enough.
+
+**Pass one — shortlist from the crawl.** Scan every URL for topical proximity to the primary keyword. Cheap, and it is allowed to over-include: a shortlist of six candidates from a hundred URLs is doing its job.
+
+**Pass two — fetch the shortlist and read it.** Only a page's actual content settles whether it serves this intent. `/blog/automations-that-fail-silently` and `/blog/measuring-automation-roi` sit two words apart in slug space and answer different questions; nothing but the pages themselves reveals that. Two to five fetches, and if the shortlist is longer than that, the keyword is probably too broad — say so.
+
+Record `cannibalization: none`, or the competing URL plus a decision — `create`, `merge`, `redirect`, or `refresh` — naming which pass produced it and whether the page was read or only its slug was. A verdict from slugs alone is provisional and must say so. When the honest answer is "updating `local-seo-location-pages` would beat publishing a second page on the same intent," say that plainly and stop for a decision. A system that never recommends killing its own work isn't a gate.
 
 **Clusters change this test, but only partly.** When `post.json` carries a `cluster`, keyword overlap with same-cluster siblings is the design, not a defect — don't flag it. Genuine duplication within a cluster is still a finding: two spokes answering the same reader question is a mistake whether or not somebody planned them together. The test is the reader's question, not the keyword string.
 
@@ -188,26 +198,30 @@ Three artifacts and one chat response.
 ```
 ## Reader questions this must answer      numbered, the count in coverageTargets
 ## Outline                                H2/H3 nodes with closes / uses / work
-## Claims to make (→ claims.json)         ID, text, factRef or the source to chase
+## Claims to make                         ID + one line each — index only, see claims.json
 ## Internal links (from registry + crawl, real URLs only)   destinations, then sources
-## Image concepts (→ media.json)          ID, role, what it shows, placement
+## Image concepts                         ID + one line each — index only, see media.json
 ## What this post deliberately does not cover        each with its reason
 ```
+
+**`claims.json` and `media.json` are authoritative; the brief's two list sections are an index.** One line per ID — enough to read the brief and know what is coming — and nothing that would have to be edited in two places to stay true. Full text, sources, roles, placements, and statuses live in the JSON. Writing the same record in both is how the markdown and the ledger start disagreeing, and the ledger is what every later command reads.
 
 **3. `claims.json` and `media.json`** written per the schemas in `state.md`; `post.json` status → `briefed` with `updated` set; `registry.json`'s post entry updated in the same operation with `title` (the `h1`), `primaryKeyword`, `intent`, `status`, and `updated`. `openFindings` and `staleClaims` are not yours to set.
 
 **Chat response** — seven lines, no more:
 
 ```
-Research:           8 pages torn down, 1 fetch-failed · discourse 30d, 4 surfaces · serp degraded
+Research:           7 of 8 torn down, 1 fetch-failed · discourse 30d, 4 surfaces · serp skipped
 Angle:              one sentence
 Information gain:   one sentence
 Entity:             local SEO location pages
 Format:             article — SERP is 9/10 explainers, no tool competition
-Cannibalization:    none (sitemap crawl, 214 URLs)
+Cannibalization:    none — 214 URLs crawled, 4 shortlisted, 4 read
 Coverage:           7 questions committed — review fails the draft on each one left open
 Claims / images:    11 claims (3 vault-backed, 8 to verify) · 4 image concepts
 ```
+
+The research line reports **fetched of planned**, not a bare count, and the cannibalization line reports **crawled → shortlisted → read**. Both exist so a thin run is visible in the first two lines rather than discoverable three files down.
 
 Then the single next step: `who-let-the-blogs-out verify <slug>` when claims need chasing, otherwise `who-let-the-blogs-out write <slug>`. If any state was malformed or stale, report it in one line and leave it alone — repair is a deliberate act, never a side effect of briefing.
 

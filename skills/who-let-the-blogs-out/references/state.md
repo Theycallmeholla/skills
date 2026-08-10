@@ -266,11 +266,12 @@ borrowedFrom: null          # a sibling post's research file, or null
 borrowedOn: null
 dominantIntent: informational
 queriesRun: ["local seo location pages", "city pages seo"]
-searchFeatures: [featured-snippet, people-also-ask, local-pack]
+searchFeatures: null        # null = not observable with the connectors used
 entities: []
 discourseWindowDays: 30
 discourseSurfaces: [reddit, hackernews, youtube]
-discourseRun: 2026-08-07
+discourseRun: 2026-08-07    # a date, or `skipped — <reason>`
+teardown: { planned: 6, fetched: 5, failed: 1 }
 connectors:
   websearch: ok
   webfetch: ok
@@ -293,7 +294,19 @@ serpSnapshot:
 
 `entities` is collected during SERP analysis and carried into `brief.md`'s `canonicalEntity`, then checked by `review`. It used to be recorded and dropped on the floor.
 
-`discourseRun` may be `skipped` with a reason. A discourse pass that ran and found nothing is a different fact from one that never ran.
+`discourseRun` is a date, or the literal string `skipped — <reason>`. The reason belongs in the field, not in the prose body: a later reader deciding whether to trust this research needs it where the machine-readable facts are. A discourse pass that ran and found nothing is a different fact from one that never ran.
+
+### Three fields that record what the research could not see
+
+These exist because the research backbone is `WebSearch` and `WebFetch`, not a SERP API, and pretending otherwise produces a file that looks more complete than it is.
+
+**`searchFeatures` is nullable, and the distinction matters.** `null` means "not observable with the connectors used" — the normal case, since `WebSearch` returns links and prose, not People Also Ask, featured snippets, or local packs. `[]` means a connector that *can* see features looked and found none. Collapsing the two would let an empty array quietly assert that a query has no SERP features when nothing ever checked.
+
+Same three-value logic as `altText` in `media.json`, and for the same reason.
+
+**`serpSnapshot` dates are usually sparse.** `publishedOn` and `lastUpdated` come from the page itself, so they exist only for pages that were actually fetched and torn down. A six-result snapshot from a five-page teardown has one entry with null dates, and that is correct rather than incomplete. Never infer a date from a search result — search engines display dates they have no obligation to be right about.
+
+**`teardown` records the count, not just the results.** `planned` is what the protocol called for, `fetched` is what came back usable, `failed` is what errored, timed out, or failed the verbatim-heading check. A brief built on two of eight pages is a different artifact from one built on eight of eight, and the only way a later reader can tell is if the number is written down. `review` reads this the same way it reads `connectors`: thin research caps what `original-value` and `completeness` may honestly claim.
 
 **The `connectors` block is read by `review`.** Research gathered under degraded or unavailable connectors caps what the `original-value` and `completeness` scores can honestly assert, and the review says so rather than scoring as though the research were complete.
 
