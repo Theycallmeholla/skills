@@ -28,9 +28,9 @@ From the result set as a whole, record:
 - **Ranking page types** — blog articles, service pages, comparison pages, tools, forums, videos, product pages, firsthand accounts. If non-article page types dominate, that's a format-fit signal: report it rather than forcing a blog post.
 - **Recurring subtopics** — H2-level themes appearing across multiple ranking pages. These are table stakes; cover them.
 - **Questions and objections** — People Also Ask entries, forum threads, comment themes. These reveal what readers actually worry about.
-- **Freshness** — how current is the ranking content? Dated statistics in ranking pages are an easy differentiation opportunity.
+- **Freshness** — how current is the ranking content? Dated statistics in ranking pages are an easy differentiation opportunity. Dates come from the pages themselves, so you have them only for pages you actually fetched; a five-page teardown of a ten-result SERP leaves five entries dated and five null. That is accurate, not incomplete. **Never take a date from a search result** — engines display dates they are under no obligation to get right, and a wrong date drives a wrong freshness judgment.
 - **Brands and entities present** — who and what a knowledgeable author would inevitably mention.
-- **Search features** — featured snippets, local packs, video carousels, shopping results. These indicate what Google believes the query wants.
+- **Search features** — featured snippets, local packs, video carousels, shopping results. These indicate what Google believes the query wants. **Only observable with a SERP connector.** `WebSearch` returns links and prose, not the furniture around them, so on the default backbone this is recorded as `null` — not-observable — rather than as an empty list. An empty list asserts that someone looked and found none.
 - **Local vs. national intent** — does the SERP localize? A local-intent query needs local specificity, not generic national content.
 - **Weaknesses, omissions, and repetitive patterns** — what does the SERP answer badly or not at all? This feeds the information-gain requirement.
 

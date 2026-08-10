@@ -397,6 +397,27 @@ Always-ask was rejected: it becomes a dialog the user clicks through, and then i
 
 ---
 
+## Corrections from the first live run (2026-08-09)
+
+Steps 1-3 were tested end to end against a real client — `cursivemedia.com`, a live site with ~130 URLs — running `brand` (seeded from the site via the `import.json` seam), `plan`, and a full `brief` including teardowns. Six defects surfaced, all now fixed in the reference files. They are recorded here because five of the six came from one bad assumption, and a future session should not re-derive them.
+
+**The bad assumption: that a SERP API would be available.** Four of the six defects trace to schema fields specced while `mcp__serp` was still presumed working. It isn't, and `WebSearch` sees less.
+
+1. **`searchFeatures` is now nullable.** `WebSearch` returns links and prose, never People Also Ask, featured snippets, or local packs. `null` means not-observable; `[]` means a capable connector looked and found none. Same three-value logic as `altText`.
+2. **`serpSnapshot` dates are expected to be sparse.** Dates come from fetched pages only, so a six-result snapshot from a two-page teardown has four nulls and that is correct. Search-result dates are never used — engines display dates they need not get right.
+3. **`teardown: { planned, fetched, failed }` added.** A brief built on two of eight pages is a different artifact from one built on eight of eight, and nothing recorded the difference. `review` reads it the way it reads `connectors`.
+4. **Cannibalization is now two passes.** A sitemap gives slugs, not intent. The old instruction said compare "keyword overlap and intent" against every published post, which a URL list cannot support. Now: shortlist from the crawl, then fetch and read the shortlist. A verdict from slugs alone is provisional and must say so.
+5. **`discourseRun` carries its own reason** — `skipped — <reason>` in the field, not in the prose body, where a machine-readable fact belongs.
+6. **`claims.json` and `media.json` are authoritative; the brief's list sections are an index.** The brief previously restated both records in full as markdown tables, so every claim existed in two hand-synced places.
+
+**What the run validated, with evidence:**
+
+- **The sitemap crawl earned itself immediately.** The registry held zero posts; the crawl found ~130 URLs including `/blog/ai-automation-agency-cost`, which directly collides with the first candidate keyword tried. Registry-only cannibalization would have approved a duplicate on a site already covering the topic.
+- **The verbatim-heading guard pays for itself.** A teardown surfaced that the third-ranked "10 Metrics to Measure Automation ROI" has *"The Latenode Advantage: Why Your Calculation Changes Here"* as heading eight and *"Map to Latenode Credits"* as step three of its own method — a pricing page in a methodology wrapper, invisible from a snippet.
+- **The no-packet path degraded honestly.** Two of five outline sections came back marked `CLIENT EVIDENCE NEEDED` rather than being invented, which is the doctrine working under exactly the conditions that would tempt a system to fabricate.
+
+**Still untested:** the parallel teardown path (subagents were unavailable during the run, so teardowns ran sequentially), and everything from `write` onward, which needs a real Opinion Packet.
+
 ## Accepted consequences
 
 - The public copy of the skill degrades hard without the owner's MCP stack.
