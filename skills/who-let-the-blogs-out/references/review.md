@@ -2,7 +2,7 @@
 
 Returns two scores on opposite scales and a ranked findings list with stable IDs, quoting evidence for each — and touches nothing.
 
-**Reads:** `posts/<slug>/draft-vN.md`, `posts/<slug>/brief.md`, `posts/<slug>/packet.md`, `clients/<c>/brand.md`, `clients/<c>/opinion-bank.md`, `posts/<slug>/claims.json`, `posts/<slug>/media.json`
+**Reads:** `posts/<slug>/draft-vN.md`, `posts/<slug>/brief.md`, `posts/<slug>/research-vN.md`, `posts/<slug>/packet.md`, `clients/<c>/brand.md`, `clients/<c>/opinion-bank.md`, `clients/<c>/voice-baseline.json` *(when present)*, `posts/<slug>/claims.json`, `posts/<slug>/media.json`
 **Writes:** `posts/<slug>/review-vN.json`, `posts/<slug>/post.json` (status → `reviewed`), `registry.json` (`openFindings`, `status`)
 **Stops at:** NEVER EDITS THE DRAFT. Not a typo, not a banned word, not a heading level.
 
@@ -31,6 +31,20 @@ If `posts/<slug>/review-v<N>.json` already exists for that same draft version, d
 Run `python3 scripts/tells_metrics.py posts/<slug>/draft-v2.md`. It returns JSON: lexicon hits, signpost phrases and paragraph openers, hedge density, em-dash / triad / bold / colon densities, "not just X but Y" frames, paragraph and sentence rhythm as coefficients of variation, bullet share, and a `reference_thresholds` block.
 
 Read the thresholds as rules of thumb, not verdicts — that's what the script's own note says. A lower CV means more uniform means more tell-like. A technical audience tolerates more structure than a narrative one, so a 0.31 sentence CV in a spec-adjacent piece is worth less than the same number in a customer story.
+
+### Client thresholds beat global ones, where they exist
+
+If `clients/<c>/voice-baseline.json` exists, use its `calibrated` values in place of the script's globals for the metrics it covers, and the globals for everything else. **Say in the report which thresholds came from where.** A finding raised against a global threshold when a baseline exists but deliberately excluded that metric should be legible as exactly that.
+
+The point is that an author who genuinely writes with em-dashes at 5 per 1,000 was being flagged on every draft forever, because the global threshold had never met them. A calibrated baseline stops charging a writer for their own voice.
+
+Three things the baseline may never do, and the file records refusals in `refused` for exactly this reason:
+
+- **It cannot tighten a rhythm threshold past the global floor.** A corpus more uniform than the tell threshold does not license more uniformity; uniformity is a symptom, not a house style. Report the refusal rather than silently applying the global.
+- **It cannot calibrate lexicon at all.** "Delve," "leverage," "seamless" are not a style worth preserving.
+- **It cannot touch the judgment layer.** Substance, texture, audience fit, and the 500-companies test are scored by reading, and no corpus can teach the system that this client is allowed to have no opinion.
+
+No baseline is the normal case, not a gap. Fall back to globals and say so in one line.
 
 If code execution is unavailable, estimate these by reading and say so in the report. An estimate labeled as an estimate is useful; an estimate presented as a measurement is a lie the next command inherits.
 
@@ -71,6 +85,17 @@ Overall is the weighted sum. Bands: **0–20 clean** · **21–40 light tells** 
 Score the eight categories in `references/quality-rubric.md` at their stated weights, 0–100 higher-is-better, and compute the weighted overall. Use `brief.md` for what was promised, `brand.md` for voice and audience, `claims.json` for whether accuracy is actually resolved, and `media.json` for whether the image plan was honored.
 
 Two rubric categories have hard evidence available, so use it rather than impressions: `accuracy` cannot score above 60 with an unresolved row in `claims.json` (`needsVerification: true` and no status), and `completeness` is set by Phase 5, not by feel.
+
+### What the research could actually see
+
+Read the `connectors` and `teardown` blocks in `research-vN.md` before scoring `original-value` or `completeness`. Both categories rest on a claim about the competitive set — "this says something page one doesn't" — and that claim is only as good as the look someone took at page one.
+
+- **A `degraded` or `unavailable` connector** means part of the SERP was never observed. `searchFeatures: null` is normal and costs nothing; a degraded search backbone is not.
+- **`teardown: { planned: 8, fetched: 2 }`** means the information-gain argument rests on a quarter of the intended evidence.
+
+Neither caps the score numerically — a two-page teardown can still surface a real gap, and the test run proved it can. What it does is bound what the review may **assert**. Score the gap the draft claims, and say in the report that the competitive picture behind it was partial, naming the numbers. A confident `original-value: 90` on research that read two of eight pages is a judgment the file itself contradicts.
+
+If `research-vN.md` is absent entirely — a post briefed before v2 — say so once and score from `brief.md` alone. That is a real limitation, not a finding against the draft.
 
 ## Phase 4 — Boundary and fabrication check
 
@@ -133,6 +158,8 @@ Deliver in chat, in this order, plus the JSON file:
 
 **Rubric 78/100** (higher is better)  ·  **Tells 34/100 — light tells** (higher is worse)
 Two scales, never blended. Neither is an authorship verdict.
+Thresholds: client baseline (learned 2026-08-07, 8 samples) · rhythm from globals, calibration refused
+Research behind this: 7 of 8 pages torn down · serp skipped · discourse 30d
 
 | Rubric category | Score | Weight |    | Tells category | Score | Weight |
 (both tables, side by side or stacked — every category, both scales)

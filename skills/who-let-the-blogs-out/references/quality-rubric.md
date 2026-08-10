@@ -18,6 +18,7 @@ Loaded by `review` when scoring a draft and by `refresh` when judging whether an
 - Does the article deliver the outcome the searcher wanted — an answer, a decision, a plan — not just words about the topic?
 - Was the format-fit question honestly answered? If a blog post was the wrong page type, was that flagged?
 - Would a reader arriving from this query leave satisfied, or search again?
+- **One canonical entity, named consistently.** The page is unambiguously about the brief's `canonicalEntity`, and that thing is called the same name throughout rather than rotated through synonyms. A page trying to be about three things is about none of them, and synonym rotation reads as padding to a person and as ambiguity to anything parsing the page. Related entities from the research are mentioned; only one is the subject.
 
 ## Accuracy and sourcing (20%)
 
@@ -46,6 +47,7 @@ Loaded by `review` when scoring a draft and by `refresh` when judging whether an
 - No heading exists primarily to hold a keyword.
 - Paragraph lengths deliberately uneven; sections asymmetric where value is asymmetric; lists and tables only where they aid scanning — the article doesn't default to listicle form.
 - Opening leads with the reader's problem or payoff — no throat-clearing.
+- **Sections stand on their own.** Each H2's central claim is recoverable without the section before it — the reader who lands mid-page from a search result, or skims to the heading matching their question, gets a complete answer there. Cross-references that add something are fine; a section whose point is *unavailable* without its predecessor is not. This is a reader-first rule, not chunking: no question-shaped headings are required, no word band applies, and a page split into small pieces to satisfy a formula fails this criterion rather than passing it.
 - Sentence lengths vary; claims made confidently; hedges converted to conditions; passes the full checklist in references/voice-and-tells.md (stance, texture, rhythm, constructions, lexicon).
 
 ## Brand and audience fit (10%)
