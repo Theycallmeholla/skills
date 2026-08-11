@@ -48,9 +48,9 @@ If `.blog/` does not exist, say so and point at `brand`. Do not create a partial
 
 | Command | Category | What it does | Reads | Writes | Reference |
 |---|---|---|---|---|---|
-| `brand` | Setup | Build or update a client's brand profile; initialize `.blog/` | `clients/<c>/brand.md`, `registry.json` | `clients/<c>/*` (whole dir on first run), `registry.json` | `references/brand.md` |
+| `brand` | Setup | Build or update the brand profile and initialize `.blog/`. `learn` calibrates voice thresholds; `show` prints and lints client state | `clients/<c>/brand.md`, `registry.json` | `clients/<c>/*` (whole dir on first run), `voice-baseline.json`, `registry.json` | `references/brand.md` |
 | `plan` | Setup | Pick what to write next; keyword, intent, format fit, cannibalization | `registry.json`, `clients/<c>/brand.md` | `posts/<slug>/post.json`, `registry.json` | `references/plan.md` |
-| `interview` | Capture | Capture the author's stance, stories, specifics, boundaries | `opinion-bank.md`, `brand.md`, `facts.json` | `posts/<slug>/packet.md`, `opinion-bank.md`, `facts.json` | `references/interview.md` |
+| `interview` | Capture | Capture the author's stance, stories, specifics, boundaries. A client slug with no post runs the one-time foundational session | `opinion-bank.md`, `brand.md`, `facts.json` | `posts/<slug>/packet.md`, `opinion-bank.md`, `facts.json` | `references/interview.md` |
 | `verify` | Capture | Verify claims; promote durable facts to the vault; set expiries | `claims.json`, `facts.json`, `draft-vN.md` | `claims.json`, `facts.json`, `registry.json` | `references/verify.md` |
 | `brief` | Draft | Research and teardown, angle, information gain, coverage targets, outline, title set | `packet.md`, `brand.md`, `facts.json`, `registry.json` | `research-vN.md`, `brief.md`, `claims.json`, `media.json` | `references/brief.md` |
 | `write` | Draft | Draft the article from the brief and the research; emit the CMS paste block; chain into `review` | `brief.md`, `research-vN.md`, `packet.md`, `brand.md`, `opinion-bank.md`, `facts.json` | `draft-v(N+1).md`, `post.json` | `references/write.md` |
@@ -64,7 +64,7 @@ Read the Reads and Writes columns as the wiring diagram: one command's Writes is
 
 Two things the table can't show. **`write`, `revise`, and `refresh` each chain into `review` automatically** — a draft never reaches the author unscored, and the author reads the article and its findings together instead of forming an opinion before anything scored it. And every command that produces a draft version writes `uses_claims` and `uses_bank` into its front matter; those two lists are what `verify`, `publish`, and `refresh` read to know what the article actually says.
 
-> **v2 in progress.** `brief` writes `research-vN.md`, `write` reads it and chains into `review`. Still ahead of their commands: `voice-baseline.json` (needs `brand learn`), the opinion-bank IDs (need `interview`), and the cluster fields (need `plan`) — all defined in `references/state.md`, none yet produced. The table above describes what the commands do *today*; rows change as each one lands. Build order and rationale: [`docs/wltbo-v2-spec.md`](../../docs/wltbo-v2-spec.md).
+> **v2 in progress.** Landed: the state schema, `brief`, `write`, `review`, the auto-review chain, `brand learn` / `brand show`, and the foundational interview. Still ahead of their commands: the cluster fields (need `plan`) and the retrievability check (needs `publish`); `refresh`'s decay signal is blocked on a Search Console connector. Build order and rationale: [`docs/wltbo-v2-spec.md`](../../docs/wltbo-v2-spec.md).
 
 ## Routing
 
