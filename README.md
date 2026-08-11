@@ -270,9 +270,12 @@ website-audit (QA mode)
 
 ```
 who-let-the-blogs-out:
-  brand → plan → interview → verify → brief → write → images → review → revise → publish
-                                                                          ↑
-                                                        refresh (for aging posts)
+  brand → plan → interview → verify → brief → write ⇒ review → revise ⇒ review → publish
+                                                │
+                                                └ images (asset plan, any time after a draft)
+
+  write, revise, and refresh each chain into review automatically (⇒) —
+  a draft never reaches the author unscored. refresh re-enters the loop for aging posts.
 ```
 
 The standalone `blog-topic-interview → seo-blog-writer → ai-writing-detector` chain is the earlier,
