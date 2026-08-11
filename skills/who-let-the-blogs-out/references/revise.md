@@ -4,7 +4,8 @@ Applies the open findings from a review to produce the next draft version, and r
 
 **Reads:** `posts/<slug>/review-vN.json` · `posts/<slug>/draft-vN.md` · `posts/<slug>/packet.md` · `posts/<slug>/brief.md` *(read-only, for what was promised)* · `clients/<c>/facts.json` · `clients/<c>/opinion-bank.md` · `posts/<slug>/claims.json` *(read-only, for citations)*
 **Writes:** `posts/<slug>/draft-v(N+1).md` · `posts/<slug>/review-vN.json` (finding status fields only) · `posts/<slug>/post.json` · `registry.json` (`openFindings`, `currentVersion`, `updated`)
-**Stops at:** Never re-scores — that's `review` again. Never introduces a new tell while fixing an old one. Never fabricates to close a `fabrication` finding.
+**Then runs:** `review`, automatically, on the version just written.
+**Stops at:** Never scores the draft itself — the chained `review` does that, with the rubric and no stake in the prose. Never introduces a new tell while fixing an old one. Never fabricates to close a `fabrication` finding.
 
 ## Phase 0 — Locate the review and the draft it scored
 
@@ -86,7 +87,9 @@ Do not write a new review file. `revise` computed no scores, and a review file c
 - **`accepted`** — `acceptedReason` names who accepted it, what is being lived with, and why. *"Client hasn't supplied the 40-page rollout timeline; shipping without it and carrying it as client-evidence-needed in the checklist. Accepted by the author 2026-08-01."* Acceptance is the author's call, not yours — you may propose it, and a finding accepted because the fix looked like work is how the field stops meaning anything. Without acceptance, though, every future review re-raises the same item forever and the system becomes a nag people stop running, so use it honestly rather than avoiding it.
 - **`open`** — leave all three fields `null`. Partially fixed is `open`. There is no half-resolved status, and inventing one by writing prose into `resolvedBy` while leaving `status: "open"` gives the next reader two contradictory answers.
 
-Then write `draft-v(N+1).md`, leaving `draft-vN.md` byte-identical. Keep the front matter from the prior draft unless a finding named a field in it. Set `post.json`'s `currentVersion` to N+1, `status` to `drafted` — the new version has not been scored, and saying otherwise makes the pipeline lie about where the post is — and `updated` to today. Update the post's row in `registry.json` in the same operation: `currentVersion`, `updated`, and `openFindings` set to the count still `open` after this pass.
+Then write `draft-v(N+1).md`, leaving `draft-vN.md` byte-identical. Keep the front matter from the prior draft unless a finding named a field in it — with two exceptions that are always yours to recompute.
+
+**`uses_claims` and `uses_bank` are rewritten from the new prose, never copied forward.** Cutting a claim is the standard fix for a `fabrication` finding, and a first-hand line removed to close a `boundary` finding takes its bank entry with it. Copying the prior list forward would leave the ledger asserting that the article still says something you just deleted, and `verify`, `publish`, and `refresh` all read those lists as fact. Set `post.json`'s `currentVersion` to N+1, `status` to `drafted` — the new version has not been scored, and saying otherwise makes the pipeline lie about where the post is — and `updated` to today. Update the post's row in `registry.json` in the same operation: `currentVersion`, `updated`, and `openFindings` set to the count still `open` after this pass.
 
 Optional smoke check: `python3 scripts/tells_metrics.py posts/<slug>/draft-v3.md` on the new version and the old one, compared only on the specific metrics the findings named — did the em-dash density actually drop, did the hedge count actually fall. Do not compute a tells score, report an overall number, or write anything from it. That is `review`'s job on the next pass, and a number produced here is one nobody can reconcile with the real one.
 
@@ -127,7 +130,7 @@ Tightened two paragraphs in the intro while rewriting around BL-011.
 Written: posts/local-seo-location-pages/draft-v3.md ·
          review-v2.json (finding status fields only) ·
          post.json (currentVersion 3) · registry.json (openFindings: 2)
-Next: `who-let-the-blogs-out review local-seo-location-pages` — revise never scores its own output.
+Then: review ran automatically on draft-v3 — see its scores above.
 ```
 
 The changelog is the deliverable, not the draft. A revision nobody can audit is a revision nobody trusts, and "applied the feedback" is not auditable. Every ID gets a line, including the ones that didn't move — a finding that silently vanishes from the report is indistinguishable from one that was quietly ignored.

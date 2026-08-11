@@ -29,6 +29,8 @@ Lead with `who-let-the-blogs-out revise <slug>`, naming the count and the highes
 
 Lead with `who-let-the-blogs-out review <slug>`. A draft nobody scored is a draft nobody knows about.
 
+This case should now be rare: `write`, `revise`, and `refresh` all chain into `review`, so a `drafted` post with no matching `review-vN.json` usually means the chain was interrupted. Say that when you recommend it — an unexplained gap in the pipeline is worth a sentence, not a silent re-run.
+
 **E — Published posts have `staleClaims > 0`.**
 
 Lead with `who-let-the-blogs-out refresh`, naming how many posts and roughly how old the oldest stale claim is. This is the case most likely to be genuinely news to the user, since nothing else surfaces it.
@@ -55,11 +57,13 @@ Two or three picks, then the table. Something like:
 
 Everything else:
 
-Setup    brand · plan
-Capture  interview · verify
+Setup    brand · brand learn · brand show · plan
+Capture  interview · interview <client> (foundational) · verify
 Draft    brief · write · images
 Ship     review · revise · publish · refresh
 ```
+
+`review` isn't something the user runs after a draft — `write`, `revise`, and `refresh` each chain into it. Don't recommend it as a next step after one of those; recommend `revise` when findings are open.
 
 Keep it short. This file is loaded on every bare invocation, which is the most frequent kind, so it should cost almost nothing to run.
 

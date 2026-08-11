@@ -4,7 +4,10 @@ The author's accumulated record of positions, stories, specifics, and voice. Loa
 
 Rules for maintaining this file:
 
-- Date every entry (YYYY-MM).
+- Date every entry (YYYY-MM), and give it an ID: `P-###` for positions and contrarian takes,
+  `S-###` for war stories. Monotonic per client, never reused, never renumbered — drafts cite these
+  IDs in their `uses_bank` front matter, which is how a superseded position gets traced to the posts
+  still arguing it. Voice fingerprints and boundaries get no IDs; nothing cites them individually.
 - Store durable material only — standing positions and reusable stories, not one-off post details.
 - Numbers do not live here. Prices, timelines, thresholds, and measurable results go to `facts.json`, where they carry a verification date and an expiry. A number in prose can't be checked for staleness; a number in the vault can.
 - Keep the author's actual wording. This file is a voice archive, not a summary.
@@ -24,7 +27,7 @@ Rules for maintaining this file:
 ## Standing positions
 
 <!-- The author's core beliefs about their field. Format:
-### [Topic] (YYYY-MM)
+### [Topic] (P-001, YYYY-MM)
 Position in the author's own words. -->
 
 ## Contrarian takes
@@ -35,7 +38,7 @@ Position in the author's own words. -->
 
 <!-- Real client stories, projects, mistakes, results. These are the ONLY experiences
 that may ever be presented as first-hand in published content. Format:
-### [Short story title] (YYYY-MM)
+### [Short story title] (S-001, YYYY-MM)
 What happened, with the specifics. Note any anonymization the author requested. -->
 
 ## Voice fingerprints

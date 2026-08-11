@@ -2,7 +2,7 @@
 
 Records a post as live and returns the closed checklist plus the re-verification schedule for every claim in it.
 
-**Reads:** `posts/<slug>/post.json` · `posts/<slug>/claims.json` · `posts/<slug>/media.json` · `posts/<slug>/review-vN.json` · `posts/<slug>/brief.md`
+**Reads:** `posts/<slug>/post.json` · `posts/<slug>/claims.json` · `posts/<slug>/media.json` · `posts/<slug>/review-vN.json` · `posts/<slug>/brief.md` · `posts/<slug>/draft-vN.md` *(read-only, front matter only, for `uses_claims`)*
 **Writes:** `posts/<slug>/post.json` (status → `published`) · `posts/<slug>/claims.json` · `registry.json` · `posts/<slug>/notes.md` *(drawer entries only — redirects, reviewer names, proceed-anyway acknowledgments)*
 **Stops at:** Never pushes to a CMS. Never publishes over an open `boundary` or `fabrication` finding.
 
@@ -24,14 +24,18 @@ Open findings in `boundary` or `fabrication` stop this command. These are the tw
 
 An absent review file is not a clean gate. It means the boundary and fabrication checks never ran, which is different from running and passing. Say that plainly, offer `review`, and if the user still wants the post recorded, write the acknowledgment into `notes.md` with the date so the next person reading the record knows the gate was skipped rather than cleared.
 
-**Four things warn, and the user decides — on the record.**
+**Five things warn, and the user decides — on the record.**
 
 Each of these is something that genuinely ships broken, and publish is the last cheap moment to name it. List them, then ask once.
 
 1. **Assets still `needed` in `media.json`.** Name the ID, role, and placement: `M-002 diagram, after H2 "Why Google rewrites titles"`. A live post with a missing diagram is the "no relevant images" complaint arriving three weeks late.
 2. **Claims still `awaiting-client` or carrying `needsVerification: true` in `claims.json`.** These are the numbers nobody chased. They are already in the article.
 3. **Unanswered coverage targets.** Cross-check `brief.md`'s numbered reader questions against open `completeness` findings in the review. Quote the brief's question verbatim — "How do I keep 40 city pages from reading identical?" is more useful than "2 coverage gaps."
-4. **A YMYL article with no reviewer.** Load `references/evidence-rules.md` for what counts as YMYL. If the topic is health, legal, financial, or safety-adjacent and no qualified reviewer is recorded, ask who signed off. Their name has no field in `post.json` — the schema is closed and this is not the moment to extend it — so it goes in `notes.md` with the review date.
+4. **Retrievability, unverified.** The draft's publish checklist carries a line for it: primary content is crawlable text rather than JS-gated, `robots.txt` doesn't block the crawlers this client cares about, and structured data matches what is visibly on the page. If the live URL is fetchable, check the first one for real — fetch it and confirm the body text is present in the returned HTML. A page whose content only exists after JavaScript runs is invisible to crawlers that don't execute it, and Vercel's analysis of over 500 million GPTBot fetches found no evidence of JS execution at all.
+
+   **wltbo flags; it does not fix.** Per-crawler `robots.txt`, server rendering, CDN and WAF rules are site-level work owned by `website-audit`. Naming the problem at the last cheap moment is in scope; solving it is not.
+
+5. **A YMYL article with no reviewer.** Load `references/evidence-rules.md` for what counts as YMYL. If the topic is health, legal, financial, or safety-adjacent and no qualified reviewer is recorded, ask who signed off. Their name has no field in `post.json` — the schema is closed and this is not the moment to extend it — so it goes in `notes.md` with the review date.
 
 Open findings in every other category are also worth listing before you proceed: `original-value`, `completeness`, `technical-seo`, whatever is still open. Those can be `accepted`, and often already were. Show the count and the worst two or three so the decision is informed rather than theoretical.
 
@@ -87,7 +91,7 @@ Claims with `status: "removed"` are not in the article and get no expiry. Settin
 
 ## Phase 4 — Index
 
-Update the post's entry in `registry.json` in the same operation as the `post.json` write: `status`, `url`, `publishedAt`, `currentVersion`, `title` (the `h1`), `primaryKeyword`, `intent`, `updated`, and the two summary counts — `openFindings` from the review file, `staleClaims` counted as claims whose `reverifyBy` is already in the past (normally zero at publish; non-zero means a vault-inherited expiry lapsed before the post went live, which is worth saying out loud).
+Update the post's entry in `registry.json` in the same operation as the `post.json` write: `status`, `url`, `publishedAt`, `currentVersion`, `title` (the `h1`), `primaryKeyword`, `intent`, `updated`, and the two summary counts — `openFindings` from the review file, `staleClaims` counted by the state contract's three-part definition — not `removed`, present in the shipping draft's `uses_claims` list, and either past its effective expiry or `awaiting-client`. `verify`, `publish`, and `refresh` must all count it identically or the menu starts recommending work that isn't there. Normally low at publish; a non-zero expiry count means a vault-inherited date lapsed before the post went live, which is worth saying out loud.
 
 This step is not bookkeeping. The registry is the only thing future commands read before they open a record, so an unindexed published post is invisible to the entire system going forward: `plan`'s cannibalization check will happily approve a near-duplicate keyword, `brief` will never suggest an internal link to it, and `refresh` will never find its aging claims. The post exists on the web and not in the system's memory, which is the specific failure this whole state directory was built to prevent.
 

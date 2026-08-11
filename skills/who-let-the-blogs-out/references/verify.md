@@ -2,7 +2,7 @@
 
 Returns the post's claim ledger with a status, a source, and an expiry date on every row — plus any durable facts promoted into the client's vault — and changes no prose.
 
-**Reads:** `posts/<slug>/claims.json` · `clients/<c>/facts.json` · `posts/<slug>/post.json` *(read-only, for `currentVersion`)* · `registry.json`
+**Reads:** `posts/<slug>/claims.json` · `clients/<c>/facts.json` · `posts/<slug>/post.json` *(read-only, for `currentVersion`)* · `posts/<slug>/draft-vN.md` *(read-only, front matter only, for `uses_claims`)* · `registry.json`
 **Writes:** `posts/<slug>/claims.json` · `clients/<c>/facts.json` · `registry.json` (`staleClaims` and the post row's `updated`)
 **Stops at:** Never edits a draft. A claim that can't stand gets marked `removed` and reported; `revise` is what takes it out of the prose.
 
@@ -105,7 +105,7 @@ Adjust for the source, not just the category. A vendor's pricing page that chang
 Count a claim toward `staleClaims` when all three hold:
 
 1. Its status is not `removed` — a claim already marked for deletion is `revise`'s problem, not a staleness signal.
-2. It is in the current copy: `appearsIn` includes `post.json`'s `currentVersion`. If no draft exists yet, count every non-`removed` claim, since none has been written out.
+2. It is in the current copy: the `uses_claims` list in `draft-v<currentVersion>.md`'s front matter includes its ID. If no draft exists yet, count every non-`removed` claim, since none has been written out.
 3. Either its effective expiry (the fact's when `factRef` is set, its own when not) is in the past, or its status is `awaiting-client`.
 
 Write the count and the post row's `updated` in the same operation as the ledger write. `openFindings`, `status`, `currentVersion`, and the client rows aren't yours — `review`, `publish`, and `brand` own those.

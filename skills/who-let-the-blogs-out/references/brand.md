@@ -8,6 +8,18 @@ Builds or updates a client's brand profile and initializes `.blog/`, returning a
 
 This is the only command permitted to create `.blog/`. Every other command that finds it missing says so and points here, because a half-formed state tree is harder to reason about than none.
 
+## Three modes
+
+| Invocation | Mode | Writes |
+|---|---|---|
+| `brand <client>` | **profile** — build or update the brand profile. Phases 1-4 below. | `brand.md`, `registry.json`, scaffold on first run |
+| `brand learn <client> <paths>` | **learn** — derive voice thresholds from the client's published writing | `clients/<c>/voice-baseline.json` |
+| `brand show <client>` | **show** — print what the system knows, and lint it | nothing |
+
+`learn` and `show` are separate sections at the bottom. They share this command because `brand` already owns the client record; neither is a new top-level command.
+
+---
+
 ## Phase 1 — Locate or initialize
 
 Settle the slug first. It is lowercase and hyphenated, derived from the domain or the business name — `cursivemedia.com` → `cursive-media`. It appears in every path this system will ever write for this client and is never renamed, so decide it deliberately and show it to the user before writing anything.
@@ -146,6 +158,84 @@ A chat response in four named parts, in this order. The profile file is the arti
 
 If drift was found in Phase 1, add a fifth line naming the file and field. Reported, not repaired.
 
+---
+
+# Mode: `learn`
+
+`brand learn <client> <paths>` — derive this client's voice thresholds from writing they already published, so `review` stops charging them for their own style.
+
+**Reads:** 5-10 of the client's published posts (files or URLs) · `scripts/tells_metrics.py`
+**Writes:** `clients/<c>/voice-baseline.json`
+**Stops at:** Never calibrates from a corpus nobody confirmed a human wrote. Never lowers a rhythm floor. Never touches lexicon.
+
+## Why this exists
+
+`tells_metrics.py` ships hardcoded global thresholds — `em_dashes_per_1000_flag_above: 3.5`, `sentence_word_cv_uniform_below: 0.40` — identical for every client. An author who genuinely writes with em-dashes at 5 per 1,000 gets a finding on every draft forever, because the threshold has never met them. Their voice reads as a tell.
+
+## Phase 1 — Measure, then stop
+
+Run `tells_metrics.py` over each sample and aggregate. **Then stop and show the numbers beside the globals before writing anything.**
+
+## Phase 2 — The human-corpus gate
+
+**A corpus may only calibrate if someone confirms a human wrote it.** Not a checkbox — a person looking at the samples and saying so, recorded in `confirmedHumanBy` with a date.
+
+Most agency clients' existing blogs were already AI-written. Calibrate to one and the baseline is set to slop, after which `review` passes drafts that read exactly like the posts the client hired someone to stop producing. **The detector ends up tuned to agree with the disease**, and nothing downstream will ever catch it, because the thing that would have caught it is what you just recalibrated.
+
+If the measured corpus already reads generated — lexicon above the global rate, rhythm CVs below the uniformity flags — **say so plainly and refuse to write the file.** That refusal is the most valuable output this mode has: it means the client's existing content is the problem, which is worth knowing before writing a hundred more posts to match it.
+
+## Phase 3 — Loosen only, never past a floor
+
+| Family | Calibratable | Why |
+|---|---|---|
+| Constructions — em-dashes, bold density, triads, question headings | **Fully** | Stylistic fingerprints with no quality meaning. Loving em-dashes is not writing worse. |
+| Rhythm — paragraph and sentence CVs | **Upward only.** A learned value below the global keeps the global and lands in `refused` | Uniformity is a symptom of generated writing, not a house style. Lowering this floor is the gated failure arriving slowly instead of at once. |
+| Lexicon | **Never** | "Delve", "leverage", "seamless" are not a style worth preserving. A corpus full of them is the reason the client called. |
+
+Judgment-layer categories — substance, texture, audience fit, the 500-companies test — are not calibratable and never appear in this file. `tells_metrics.py` says outright that it doesn't attempt them, and no corpus can teach the system that this client is allowed to have no opinion.
+
+## Phase 4 — Write it
+
+`clients/<c>/voice-baseline.json` per the schema in `state.md`: `learnedOn`, `relearnAfter`, `sampleCount`, `sampleUrls`, `confirmedHumanBy`, `calibrated`, `refused`.
+
+Every refusal carries its reason. `review` reports refusals, so "learned 0.31, below the 0.40 global floor — not calibrated downward" ends up in front of a human rather than vanishing.
+
+Fewer than five samples: write it, and say the baseline is unstable and worth re-learning once more posts exist.
+
+---
+
+# Mode: `show`
+
+`brand show <client>` — print what the system knows about a client, and lint the state while you're in there.
+
+**Reads:** everything under `clients/<c>/` and this client's rows in `registry.json` and `posts/`
+**Writes:** nothing, ever
+**Stops at:** No `--fix`. Not now, not behind a flag.
+
+## What it prints
+
+The bare menu answers *"what should I do?"* This answers *"what does the system know?"* — a different question it has never been able to answer without opening files by hand.
+
+- **Opinion bank** — counts by section, the most recent entries with their `P-` / `S-` IDs, and anything marked superseded
+- **Fact vault** — entries by `kind`, flagging what is past `reverifyBy` and what expires within 90 days
+- **Voice baseline** — whether one exists, when, from how many samples, who confirmed the corpus, and which families were refused
+- **Posts** — status, cluster and role, open findings, stale claims
+- **Research** — which posts carry a `research-vN.md`, at what version, and which borrowed from a sibling
+
+**Terminal output only. No rendered file.** The moment it is a file it is shareable, and `opinion-bank.md` holds the author's never-publish boundaries and the positions they have abandoned. A polished report containing that is a leak waiting for somebody to forward it to the client.
+
+## The lint
+
+A read-only conformance pass: files that don't match their schema, values outside a closed enum, IDs referenced but absent, `currentVersion` pointing at a draft not on disk, registry rows disagreeing with the records they mirror.
+
+This is a real gap. `state.md` and `routing.md` both describe reporting a mismatch **when a command happens to trip over one** — nothing checks on purpose, so a malformed file sits unnoticed until whatever reads it next happens to run.
+
+**No `--fix`, ever.** Doctrine point 4 is that drift is reported and never silently repaired, and a lint that offers to repair is the single most natural place for that to erode — it would feel helpful every time. Print the finding, name the file and field, stop.
+
+---
+
 ## Confirm and stop
 
 Brand records who the client is, what they can prove, and what they may never say. It does not capture opinions or stories (`interview`), does not audit the site (`website-audit`), and never writes a word of post content — and it marks every gap rather than filling one.
+
+`learn` refuses a corpus nobody vouched for. `show` writes nothing at all.

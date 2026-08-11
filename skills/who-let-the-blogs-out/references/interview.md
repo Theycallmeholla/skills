@@ -8,6 +8,27 @@ Captures the author's real stance, evidence, specifics, voice, and boundaries fo
 
 This is the command the doctrine's first belief depends on. Everything `write` is allowed to say in the author's voice traces back to a packet line captured here. A thin interview doesn't produce a thin article — it produces an article that has to fabricate to sound confident.
 
+## Two modes, decided by the argument
+
+| Invocation | Mode |
+|---|---|
+| `interview <client-slug>` — no post | **foundational.** One deep session per client. Fills the bank across their whole field. No packet is written. |
+| `interview <post-slug>` | **per-topic.** The session this file otherwise describes. Writes a packet. |
+
+A slug that matches a client and a post is a real ambiguity — ask once which one, rather than guessing.
+
+### Foundational mode
+
+Run once per client, at onboarding, alongside `brand` while they are already expecting setup work.
+
+Without it the bank grows one article at a time: after three posts you hold three topics' worth of stance and nothing about the fourth, and every interview starts near-empty. The foundational session front-loads it, and every per-topic interview afterwards is short and mostly confirmation.
+
+**What it covers**, drawing on the question bank below but sweeping their field rather than one topic: standing positions across the work they actually do · their five or six best war stories · the objections they hear weekly · what prospects arrive believing that has to be un-taught · voice fingerprints · boundaries.
+
+**What changes procedurally:** longer than a per-topic session — 20 to 30 questions is normal, still in batches of two or three. Everything durable goes to the bank with IDs. **No packet is written**, because no post exists; `post.json` isn't touched and `registry.json` gets `bankEntries` and `updated` on the client row only.
+
+**The honest cost, say it once up front:** this is an hour, before any article exists. It is worth it for a client you will write for repeatedly, and it is not worth it for one post. If they only want one post, run per-topic mode and say so.
+
 ---
 
 ## 1. Load the bank
@@ -22,6 +43,10 @@ Then build two lists and keep them in front of you for the whole interview:
 - **Genuinely open** — what this topic needs that the bank doesn't have.
 
 **Never re-ask what the bank already answers.** Show what's on record and ask "still true? anything new since?" This is not politeness. An author who gets asked the same question a third time learns that the interview is a form that ignores them, and starts skipping it — at which point the bank stops growing and the whole system degrades to a generic content generator with extra steps. Confirming takes one line and produces the dated supersede entries that make the bank valuable.
+
+**When the bank already covers the topic: confirm, don't skip.** A foundational session plus two or three prior interviews will sometimes leave nothing genuinely open. Run in confirm mode — show the relevant `P-` and `S-` entries, ask whether they still hold and whether anything has changed, and be done in two minutes.
+
+Do **not** skip to building the packet from the bank alone. §5's bank-derived path is explicitly the *degraded* one, and auto-skipping would make degraded the silent default — the author never sees what is about to be published in their voice, and nobody notices the system stopped asking. Confirm mode costs two minutes, keeps the human in the loop where it is nearly free, and generates the dated supersede entries that a skip would never produce.
 
 If a relevant fact is past its `reverifyBy`, surface it during the interview: *"You told me in March that a full rebuild runs 6–8 weeks (F-012). That's due for a re-check — still the number you'd quote?"* Report the staleness; don't silently repair or delete the entry.
 
@@ -170,6 +195,23 @@ Rules for writing vault entries here:
 ## 4. Update the bank
 
 Move anything durable into `clients/<c>/opinion-bank.md` — standing positions, contrarian takes, war stories, voice fingerprints — dated `YYYY-MM`, in the author's wording. One-off details specific to this article stay in the packet.
+
+### Allocate an ID to every entry
+
+Positions and stories are addressable, monotonic per client, never reused and never renumbered — the same discipline `facts.json` uses:
+
+- **`P-###`** — standing positions and contrarian takes
+- **`S-###`** — war stories and first-hand evidence
+
+The ID rides in the heading so the file stays a voice archive rather than turning into a database:
+
+```markdown
+### The 40-page rollout that got manually actioned (S-004, 2026-03)
+```
+
+Scan the existing bank for the highest `P-` and `S-` and continue from there. Voice fingerprints and boundaries get no IDs — nothing cites an individual one; `write` and `review` read those sections whole.
+
+**Why they need IDs.** `write` records what it drew on in the draft's `uses_bank` list, so a superseded position can be traced to the published posts still arguing it. The vault already answers that question for numbers — *which posts assert a price the author changed in March?* Until now the same question about a **belief** was unanswerable, and under doctrine point 1 a stale stated belief is the worse liability of the two.
 
 Two rules from `state.md` that carry the weight:
 

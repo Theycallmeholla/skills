@@ -68,6 +68,7 @@ For each candidate still standing, compare against **every** post in the registr
 
 - Same intent + overlapping keyword → collision, no matter how different the two titles look.
 - Same topic, different intent → usually fine. "how to do local seo" (informational) and "best local seo agency houston" (local/commercial) are different pages serving different people. Say so. Over-flagging is how a check gets ignored, and an ignored check is worse than none.
+- **Same cluster → overlap is the design.** Where an existing post carries a `cluster` and this candidate belongs to it, keyword proximity is intended and is not a collision. What still *is* a collision is two spokes answering the same reader question — that is a mistake whether or not somebody planned them together. Test the reader's question, not the keyword string.
 
 Then run the site-context check from `research-protocol.md` — `site:<domain> "<topic>"` — because the registry only knows what blog made. If no domain is available in `brand.md`, say the check ran against the registry only, so nobody mistakes a partial answer for a clean one.
 
@@ -96,8 +97,18 @@ Check the proposed slug against every slug in the registry and against the live 
 
 Then write, in one operation:
 
-1. `posts/<slug>/post.json` — schema per `state.md`, with `status: "idea"`, `currentVersion: 0` (no draft exists; `write` sets 1), `url: null`, `publishedAt: null`, and `created`/`updated` set to today.
-2. The matching `registry.json` post entry — same slug, client, `primaryKeyword`, `intent`, `status: "idea"`, `openFindings: 0`, `staleClaims: 0`.
+1. `posts/<slug>/post.json` — schema per `state.md`, with `status: "idea"`, `currentVersion: 0` (no draft exists; `write` sets 1), `url: null`, `publishedAt: null`, `cluster` and `clusterRole` per below, and `created`/`updated` set to today.
+2. The matching `registry.json` post entry — same slug, client, `primaryKeyword`, `intent`, `status: "idea"`, `cluster`, `clusterRole`, `openFindings: 0`, `staleClaims: 0`.
+
+### Cluster, when there is one
+
+`cluster` is a slug naming the group; `clusterRole` is `hub`, `spoke`, or `null`. Both default to `null`, which is the honest answer for most posts — a standalone article is not a cluster of one.
+
+Set them when the user names a cluster, or when an obvious parent already exists in the registry and this candidate is plainly a spoke of it. Do not infer a cluster from topical similarity alone: two posts on adjacent keywords are not a hub and spoke, they are two posts, and labelling them otherwise switches off a cannibalization check that was doing real work.
+
+`clusterRole` is written explicitly rather than derived from `slug == cluster`. Inferring topology from string equality breaks the first time a hub's slug differs from its cluster's name, and it breaks silently.
+
+Both fields are editable later — by a subsequent `plan` run or by hand. Nothing downstream treats them as immutable the way the slug is.
 
 Set the registry entry's **`title` to `null`**. There is no title yet, and a placeholder written now is the anchor this whole command is built to avoid — everything downstream would quietly steer toward it. The slug is the human-readable handle until `brief` decides the real title set.
 
