@@ -21,19 +21,33 @@ interview   →   brief   →   write   →   review   →   revise   →   publ
 ```
 
 - **interview** — asks what you actually think about the topic. Your opinions, your war stories, your real numbers, and what you refuse to say. Takes 8–12 questions, in small batches.
-- **brief** — researches the topic, picks the angle, and commits to the list of questions the article must answer. This is the cheap thing to reject before an expensive draft exists.
-- **write** — drafts the article from the brief. It can only claim experience you actually gave it.
+- **brief** — reads the pages already ranking for the topic, picks the angle, and commits to the list of questions the article must answer. This is the cheap thing to reject before an expensive draft exists.
+- **write** — drafts the article from the brief and that research. It can only claim experience you actually gave it. **Scores itself automatically when it's done** — you get the draft and the findings together.
 - **review** — scores the draft two ways and lists what's wrong. It never edits.
-- **revise** — fixes what review found. Then review again if you want.
+- **revise** — fixes what review found, then re-scores automatically.
 - **publish** — records that it went live, and sets expiry dates on every fact in it.
 
-### The other five
+You never have to remember to run `review`. Anything that produces a draft runs it — a draft never reaches you unscored.
+
+### The other five commands
 
 - **brand** — run once per client. Records who they are, how they talk, and what they'll never say. Everything else reads it.
 - **plan** — run when you don't know what to write next. Proposes topics and checks them against what you've already published.
 - **verify** — checks claims against sources and files the durable ones for reuse.
 - **images** — turns "we need pictures" into a specific list of what each image must show.
 - **refresh** — finds published posts whose facts have gone stale and updates them without rewriting what still works.
+
+### Two things that take a while but pay for themselves
+
+**`interview <client>` with no topic** runs the long one — an hour, once, covering their whole field instead of one article. Every interview after it is short, because the bank is already full. Worth it for a client you'll write for repeatedly; not worth it for a single post.
+
+**`brand learn <client> <posts>`** reads 5–10 things they've already published and works out how *they* write, so the AI-tells check stops flagging their actual style as a tell. It will refuse if their existing posts look AI-written — which is worth knowing on its own.
+
+### Two that only look and never touch anything
+
+**`brand show <client>`** prints everything the system knows about a client — their positions, their verified numbers and when those expire, every post and its state — and flags anything malformed. It writes nothing and has no repair mode.
+
+**Typing `wltbo` with nothing after it** gives a short menu built from what's actually sitting there: which post has findings open, which published posts have facts going stale. That's the "what should I do now" answer.
 
 ### What it remembers
 
@@ -70,6 +84,9 @@ If they describe a situation rather than naming a command, map it and say why:
 | "it went live" | `publish` |
 | "we need pictures" | `images` |
 | "is that number still true" | `verify` |
+| "what do we even know about this client" | `brand show` |
+| "review keeps flagging how I write" | `brand learn` |
+| "we'll be writing for them a lot" | `interview <client>` — the long one |
 
 ## Keep it short
 
