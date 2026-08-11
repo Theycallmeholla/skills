@@ -43,7 +43,14 @@ Don't claim anything is fixed. Say what changed and that `check-playbook` is wha
 **Added:** <what gotcha or missing material went in, and where>
 **Skill stub written:** <if applicable — name and next step>
 
-Run `check-playbook` to confirm these actually resolve.
+### Next
+
+**Do this:** `check-playbook`
+Nothing above is resolved yet — these edits are changes, and only the next pass
+observing the signals stop firing turns them into resolutions.
+
+**Instead, if <a finding here needs a hook/permission rather than wording>:** `drill <id>`
+<name the specific finding and why prose won't hold it>
 ```
 
 ## Confirm and stop

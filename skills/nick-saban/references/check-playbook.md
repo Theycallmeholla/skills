@@ -16,6 +16,26 @@ Read `waived.json` and `notes.md`. A decline means don't re-raise that specific 
 
 Before running detectors, work out what verification commands actually exist and run in this repo: check `package.json#scripts`, `Makefile` targets, any CI config. For each of test / typecheck / lint / build / ci, record the command, where you found it, and whether you actually confirmed it runs (or at minimum that it's syntactically present and the underlying tool is installed — running the full suite isn't required, but don't claim `"runnable": true` on faith). This becomes `verificationSurface` in the record and it's what `gameplan` will later use to bind acceptance criteria to real commands, so getting this right saves real work downstream.
 
+## Phase 2b: Map the tool surface
+
+Before evaluating any permission or enforcement finding, establish what tools this agent actually has, because a guard only guards the surface it's registered against.
+
+1. List the native tools available (Bash, Read, Edit, Write, …).
+2. List connected MCP servers and their tools — check `.mcp.json`, `settings.json`, and the user's global config.
+3. Mark every tool capable of: shell execution, file read, file write, git operations, network calls, database access.
+4. For each existing guard in the repo, record which of those surfaces it intercepts and which it doesn't.
+
+Record the result in the audit as `toolSurface`:
+
+```json
+"toolSurface": {
+  "shell": { "Bash": "guarded", "mcp__desktop-commander__execute_command": "unguarded" },
+  "fileRead": { "Read": "restricted-by-deny-rule", "mcp__filesystem__read_file": "unguarded" }
+}
+```
+
+Any guarded/unguarded split like the one above is an `enforcement-bypass-surface` finding. This is not a hypothetical: a hook registered on `"Bash"` does not see an MCP shell tool, so a repo can hold a carefully written guard and have every one of its protections be one tool-choice away from irrelevant. **Never describe a guard as repo-wide, global, or enforced when an equivalent unguarded surface exists** — say which surface it covers.
+
 ## Phase 3: Run the detectors
 
 Load `references/state.md`'s detector table if you haven't already this session. Go through each category and look for the specific things each detector describes — don't freelance new categories of concern; if something doesn't fit, note it separately as an observation rather than forcing a category (see `state.md`'s note on this).
@@ -36,6 +56,16 @@ python3 <skill-path>/scripts/verify_resolution.py \
 
 This reads the prior audit record and, for any previously-open finding that carries a `mechanicalCheck` and that your raw findings list doesn't mention, independently re-checks whether the underlying condition is actually gone. If it isn't, the finding gets reinstated into your raw findings automatically and the script tells you so — read that output. If it reports anything reinstated, that's a real signal your detection pass just missed something; don't just proceed silently, mention it in your summary to the user.
 
+The script also lists any **judgment-mode** findings that were open and that your raw findings don't mention. Those can't be re-checked mechanically, so they will not close on their own. For each one, either re-raise it or write a resolution claim into a resolutions file:
+
+```json
+[{ "signal": "inferable-content:framework-tour",
+   "basis": "The file-by-file tour was deleted from CLAUDE.md by adjust in pass 4.",
+   "evidence": "CLAUDE.md is now 61 lines; the '## Project structure' section is gone." }]
+```
+
+Hold that `evidence` to the same bar as a finding's: point at the thing so someone can confirm it in ten seconds. "Cleaned up the bloat" is not a basis for closing anything.
+
 Then merge and score:
 
 ```
@@ -43,8 +73,11 @@ python3 <skill-path>/scripts/merge_pass.py \
   --project-dir <project-root> \
   --raw-findings <temp-file> \
   --categories-scanned <comma-separated list from phase 3> \
-  --verification-surface <temp-file-with-verificationSurface>
+  --verification-surface <temp-file-with-verificationSurface> \
+  --resolutions <temp-file-with-resolution-claims>
 ```
+
+`merge_pass.py` refuses to run if `verify_resolution.py` hasn't run against this raw-findings file. That's deliberate — the gate is only a guarantee if it actually ran, and an optional gate is not a gate. `--skip-verify-gate` exists for a genuinely script-less environment; using it means saying plainly in your summary that the false-resolution guard was bypassed.
 
 This handles ID inheritance, resolved-detection, waiver application, and scoring — see `references/state.md` for why this must not be done by hand. Then run `scripts/build_registry.py --project-dir <project-root>` to refresh the index.
 
@@ -74,8 +107,18 @@ New this pass: <list, or "none">
 
 **Highest priority:** <the one finding worth acting on first, with its consequence>
 
-Run `drill` to work the enforcement-side findings, or `adjust` for the wording-side ones.
+<If verify_resolution.py reported anything, one line here — reinstated findings mean
+this pass missed something; unverifiable ones mean the gate is blind there.>
+
+### Next
+
+**Do this:** `<drill|adjust> <the specific finding id>`
+<why that finding first — its severity and its actual consequence, from this pass>
+
+**Instead, if <that finding is a deliberate trade-off you already made>:** `decline <id>`
 ```
+
+Pick the `Next` command by rung-owner of the highest-severity open finding, and name the id. "Run drill or adjust" with no id is the failure this contract exists to stop — the user just read a whole table and still can't tell which row to act on.
 
 ## Confirm and stop
 

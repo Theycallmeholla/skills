@@ -54,6 +54,15 @@ Declined <finding id> (<signal>).
 Reason on record: "<reason>"
 
 This stops counting against your score starting with the next check-playbook.
+It shows as declined, not resolved — the risk is still real, it's just accepted.
+
+### Next
+
+**Do this:** `<the owning command> <next open finding id>`
+<what's now the top open finding, and its consequence>
+
+**Instead, if <nothing else is open>:** `check-playbook`
+Re-scores with this decline applied.
 ```
 
 ## Confirm and stop
