@@ -54,6 +54,7 @@ flowchart LR
         CC[connotation-cop]
         WB[whiteboard]
         WBH[whiteboard-help]
+        WWBD[what-would-bezos-do]
     end
 
     subgraph CODE["🧪 Code & test quality"]
@@ -67,6 +68,7 @@ flowchart LR
         UX1[ux-audit]
         UO[ui-oddity-scan]
         CV[conversion-audit]
+        GS[gap-scan]
         FE[fresh-eyes]
         CS[cover-story]
     end
