@@ -227,6 +227,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **genie-proof-prompts** — audits a prompt across ten loophole categories, rewrites it airtight, and shows what the genie would have done
 - **handoff** — compacts a session into a dense resume-from-zero document, with a redaction sweep and facts separated from assumptions
 - **elihadhd** — restructures responses for an ADHD brain: TL;DR first, verb-first steps, one recommended path, and it stays in that mode
+- **cowork-with-codex** — turns your notes plus pasted Codex output into the exact message to send back, with the user's correction always outranking the agent's plan
 - **skills-repo-sync** — finds local skills missing from this repo, adds them in the expected format, updates this index, commits, and asks before pushing
 - **skills-repo-push** — the reverse: repo → `~/.claude/skills`, dry-run by default, with backups, local-only skills untouched, and state files preserved
 
@@ -1173,6 +1174,39 @@ don't look identical.
 
 **Not for** — Summarizing external content, or dropping information you explicitly asked for. Nested
 bullets and "Note:" blocks are banned.
+</details>
+
+<details>
+<summary><b>cowork-with-codex</b> — write the exact message to send back to Codex</summary>
+
+**What it does** — Takes a messy mix of your own notes and pasted Codex output and returns the
+single ready-to-send message Codex should receive — no commentary, no menu of options.
+
+**Say something like** — "Codex is wrong here", "what should I send back?", "tell it to patch
+only", "don't let it rebuild", "it touched files I didn't ask about".
+
+**Input** — Whatever you paste: user notes, Codex plans and exec output, diffs, terminal logs,
+test results. Repo and documentation tools are used only when the message depends on real files or
+real API behavior.
+
+**Output** — One fenced code block containing the message for Codex. On an explicit audit
+request instead: Verdict (APPROVE / REVISE / REDIRECT), Why, and the message.
+
+**Mechanics** — Every segment is classified `USER_DIRECT`, `USER_NOTE_AROUND_PASTE`,
+`CODEX_PASTE`, or `UNKNOWN`, and a fixed authority hierarchy resolves conflicts in the user's favor
+— pasted agent output is evidence, never instruction. Boundary detection keys on real Codex tells:
+`update_plan` step lists with `pending` / `in_progress`, `bash -lc` exec echoes, apply-patch blocks,
+`path/file.ts:120` citations, and sandbox or approval language. Outgoing messages follow OpenAI's
+stated prompting rules — outcome first, repro steps and constraints over description, explicit
+scope boundary, and a named verification command — and a completion claim is treated as a claim
+until a command's raw output backs it.
+
+**Bundle** — `references/codex-operating-surfaces.md`: sandbox modes, approval policies,
+AGENTS.md lookup order and its 32 KiB limit, and the subcommands that matter when correcting a run,
+each tagged with where it was verified.
+
+**Not for** — Doing the engineering itself, or writing a message that tells Codex to bypass its
+sandbox or approval policy; that stays the operator's launch-time decision.
 </details>
 
 <details>
