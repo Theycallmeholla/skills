@@ -3,7 +3,7 @@ name: who-let-the-blogs-out
 description: >
   Blog and web-content system for agency work — plan topics, interview the author for
   their real take, brief the angle, draft the article, plan images, verify claims, score
-  drafts for quality and AI tells, revise, publish, and refresh aging posts. Shorthand
+  drafts for quality and AI tells, revise, export into the site's code, publish, and refresh aging posts. Shorthand
   "wltbo" also triggers it. Commands share a per-client memory of brand voice,
   the author's positions and stories, verified facts with expiry dates, and every
   published post. Use for blog posts, articles, long-form content, refreshes, keyword
@@ -20,7 +20,7 @@ allowed-tools:
 
 # Who Let The Blogs Out
 
-`brand · plan · interview · verify · brief · write · images · review · revise · publish · refresh · help`
+`brand · plan · interview · verify · brief · write · images · review · revise · export · publish · refresh · help`
 
 Shorthand: `wltbo` stands in for the full name — `wltbo write` is `who-let-the-blogs-out write`.
 
@@ -57,6 +57,7 @@ If `.blog/` does not exist, say so and point at `brand`. Do not create a partial
 | `images` | Draft | Concrete asset plan: what each image shows, where, and its status | `brief.md`, `draft-vN.md`, `media.json` | `media.json` | `references/images.md` |
 | `review` | Ship | Score on rubric + AI tells; boundary, fabrication, coverage, headings | `draft-vN.md`, `brief.md`, `research-vN.md`, `packet.md`, `brand.md`, `voice-baseline.json` | `review-vN.json`, `post.json`, `registry.json` | `references/review.md` |
 | `revise` | Ship | Apply open findings; produce the next draft version | `review-vN.json`, `draft-vN.md`, `packet.md` | `draft-v(N+1).md`, `review-vN.json` | `references/revise.md` |
+| `export` | Ship | Write the post into the site's code (`lib/posts/<slug>.ts` + `lib/blog.ts`); never deploys | `post.json`, `draft-vN.md`, `media.json`, `claims.json`, `review-vN.json` | site files only | `references/export.md` |
 | `publish` | Ship | Record the live URL; set re-verify dates; index the post | `post.json`, `claims.json`, `media.json`, `draft-vN.md` | `post.json`, `claims.json`, `registry.json` | `references/publish.md` |
 | `refresh` | Ship | Find aging posts; re-research; change plan plus a new version | `registry.json`, `claims.json`, `draft-vN.md` | `draft-v(N+1).md`, `claims.json`, `post.json` | `references/refresh.md` |
 
