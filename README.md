@@ -215,7 +215,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 
 ### Content
 
-- **who-let-the-blogs-out** — twelve-command blog system with per-client memory: brand, plan, interview, verify, brief, write, images, review, revise, publish, refresh, help
+- **who-let-the-blogs-out** — thirteen-command blog system with per-client memory: brand, plan, interview, verify, brief, write, images, review, revise, export, publish, refresh, help
 - **seo-blog-writer** — research-driven SEO articles built on SERP analysis, a verified claim ledger, and a weighted quality rubric
 - **ai-writing-detector** — weighted 0–100 AI-tells scorecard with quoted evidence and fixes ranked by score impact
 - **case-study-builder** — mines existing files, asks only the gap questions, and ships web-ready case study copy plus a media plan
@@ -903,7 +903,7 @@ commands, GIF tuning, troubleshooting).
 ### Content
 
 <details>
-<summary><b>who-let-the-blogs-out</b> — the twelve-command blog system with per-client memory</summary>
+<summary><b>who-let-the-blogs-out</b> — the thirteen-command blog system with per-client memory</summary>
 
 **What it does** — Runs blog and web content end to end for agency work: plan topics, interview the
 author, verify claims, brief the angle, draft, plan images, score, revise, publish, and refresh

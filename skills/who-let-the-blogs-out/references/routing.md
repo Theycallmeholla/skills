@@ -72,3 +72,8 @@ Keep it short. This file is loaded on every bare invocation, which is the most f
 If the registry disagrees with the records — a post listed as `published` with no URL, a `currentVersion` pointing at a draft that doesn't exist, a client directory with no registry entry — say so in one line and continue presenting the menu.
 
 Do not repair it. Rule 5 of the state contract applies here as much as anywhere: someone asking "what should I do?" has not asked for six files to be rewritten.
+
+
+## export
+
+Reviewed draft, site-file time → `export <slug>`. Writes `lib/posts/<slug>.ts` + the `lib/blog.ts` entry; never deploys, never records — `publish` still does the recording once the post is live.
