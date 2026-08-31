@@ -64,7 +64,19 @@ Save as `orders/<slug>.attest-N.json`, N incrementing per slug. Update the order
 
 **Diff findings:**
 [list, or "none — the diff matches the contract"]
+
+### Next
+
+**Do this:** <the single most important thing about this diff — fix AT-2 before
+merging, re-run watch-film after, or ship it if the verdict is a clean pass>
+<one line of why, citing the criterion or finding that drives it>
+
+**Instead, if <a criterion came back unverifiable rather than unmet>:** `check-playbook`
+An unverifiable criterion is a verification-category problem in the harness
+itself, not a problem with this diff.
 ```
+
+This command's `Next` is the one place in the system where the recommendation is often *not* another command in this skill — "fix AT-2, then re-run `watch-film <slug>`" is a perfectly good answer, and so is "this passes, merge it." Say which.
 
 ## Confirm and stop
 

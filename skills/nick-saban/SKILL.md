@@ -46,17 +46,49 @@ Read `.claude/nick-saban/registry.json` once, at the start of the turn, if it ex
 | `scouting-report` | Assess | Scorecard, delta since last pass, open backlog, orders | registry, records, orders | — | `references/scouting-report.md` |
 | `adjust` | Resolve | Restructure the instruction layer | record @ rungs `prose`/`scoped-rule`/`skill` | `CLAUDE.md`, `.claude/rules/`, `.claude/agents/` | `references/adjust.md` |
 | `drill` | Resolve | Convert advisory prose into executable enforcement | record @ rungs `hook`/`permission`/`ci`/`test` | `.claude/hooks/`, `settings.json`, CI | `references/drill.md` |
+| `drill permissions` | Resolve | Establish or harden the whole permission surface as one package | live surface + baseline + any findings | `.claude/hooks/`, `settings.json` | `references/drill.md` |
 | `decline` | Resolve | Record a finding as a deliberate, accepted choice | record | `waived.json` | `references/decline.md` |
 | `gameplan` | Contract | Write a work order with acceptance criteria bound to real commands | repo, `verificationSurface` | `orders/<slug>.md` | `references/gameplan.md` |
 | `watch-film` | Contract | Check a diff against its work order | order, `git diff` | order frontmatter, `orders/<slug>.attest-N.json` | `references/watch-film.md` |
 
 ## Routing
 
-1. **No argument** → load `references/routing.md` and present its evidence-based menu. Never auto-run a command just because one is due — a bare invocation means "what should I do?", not "do the obvious thing."
+Classify the **intent** first, because two of these routes must not write anything and one of them does.
+
+1. **No argument, or an orientation request** — `help`, `what next`, `what should I do`, `where do I stand`, `how's my setup` → load `references/routing.md` and present its evidence-based menu. **Read-only.** Recommending a command is the deliverable; running it is not. Stop after the recommendation and wait.
 2. **Explicit or clearly implied command** → load its reference file and follow it exactly, including its "stops at" boundary.
-3. **Otherwise** (general "how's my setup" or "help me with Claude Code here" energy, no command implied) → treat it as a request to understand the current state and default to `check-playbook`.
+3. **An assessment request** — `audit`, `score`, `check`, `inspect my setup`, "tell me what's actually wrong here" → `check-playbook`, which writes an audit record. The distinction from rule 1 is asking *what is wrong* (assess, writes) versus asking *what to do* (orient, reads). When a request could honestly be read either way, take the read-only route and offer the audit as the recommendation.
 4. **Aliases** — route silently, no need to mention the alias resolved: `init` / `setup` / `scaffold` → `kickoff` · `check` / `score` / `status` → `check-playbook` · `prove` → `watch-film` · `order` / `brief` → `gameplan` · `accept` / `ignore` / `waive` → `decline`.
-5. **Genuinely ambiguous — ask once, then proceed:** `verify` could mean `check-playbook` (verify the setup) or `watch-film` (verify a change). `fix` could mean `adjust` (rewrite the text) or `drill` (make it enforced). `review` could mean either playbook command or a different skill entirely (see the boundary sentence in this skill's description). One short clarifying question, then go.
+5. **`drill permissions`** (also `harden`, `lock down permissions`, `set up permissions`) → `drill` in permission scope. It works the entire permission surface as one package and does **not** require existing findings — it's the right route for initial setup as well as hardening.
+6. **Genuinely ambiguous — ask once, then proceed:** `verify` could mean `check-playbook` (verify the setup) or `watch-film` (verify a change). `fix` could mean `adjust` (rewrite the text) or `drill` (make it enforced). `review` could mean either playbook command or a different skill entirely (see the boundary sentence in this skill's description). One short clarifying question, then go.
+
+## Output contract — every command, no exceptions
+
+Two rules govern what the user actually reads.
+
+**1. Never end without telling the user what to do next.** Every command's final block is a `### Next`, and it always contains a recommendation, not a menu. The user should never have to ask "so what do I do now?" — if they do, the command failed regardless of how good its analysis was.
+
+```
+### Next
+
+**Do this:** `<exact command to type>`
+<one line on why — drawn from what this run actually found, not what the command does in general>
+
+**Instead, if <specific condition>:** `<alternative command>`
+
+<Only when a decision genuinely belongs to the user and blocks progress:>
+**Need from you:** <the one question, with the options>
+```
+
+Rules on that block:
+- Name the exact invocation, including arguments — `drill HN-013`, not "run drill."
+- The reason cites this run's evidence. "HN-013 is the only high-severity finding open and every guard in the repo routes around it" — not "drill converts prose into enforcement."
+- Two options maximum. If three feel necessary, you haven't decided, and deciding is the job.
+- **State the pick.** "You could adjust or drill" is not a recommendation. Choose one, say why, and let the user overrule it.
+- When there is genuinely nothing to do, say that outright and say what would change it: "Nothing open. Next `check-playbook` is worth running after your next config change."
+- A recommendation is never permission. Rule 1 above still holds — recommending `check-playbook` and then running it in the same turn is the exact bug this contract exists to prevent.
+
+**2. Never reproduce reference-file text in the response.** These files direct your behavior; they are not content to relay. The user gets the decision, the evidence, the proposed change, how it'll be verified, and the `Next` block. Not the doctrine, not the phase list, not the command table — that table appears only on an explicit `commands` request.
 
 ## State
 
