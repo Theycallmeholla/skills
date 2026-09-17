@@ -185,6 +185,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **code-audit** — nine-phase whole-repo audit (security, quality, performance, dependencies, architecture, tests, docs) into a severity-ranked report with a 30/60/90 plan
 - **test-assessment** — audits an existing test suite: what's missing, what's weak, which gaps carry real risk, on a risk × coverage matrix
 - **test-suggest** — turns one module or one assessment finding into a prioritized list of specific test cases, stopping short of writing code
+- **prove-it** — proves work actually shipped before you claim it did: seven layers from uncommitted code to the analytics event, each ending PASS, FAIL or UNVERIFIED
 
 ### Requirements & discovery
 
@@ -383,6 +384,40 @@ sampled down to the 5–8 highest-leverage behaviors, and it says so.
 `untestable-code.md`, `language-notes.md`; `assets/suggestion-template.md`.
 
 **Not for** — Writing or running test code, refactoring untestable code, or repo-wide assessment.
+</details>
+
+<details>
+<summary><b>prove-it</b> — proves work shipped and works, before you say it did</summary>
+
+**What it does** — Verifies a deployment across seven layers and reports each one as PASS, FAIL or
+UNVERIFIED: uncommitted/unpushed code, every CI job for that exact commit, whether the live build
+*is* that commit, whether pages serve the right content, whether endpoints answer the expected way,
+whether writes persist, and whether analytics events arrive. Every rule in it exists because it was
+violated on a real deploy.
+
+**Say something like** — "is it live?", "did that deploy?", "is it actually working?", "are you
+sure?", "verify this", or right after a `git push`. Also when a previous "it works" turned out to
+be false.
+
+**Input** — A site URL plus the strings that prove the right page rendered, or a committed
+`.prove-it` file so the whole run takes no arguments. Works on any stack and any host.
+
+**Output** — A per-layer report with the evidence inline, and an exit code that gates a release:
+`0` proven, `1` something failed, `2` nothing failed but something went unchecked, `64` bad usage.
+A layer is only N/A when a human declares it — never assumed.
+
+**Mechanics** — `scripts/stamp-version.sh` writes the built commit into `version.json` (it knows
+the commit variable for twelve hosts, falling back to git), so layer 3 compares the *live* commit
+against HEAD instead of trusting a dashboard that says "Active". `--wait` polls until the deploy
+lands and CI finishes. Content matching is literal against the saved response body — never
+`echo "$BODY" | grep -q`, which silently inverts on pages past ~64KB. Storage and analytics live in
+systems no generic script can see, so they stay UNVERIFIED until the project supplies its own
+`check` command.
+
+**Bundle** — `scripts/verify.sh`, `scripts/stamp-version.sh`.
+
+**Not for** — Judging whether the work is any good. It only answers whether what you claim shipped
+actually shipped.
 </details>
 
 ### Requirements & discovery
