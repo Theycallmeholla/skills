@@ -8,7 +8,7 @@ Returns the post's claim ledger with a status, a source, and an expiry date on e
 
 That separation exists because verification and rewriting fail differently. Fixing a sentence while you're checking it means the check and the edit land in one unreviewable motion, and nobody can later tell whether the number changed because the source said so or because the sentence read better the other way.
 
-Load `references/evidence-rules.md` and follow it. It owns the verification standards, the three tiers of assertion, the promotion criteria, and the YMYL rules. This file is the procedure for applying them; it does not restate them. For source ranking, `references/research-protocol.md` has the ordered preference list — use it rather than re-deriving one.
+Load `references/governing-rules.md` and `references/evidence-rules.md` and follow them. Rule 3 is the one that decides most rows here: a claim may not be resolved into a band stronger than its evidence supports, and where the evidence is ambiguous the claim gets rewritten narrower rather than marked verified. Rule 5 decides where a resolved claim goes — a research conclusion never travels to the opinion bank. It owns the verification standards, the three tiers of assertion, the promotion criteria, and the YMYL rules. This file is the procedure for applying them; it does not restate them. For source ranking, `references/research-protocol.md` has the ordered preference list — use it rather than re-deriving one.
 
 ## Two modes, one playbook
 
@@ -115,6 +115,8 @@ One boundary worth naming: a published post whose claim just expired is now fact
 ## Output
 
 One chat response. Files written, no new files created beyond `facts.json` if the vault didn't exist.
+
+**The ledger is what was asked for, so the ledger is the answer.** Rule 9 does not suppress it here — someone who runs `verify` wants the claim statuses. What Rule 9 does suppress is everything around it: no promotion rationale essays, no expiry arithmetic for claims that expire in a year, no registry counts. Lead with the rows that change what gets written — `removed` and `awaiting-client` — and say each one in a sentence a person can act on before the table repeats it in IDs.
 
 ```
 ## local-seo-location-pages — claim ledger

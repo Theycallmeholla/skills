@@ -17,6 +17,7 @@ If `.blog/` doesn't exist at all, say so and point at `brand`.
 
 Then load and follow, without restating them here:
 
+- `references/governing-rules.md` — the priority order and the ten rules. Rule 1 governs this command more than any other: **the brief's `thesis` is what this article argues.** Copy it into your working map and check the finished draft against it.
 - `references/voice-and-tells.md` — the voice rulebook. Read it before the first sentence, not after the draft exists. Its rules are generative; retrofitting them onto finished prose produces prose that reads retrofitted.
 - `references/evidence-rules.md` — the three tiers of assertion and what may never be invented. This is the anti-fabrication mechanism, and tier drift is the failure it catches.
 - `references/headline-contract.md` — heading craft, the skim test, and the six title fields you are honoring rather than deciding.
@@ -73,6 +74,12 @@ Nothing about credentials, years in business, customer outcomes, quotes, case st
 
 Where an author byline, a named reviewer, or an About-page improvement would materially strengthen the page, put it in the checklist rather than writing it into the article.
 
+**The client's own company is a legitimate example when it factually is one.** If the article is about choosing a provider for a service the client sells, or about a process the client runs, naming them and describing what they actually do is not self-promotion — it is the first-hand value the whole system exists to capture. Rule 6: this is your call, not a question for the author. The constraints are the normal ones — every claim about the company traces to the packet, the vault, or `brand.md`, and the boundaries list still governs.
+
+Keeping the company out of the body until the CTA is a choice, not a default, and on an article about the company's own service it is usually the wrong one.
+
+**Serve the business purpose.** Read `businessPurpose` in the brief. It decides which objections get answered, which example earns 300 words, and where the CTA belongs. It does not decide what is true — a finding that undercuts the service gets written honestly and reported, never buried. What it does stop is drifting into an article that argues against the reason the client wanted it, because a clever angle presented itself during research.
+
 ### Links and evidence
 
 Cite every material claim that needs verification, using the `claims.json` entry's `source` URL — prefer the primary source over anyone's summary of it. Internal links go in only where they help the reader continue a real journey: use the real slugs the brief pulled from the registry, or `[anchor text](INTERNAL: description of target page)` where the brief only identified a destination type. No quotas in either direction — don't add links to hit a number and don't cap the sources a technical piece genuinely needs. Competing SEO articles are positioning intel, never a factual backbone.
@@ -116,6 +123,7 @@ For health, medical, legal, financial, or safety content: current authoritative 
 
 Run this on yourself before emitting. It is a pass/fail check for the three things that must not ship, **not a score** — scoring belongs to `review`, which reads the rubric and the tells model and has no stake in the draft. A writer that grades its own work grades it generously, every time, and the moment a draft arrives pre-scored nobody re-scores it.
 
+0. **The draft argues the brief's thesis.** Read the `thesis` frontmatter key, then read your own opening and your own conclusion. If they argue something else — a more interesting angle you drifted into, a nuance from the research that took over — the draft is wrong and the thesis is right. Fix the draft. This check comes first because it is the only one whose failure invalidates everything after it.
 1. **Every first-hand-sounding sentence traced.** Walk the draft and name the packet line or fact ID behind each one. Anything you can't trace gets rewritten into tier 2 with a citation, into tier 3 as openly framed judgment, or cut.
 2. **Every item on the client's "Never say" list absent.** Read that section of `brand.md` again against the finished text — those lists exist because someone got burned, and the phrasing usually creeps back in during drafting rather than being consciously chosen.
 3. **Every coverage target answered.** Walk the brief's numbered list against the finished sections. Anything unanswered gets written or gets named in the checklist and in your return message — never quietly dropped.
@@ -213,10 +221,22 @@ Everything a CMS editor asks for that the front-matter doesn't already carry, de
 
 **`none` is a valid JSON-LD output.** When nothing on the page warrants markup, say so with the reason. Do not emit `BlogPosting` because a field looked empty, and never emit `FAQPage`.
 
-Then, in chat: **any `boundary` or `fabrication` findings from the chained review, first and by ID**, then three or four lines — the version you wrote, the angle you took, any coverage target you could not answer and why, and anything the draft did that the brief did not anticipate. Then the review's headline scores.
+Then, in chat: **short, plain, and free of machinery** — load `references/reporting.md`.
 
-Not a recap of the article. Point at `images` if assets are still `needed`, and at `revise` when findings are open. Don't point at `review` — it already ran.
+```
+Draft's done — <length>, argues <the thesis, in the user's own framing>.
+
+<0-2 lines: anything genuinely worth their call — a claim you cut for lack of a source,
+ an editorial decision they'd want to know about, a coverage target you couldn't answer>
+
+Draft: .blog/posts/<slug>/draft-vN.md
+Next: `wltbo images <slug>` / `wltbo revise <slug>`
+```
+
+**The chained review's serious findings get translated, not listed.** Not "BL-014 fabrication high." Instead: *"The post said you've done this for dozens of clients. You never told me that — I cut it."* Anything that blocks publishing is said in plain words, first.
+
+No score tables, no finding IDs, no category names, no version bookkeeping, no recap of the article. If the user asks for the review in full, give them all of it.
 
 ## Confirm and stop
 
-Draft it, self-check it, version it — but never invent experience the packet doesn't hold, never rewrite the brief's title set, and never score your own draft.
+Draft it, self-check it, version it — but never invent experience the packet doesn't hold, never rewrite the brief's title set, never argue a thesis the brief didn't give you, and never score your own draft.

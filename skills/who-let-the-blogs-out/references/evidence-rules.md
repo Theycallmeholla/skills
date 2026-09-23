@@ -1,6 +1,8 @@
 # Evidence Rules
 
-Loaded by `verify`, `write`, and `review`. This is the file that decides what the system is allowed to assert, and under whose name.
+Loaded by `brief`, `verify`, `write`, and `review`. This is the file that decides what the system is allowed to assert, and under whose name.
+
+It has two halves. The **source-interpretation hierarchy** governs how far a claim may travel from what a document actually says. The **assertion tiers** govern who the claim is attributed to. Both are enforced by `review`, and a violation of either is a `high`-severity finding.
 
 ## The one rule everything else serves
 
@@ -10,11 +12,48 @@ Not softened, not hinted at, not implied by phrasing. "We've seen this fail on d
 
 This matters because the content publishes under a real person's name against a real business. Invented experience is not a style problem — it's a liability that reads well, which is the most dangerous kind.
 
+## Material the user pasted is a source, not the author
+
+When the user pastes a document excerpt, another tool's output, a competitor's article, or a research summary into the conversation, **the sentences inside it are the source's words.** They arrive in a message from the author; they are not the author speaking.
+
+Route them to `claims.json` or `research-vN.md`, recording where the paste actually came from. They never become a quote attributed to the author, never become a first-hand claim, and never enter the opinion bank as a position. See Rule 5 in `governing-rules.md` for the full provenance contract and the incident that produced it.
+
+The distinguishing question is simple: **did the author write this sentence, or forward it?** If forwarded, it is tier 2 at best and needs its real source cited.
+
 ## Never invent
 
 Credentials · years of experience · customer outcomes · quotes · case studies · proprietary processes · awards · test results · site visits · product usage.
 
 If the article would be stronger with one of these and none exists, the move is to name it in the publish checklist as **client evidence needed** — not to write a plausible version. A checklist item costs the client an email; a fabricated case study costs them a claim they have to defend.
+
+## The source-interpretation hierarchy
+
+Every claim traced to a document sits in one of three bands. The article must make clear which band it is in, and **may never write a claim in a stronger band than its evidence supports.**
+
+**Band 1 — What the source explicitly says.** It is on the page, in those words or unmistakably close. Quotable. Write it as fact, cite it, and prefer the source's own phrasing over a paraphrase that drifts.
+
+**Band 2 — What is reasonably implied.** The source supports it but does not say it. Write it as an inference with the reasoning visible: *"Google's guidance treats replies as a trust signal rather than naming them a ranking input, which is why…"* The reader can see where the document stops and you start.
+
+**Band 3 — Uncertain or speculative.** Write it as openly framed judgment, or leave it out. Never as either band above.
+
+### Six hard limits
+
+These are the specific escalations that produce a false claim, and each one has been made:
+
+1. **Absence of an explicit statement is not proof of the opposite.** "The page does not name X" is not "X does not work," and neither is "the source says X does not work."
+2. **Never convert "the source does not explicitly call X a standalone factor" into "X does not affect ranking."** The first is a fact about a document. The second is a claim about the world.
+3. **Never convert a scoped instruction into a general prohibition.** *"Don't send the same generic thank-you to everyone"* does not become *"Google says don't reply to every review."* The object of that sentence is the sameness, not the coverage.
+4. **A nuance may not become the headline** unless the source actually supports that headline. A qualifier found in one paragraph is a sentence in the article, or a short section at most.
+5. **Never treat one source's silence as another source's contradiction.** Two documents covering different scopes are not in conflict.
+6. **When the evidence is ambiguous, write the narrowest defensible claim.** Boring accuracy beats clever interpretation. A claim that survives scrutiny and says less is worth more than a striking one that doesn't.
+
+### The test
+
+Before writing a sourced claim, ask: **could I show this sentence and the source paragraph side by side to the source's author without them objecting?** If no, narrow it until yes.
+
+### Where an over-reach shows up
+
+`review` raises an `accuracy` finding at `high` for any band escalation — an implication written as an explicit statement, an absence written as a denial, a scoped instruction written as a general rule. It is the same severity as a fabricated experience claim, because it produces the same thing: a sentence the client has to defend that nobody actually said.
 
 ## The three tiers of assertion
 

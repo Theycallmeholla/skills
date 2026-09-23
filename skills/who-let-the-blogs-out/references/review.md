@@ -8,6 +8,8 @@ Returns two scores on opposite scales and a ranked findings list with stable IDs
 
 That prohibition is in caps because it is the one the model is most tempted to break — you will read a sentence with an obvious fix and the fix will take four seconds. Do it once and the system loses the ability to say "score it, don't touch it," which is the entire reason `review` and `revise` are different commands. Every fix you can see goes in a finding; `revise` applies it.
 
+Load `references/governing-rules.md` before scoring. Three rules change what this command raises: Rule 1 (a draft that argues a different thesis is an `intent` finding at `high`), Rule 3 (a claim written stronger than its source supports is an `accuracy` finding at `high`), and Rule 4 (a stance the packet doesn't record is a `fabrication`, not voice). Rule 9 governs the chat report — see Output.
+
 ## The two scores, and why they are never blended
 
 **Rubric: 0–100, higher is better.** Eight weighted categories in `references/quality-rubric.md`. Load it and follow it — don't restate the categories here.
@@ -42,7 +44,7 @@ Three things the baseline may never do, and the file records refusals in `refuse
 
 - **It cannot tighten a rhythm threshold past the global floor.** A corpus more uniform than the tell threshold does not license more uniformity; uniformity is a symptom, not a house style. Report the refusal rather than silently applying the global.
 - **It cannot calibrate lexicon at all.** "Delve," "leverage," "seamless" are not a style worth preserving.
-- **It cannot touch the judgment layer.** Substance, texture, audience fit, and the 500-companies test are scored by reading, and no corpus can teach the system that this client is allowed to have no opinion.
+- **It cannot touch the judgment layer.** Substance, texture, audience fit, and the author-value check are scored by reading, and no corpus can teach the system that this client is allowed to have no opinion.
 
 No baseline is the normal case, not a gap. Fall back to globals and say so in one line.
 
@@ -57,14 +59,15 @@ Read the full draft and score what no script can.
 - **Stance.** Is there at least one judgment a reader could disagree with? Are weak options given false equal weight? Are hedges standing in for actual conditions — "results typically vary" where "if your lot is under a quarter acre, skip this" belongs?
 - **Texture.** Numbers, dates, prices, named tools, durations, edge cases, failure modes — versus adjectives. Placeholder-people anecdotes ("imagine Sarah, a small business owner"). "Studies show" with nothing cited. Does anything here suggest someone actually did the work?
 - **Audience awareness.** Are basics the intended reader obviously knows being explained? Are their real objections answered or dodged? Explaining the obvious while ducking the hard question is a double tell.
-- **The 500-companies test.** Could this be published by 500 other companies after swapping names and cities? This is the heaviest single question in the model and it outranks every other score in the system.
+- **The author-value check.** Does this article contain meaningful value specific to this author or business — real experience, a real example, a real number, a real process, a perspective only they have? If the honest answer is no, that is a `high` `original-value` finding, and the fix named in it is *"strengthen it with X"*, never *"disagree with something."* This is a heavy question, and it sits at priority 6 — it does not outrank the thesis, the evidence, or the search intent. An article that agrees with the consensus and adds a practitioner's specifics passes. An article that manufactured a fight to look original fails twice: here, and under `fabrication`.
+- **Manufactured contrarianism.** A stance in the draft that appears nowhere in the packet or the bank is a `fabrication` finding, not a strength. "A stance the author didn't take is a fabrication wearing a personality." Check every confident disagreement against `packet.md` before scoring it as voice.
 - **Structural intent.** Are sections evenly sized regardless of value? Does the conclusion restate the intro? Does anything digress, or does it march through an outline?
 
 Score five weighted categories, each 0–100 where higher is more tell-like:
 
 | Category | Weight | Primary evidence |
 |---|---:|---|
-| Substance & stance (`substance`) | 35% | Judgment pass: 500-companies test, stance, false balance, hedging |
+| Substance & stance (`substance`) | 35% | Judgment pass: author-value check, stance, false balance, hedging |
 | Texture & specificity (`texture`) | 25% | Judgment pass: specifics, anecdote authenticity, evidence trail |
 | Rhythm & structure (`rhythm`) | 20% | Script CVs plus judgment: uniformity, symmetric sections, signposts, restated conclusion |
 | Constructions & tics (`constructions`) | 12% | Script: triads, em dashes, "not just X but Y", bold and colon density, bullet share |
@@ -76,7 +79,8 @@ Overall is the weighted sum. Bands: **0–20 clean** · **21–40 light tells** 
 
 - The strongest tells are absences — no stance, no texture, no evidence trail — not word choices. A draft with zero banned words can still land at 70 because it commits to nothing.
 - Cap each low-weight category's influence at its weight. No halo effects. A text with genuine stance and texture never scores above 40 on lexicon hits alone; twelve instances of "leverage" is a 12-point problem in an 8%-weight category, not a verdict on the article.
-- Spotless mechanics cannot rescue a text that fails the 500-companies test. Substance is scored on content, not polish. If you find yourself lowering `substance` because the prose reads smoothly, you have inverted the model.
+- Spotless mechanics cannot rescue a text with no author-specific value. Substance is scored on content, not polish.
+- **Agreement is not a tell.** A draft that says what the sources say, and adds the author's own examples and process, has substance. Do not raise `substance` because nothing in the piece picks a fight. If you find yourself lowering `substance` because the prose reads smoothly, you have inverted the model.
 
 `references/voice-and-tells.md` owns the rule set behind all five categories. Load it and run its tells checklist rather than re-deriving the rules.
 
@@ -102,6 +106,10 @@ If `research-vN.md` is absent entirely — a post briefed before v2 — say so o
 These are the two failures that put someone's name on something they didn't say. Both are severity-locked to `high`, and neither can ever be `accepted` — there is no version of "leave it" for publishing a claim the author didn't make.
 
 **Boundary.** Read the "Never say" section of `clients/<c>/opinion-bank.md` and the same section in `brand.md`. Check every item against the draft, including paraphrases — a boundary against "never call our process proprietary" is violated by "a methodology we developed in-house that nobody else runs." Quote the offending sentence in the finding. Category `boundary`.
+
+**Thesis fidelity.** Read `brief.md`'s `thesis` key, then read the draft's opening, its H2s, and its close. Does the article argue that thesis? A draft that drifted into a more novel argument — the research turned up a nuance and the draft made it the point — is an `intent` finding at `high`, quoting the thesis and the sentence that departs from it. Rule 1. This is checked before anything else in this phase, because a well-executed draft of the wrong article scores well on every other axis.
+
+**Source over-reach.** Apply the source-interpretation hierarchy in `evidence-rules.md` to every sourced claim. Raise an `accuracy` finding at `high` for any band escalation: an implication written as an explicit statement, a source's silence written as a denial, a scoped instruction written as a general prohibition, a one-paragraph qualifier promoted to the article's headline. Quote both the draft's sentence and what the source actually says. This is the same severity as a fabricated experience claim, because the result is identical — a sentence the client has to defend that nobody said.
 
 **Fabrication.** Load `references/evidence-rules.md` and apply its three tiers. Every sentence that sounds first-hand — "we've seen this fail on dozens of sites," "in our experience," a confident specific number with no source — gets traced to `packet.md` or a `source: first-hand` entry in the client's fact vault via `claims.json`. No trace, it's a finding. Also flag tier drift in either direction: a tier-3 inference written with tier-2 confidence, or a tier-2 sourced fact written in the author's voice. Category `fabrication`.
 
@@ -151,43 +159,51 @@ Leave every other field in `post.json` alone. `currentVersion` in particular bel
 
 ## Output
 
-Deliver in chat, in this order, plus the JSON file:
+**Two audiences, and the difference matters.** `review-v<N>.json` is the machine record — full scores, every finding, every ID, every consequence. It is written in full, always, exactly as specified above. The **chat response** is for a person, and under Rule 9 it is not the JSON read aloud.
+
+### Default chat response
+
+Load `references/reporting.md`. Lead with what blocks, then what's worth fixing, then where it is.
 
 ```
-## <slug> — draft-v2
+## why-respond-to-google-reviews — draft-v2
 
-**Rubric 78/100** (higher is better)  ·  **Tells 34/100 — light tells** (higher is worse)
-Two scales, never blended. Neither is an authorship verdict.
-Thresholds: client baseline (learned 2026-08-07, 8 samples) · rhythm from globals, calibration refused
-Research behind this: 7 of 8 pages torn down · serp skipped · discourse 30d
+**Blocking — has to change before this ships**
+- The post says you've done this for dozens of clients. You never told me that. Cut it, or give me the real number.
 
-| Rubric category | Score | Weight |    | Tells category | Score | Weight |
-(both tables, side by side or stacked — every category, both scales)
+**Worth fixing (3)**
+- The middle section restates what's already ranking. It needs your take on what actually changes for a business.
+- Two of the reader questions the brief committed to never get answered: what it costs to keep up, and what to do about a review you can't fix.
+- The "88% of consumers" figure has no primary source I could find.
 
-### Blocking
-BL-014  fabrication  high  — <one line>   ← blocks publish
-(or: "None. No boundary or fabrication findings.")
+**Reads fine otherwise.** Voice is close, structure holds, nothing crosses your boundaries list.
 
-### Coverage — 5 of 7 reader questions answered
-3. "How do I keep 40 city pages from reading identical?"  unanswered
-6. "What does this cost to maintain?"                     partial
-
-### Findings — 9 open, worst first
-BL-014  fabrication      high    front matter, ¶2  "we've rebuilt this for dozens of clients"
-        → not in packet or vault; publishes an experience claim the author can't defend
-(one block per finding: ID, category, severity, location, quoted evidence, consequence)
-
-### Headline contract
-Pass/fail per check, with visual prominence marked as a recommendation and why.
-
-### Top fixes, ranked by score impact
-1. ... (name the category and the points it recovers — a stance fix outranks deleting every "delve")
-
-Written: posts/<slug>/review-v2.json · registry.json (openFindings: 9)
+Findings: .blog/posts/why-respond-to-google-reviews/review-v2.json
+Next: `wltbo revise why-respond-to-google-reviews`
 ```
 
-Rank fixes by expected impact, not by order found. Never recommend fake typos, invented anecdotes, fabricated experience, or detector-evasion tricks — fixes add stance, specificity, and asymmetry, they never manufacture fake humanity. If asked to compare two draft versions, score both and show per-category deltas naming which edits moved which categories.
+Rules for that response:
+
+- **Translate every finding into the thing it is about.** Not `BL-014 fabrication high`; the sentence and what's wrong with it.
+- **No score tables by default.** Two numbers at most, and only if they say something — "reads a bit generic in the middle" beats `substance 28 / texture 35`.
+- **No category names, no IDs, no weights, no metric densities, no threshold sourcing, no connector or teardown blocks.** All of that is in the JSON.
+- **Rank by what the user should do first**, not by severity order or discovery order.
+- **Say what's fine.** A review that only lists problems reads as a verdict on the writer. One line on what holds up keeps the report usable.
+
+### When the full detail comes out
+
+The user asks — "show me all the findings," "what did it score," "give me the numbers." Then give them everything: both score tables, every category, every finding with its ID, the threshold sourcing, the research-coverage caveat. They asked for the machinery; hand it over complete.
+
+Also surface detail unprompted when it **blocks completion** or reveals a **real quality problem** — but translated, per the rules above.
+
+### The two scores, when shown
+
+When you do show them: side by side, never blended, with the one-line note that neither is an authorship verdict, and with the threshold source named. Bands: **0–20 clean** · **21–40 light tells** · **41–60 noticeable** · **61–80 reads generated** · **81–100 template-grade**.
+
+### Fix recommendations
+
+Rank by expected impact, not by order found. Never recommend fake typos, invented anecdotes, fabricated experience, manufactured disagreement, or detector-evasion tricks — fixes add stance the author actually holds, specificity, and asymmetry. If asked to compare two draft versions, score both and show per-category deltas naming which edits moved which categories.
 
 ## Confirm and stop
 
-Scores and findings only. The draft file is not yours to edit — hand every fix to `revise`.
+Scores and findings only. The draft file is not yours to edit — hand every fix to `revise`. And the report a person reads is prose about the article, not a dump of the record you just wrote.

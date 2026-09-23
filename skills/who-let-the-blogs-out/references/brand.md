@@ -89,7 +89,7 @@ Ask only about what is still empty. Where the packet gave you an answer, show it
 
 > "Fast turnaround" → *How fast, and what tells you that?* → "Sites ship in three weeks. The last eight did."
 
-The test: if a competitor could paste the sentence onto their own site without it becoming false, it's an adjective. That's the 500-companies test applied to the brand instead of the article, and it's the same failure — a differentiator anyone can claim differentiates nobody.
+The test: if a competitor could paste the sentence onto their own site without it becoming false, it's an adjective. That's the author-value check applied to the brand instead of the article, and it's the same failure — a differentiator anyone can claim differentiates nobody.
 
 When the receipt doesn't exist, keep the claim and mark it `[unproven]`. A belief the client can't yet evidence is genuinely useful: it tells `interview` what to dig for and tells `review` not to wave it through as fact. Dropping it loses that; writing it unmarked creates a fabrication four commands downstream.
 
@@ -192,7 +192,7 @@ If the measured corpus already reads generated — lexicon above the global rate
 | Rhythm — paragraph and sentence CVs | **Upward only.** A learned value below the global keeps the global and lands in `refused` | Uniformity is a symptom of generated writing, not a house style. Lowering this floor is the gated failure arriving slowly instead of at once. |
 | Lexicon | **Never** | "Delve", "leverage", "seamless" are not a style worth preserving. A corpus full of them is the reason the client called. |
 
-Judgment-layer categories — substance, texture, audience fit, the 500-companies test — are not calibratable and never appear in this file. `tells_metrics.py` says outright that it doesn't attempt them, and no corpus can teach the system that this client is allowed to have no opinion.
+Judgment-layer categories — substance, texture, audience fit, the author-value check — are not calibratable and never appear in this file. `tells_metrics.py` says outright that it doesn't attempt them, and no corpus can teach the system that this client is allowed to have no opinion.
 
 ## Phase 4 — Write it
 

@@ -154,7 +154,7 @@ blog refresh gbp-optimization-guide   published 2024-09-11, no stale claims — 
 7 posts, nothing expiring before 2027-01.
 ```
 
-**Single-post mode** — a chat response in this order, plus the file writes:
+**Single-post mode** — a chat response in this order, plus the file writes. **Sections 2 through 7 are the deliverable when the user asked for a refresh**, so they stay — but each is written in plain words first and IDs second, and anything with nothing in it is dropped rather than printed as "none." Rule 9 and `references/reporting.md`:
 
 1. **`## <slug> — refresh`** — current live version, publish date, and the one-line verdict: refresh, merge-and-redirect, or wrong-page-type-now.
 2. **`## Stale inventory`** — every expired claim and vault fact, with ID, expiry date, what it asserts, and whether it still appears in the live version.

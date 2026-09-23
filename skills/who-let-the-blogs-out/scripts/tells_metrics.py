@@ -3,7 +3,7 @@
 
 Measures only what is countable: lexicon hits, construction tics, rhythm
 uniformity, formatting density. The judgment layer (stance, texture,
-audience fit, the 500-companies test) is scored by Claude reading the text
+audience fit, the author-value check) is scored by Claude reading the text
 -- this script deliberately does not attempt it and produces no overall
 score on its own.
 

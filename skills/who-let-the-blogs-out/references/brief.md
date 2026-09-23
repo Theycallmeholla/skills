@@ -10,9 +10,21 @@ This is the cheap artifact that exists to be rejected. Four of the five failures
 
 It is also where the evidence gets written down. Before `research-vN.md` existed, this command gathered research, distilled it into conclusions, and threw the evidence away — so `write` saw the verdict and never the case for it. Phase 1 exists to stop that.
 
+## The thesis is not yours to change
+
+Before anything else: read the packet's `## Thesis` section. **That is the article's argument and this command does not get to replace it.** Rule 1 of `governing-rules.md`.
+
+What this command decides is the **angle** — how the thesis is argued, what evidence carries it, what order it lands in. Angle serves thesis. If the research turns up something more novel, more surprising, or more contrarian than the thesis, that is a section, not a replacement.
+
+If the research genuinely disproves the premise — not complicates it, disproves it — stop and say so in two plain sentences: what the user wants to argue, what the source actually says, and that the two collide. Then wait. Do not write a brief for a different article.
+
+The failure this exists to prevent: a user asked for *"why you should respond to reviews,"* research found that Google's local-ranking page names review count and rating without separately naming reply rate, and the brief turned the piece into *"two of the three reasons are wrong."* A qualifier in one paragraph of one source became the thesis of the whole article. Nobody asked for that.
+
+Copy the packet's thesis verbatim into `brief.md`'s frontmatter as `thesis`. `write` and `review` both read it, and a draft arguing something else is an `intent` finding at `high`.
+
 ## Preflight
 
-Load `references/state.md`. If `.blog/` is missing, say so, point at `brand`, and stop — don't create a partial tree.
+Load `references/governing-rules.md`, `references/evidence-rules.md`, and `references/state.md`. If `.blog/` is missing, say so, point at `brand`, and stop — don't create a partial tree.
 
 Read `posts/<slug>/post.json`. Expect status `interviewed`. If `packet.md` doesn't exist, say so and point at `interview` before continuing: without a packet, every source of original value has to come from research alone, and the article will be one any of 500 companies could publish. You can still brief it if the user insists — say plainly that you're briefing an article with no first-hand layer, and record that as the honest state of things.
 
@@ -105,21 +117,45 @@ Placeholders like `INTERNAL: some related page` are the fallback for having no s
 
 ## Phase 5 — Angle, information gain, and the canonical entity
 
-Do this before outlining, and write all three into the frontmatter. Outlining first is how an article gets built out of subtopics and then has a thesis retrofitted onto it — which is exactly the article the 500-companies test exists to catch.
+Do this before outlining, and write all three into the frontmatter. Outlining first is how an article gets built out of subtopics and then has a thesis retrofitted onto it — which is exactly the article the author-value check exists to catch.
 
-**Angle** — the specific argument this piece makes. "Location pages fail because they're built from a template and filled per-city, when the fix is to build them per-city and template only the chrome."
+**Angle** — how this piece argues the thesis it was given. "Location pages fail because they're built from a template and filled per-city, when the fix is to build them per-city and template only the chrome."
 
-**Information gain** — what a reader gets here that the ranking pages don't give them. Draw it in this order of strength:
+The angle must be **compatible with the packet's thesis**. Write it as a sentence that could follow the thesis without contradicting it. If your best angle requires the thesis to be wrong, you have found a conflict to report, not an angle to adopt.
 
-1. The packet — a first-hand story, a number the author actually watched happen, a position they'll defend.
-2. The fact vault — a durable client fact the SERP doesn't have.
-3. Original analysis of the research — a framework, decision criteria, a calculation, a comparison nobody has made.
+**Information gain — original value, not manufactured disagreement.** What a reader gets here that the ranking pages don't. All of these count, and none outranks another by type:
 
-If none of the three yields anything, **do not outline the article.** Write the frontmatter through `informationGain`, state the deficit in it directly ("none available — every claim available to this post is already on page one"), name exactly what the client would have to supply to fix it (their actual rollout numbers, three real customer objections, screenshots of the audit output), and recommend killing or reframing the topic. Leave `post.json` at `interviewed`. An article with nothing to add doesn't become one by being outlined well, and the outline is what makes it look ready.
+first-hand experience · better examples · proprietary observations · useful synthesis · clearer explanations · better frameworks · screenshots · original diagrams · case patterns · operator experience · original data · practical recommendations · implementation details · business-specific perspective
+
+Draw from the packet first, then the fact vault, then your own analysis of the research — that ordering is about *reliability*, not about which kinds of value are permitted.
+
+**Never manufacture a disagreement to create information gain.** An article that agrees with the consensus and adds a practitioner's specifics has real information gain. An article that invents a fight with a source to look original has none, and has also broken Rule 3. Contrarian framing is legitimate **only** where the packet records the author actually holding that position — see Rule 4.
+
+If nothing yields anything, **do not outline the article.** Write the frontmatter through `informationGain`, state the deficit in it directly ("none available — every claim available to this post is already on page one"), name exactly what the client would have to supply to fix it (their actual rollout numbers, three real customer objections, screenshots of the audit output), and recommend killing or reframing the topic. Leave `post.json` at `interviewed`. An article with nothing to add doesn't become one by being outlined well, and the outline is what makes it look ready.
 
 **Canonical entity** — the one thing this page is unambiguously about, named the way the field names it. The research file's `entities` list is the raw material: it holds every brand, tool, standard, and concept a knowledgeable author would inevitably mention. One of them is what the page *is about*; the rest are what it mentions. Pick the one and write it to `canonicalEntity`.
 
 This exists because a page trying to be about three things is about none of them, and because rotating synonyms for the same entity across a draft makes it harder to read and harder to retrieve. `write` uses the list for coverage and keeps the naming consistent; `review` scores whether the finished page represents one entity clearly.
+
+## Phase 5b — Business purpose
+
+Priority 4. Read the packet's `## Business purpose` section and `brand.md`, and write four things into the brief's frontmatter under `businessPurpose`:
+
+```yaml
+businessPurpose:
+  audience: who this is actually for, in one line
+  searchIntent: what ends their search
+  serviceConnection: which service or offer this content sits next to, or "goodwill"
+  readerAction: what you want them to do at the end
+```
+
+This is not a marketing overlay bolted onto the research. It is the fourth priority in the order, and it decides real things: which objections get answered, which example is worth 300 words, where the CTA belongs, and whether the company's own work is a legitimate example (it usually is — Rule 6).
+
+**Truth still outranks it.** The article helps the right reader while staying inside the evidence; it does not become sales copy, and a finding that genuinely undercuts the service gets reported, not buried.
+
+**What it stops.** An article whose commercial reason for existing is reputation management should not end up arguing against a core reason businesses do reputation management. That is not editorial independence — it is losing track of what the piece is for while chasing a clever angle. If the honest research really does undercut the purpose, that is a conversation to have with the user, not a decision to make silently in a brief.
+
+If the packet has no business-purpose section and `brand.md` makes it obvious, write it and mark it inferred. If it is genuinely ambiguous, that is one of the few things worth asking about.
 
 ## Phase 6 — Coverage targets
 
@@ -193,7 +229,7 @@ Three artifacts and one chat response.
 
 **1. `posts/<slug>/research-vN.md`** — per the schema in `state.md`. Opened in Phase 1 and closed at the end of Phase 2, before any conclusion is drawn from it. Nothing from Phase 3 onward is added to it: the research file records what was found, not what was decided about it.
 
-**2. `posts/<slug>/brief.md`** — frontmatter keys in this order: `post`, `client`, `version`, `research`, `angle`, `informationGain`, `canonicalEntity`, `formatFit`, `cannibalization`, `coverageTargets`, `titleSet` (with `searchTitle`, `h1`, `headline`, `dek`, `metaDescription`, `slug`, `alternates`). `research` names the research file this brief was built from, including a borrowed one. Then these six sections, in this order, and no others:
+**2. `posts/<slug>/brief.md`** — frontmatter keys in this order: `post`, `client`, `version`, `research`, `thesis` *(verbatim from the packet — never rewritten here)*, `angle`, `informationGain`, `businessPurpose`, `canonicalEntity`, `formatFit`, `cannibalization`, `coverageTargets`, `titleSet` (with `searchTitle`, `h1`, `headline`, `dek`, `metaDescription`, `slug`, `alternates`). `research` names the research file this brief was built from, including a borrowed one. Then these six sections, in this order, and no others:
 
 ```
 ## Reader questions this must answer      numbered, the count in coverageTargets
@@ -208,29 +244,37 @@ Three artifacts and one chat response.
 
 **3. `claims.json` and `media.json`** written per the schemas in `state.md`; `post.json` status → `briefed` with `updated` set; `registry.json`'s post entry updated in the same operation with `title` (the `h1`), `primaryKeyword`, `intent`, `status`, and `updated`. `openFindings` and `staleClaims` are not yours to set.
 
-**Chat response** — seven lines, no more:
+**Chat response** — short, plain, and free of machinery. Load `references/reporting.md`. Four things, in sentences:
 
 ```
-Research:           7 of 8 torn down, 1 fetch-failed · discourse 30d, 4 surfaces · serp skipped
-Angle:              one sentence
-Information gain:   one sentence
-Entity:             local SEO location pages
-Format:             article — SERP is 9/10 explainers, no tool competition
-Cannibalization:    none — 214 URLs crawled, 4 shortlisted, 4 read
-Coverage:           7 questions committed — review fails the draft on each one left open
-Claims / images:    11 claims (3 vault-backed, 8 to verify) · 4 image concepts
+The angle: <one sentence — how the piece argues the thesis you gave me>
+What it adds: <one sentence — the original value, in plain terms>
+Covering: <the reader questions, as a short list, in the reader's words>
+<anything that genuinely needs a decision, or a real limitation>
+
+Brief: .blog/posts/<slug>/brief.md
+Next: `wltbo write <slug>`
 ```
 
-The research line reports **fetched of planned**, not a bare count, and the cannibalization line reports **crawled → shortlisted → read**. Both exist so a thin run is visible in the first two lines rather than discoverable three files down.
+**Say the thesis back only if it moved** — if the packet's thesis is intact, repeating it is noise.
 
-Then the single next step: `who-let-the-blogs-out verify <slug>` when claims need chasing, otherwise `who-let-the-blogs-out write <slug>`. If any state was malformed or stale, report it in one line and leave it alone — repair is a deliberate act, never a side effect of briefing.
+Raise a limitation only when it changes what the article can honestly claim. "Six of the competitor pages wouldn't load, so I'm less confident than usual about what's missing out there" is worth a line. `teardown: {planned: 8, fetched: 2}` is not something a person should have to read. Same for connector states, crawl counts, claim counts, and image counts — all of that lives in the files, and `review` reads it there.
+
+Two things always surface, because they change what the user does next:
+
+- **Format fit is wrong** — the SERP wants a calculator and this is an article.
+- **Cannibalization says merge or refresh** — updating an existing post beats publishing this one.
+
+Then the single next step: `verify` when claims need chasing, otherwise `write`. Malformed state is noted in the files and left alone; it reaches the user only if it blocks the work.
 
 ### Cadence
 
-Questions only at four points, and only when the answer isn't already in state: a required connector is down, format fit is wrong, cannibalization says merge or refresh, or information gain came up empty. Two questions maximum per round, one round per decision, always with your recommendation attached so a "yes" is a valid answer.
+Questions only at four points, and only when the answer isn't already in state: a required connector is down, format fit is wrong, cannibalization says merge or refresh, or information gain came up empty. **Two questions maximum per round**, one round per decision, always with your recommendation attached so a "yes" is a valid answer.
+
+Everything else is yours to decide — Rule 6. Section order, emphasis, whether the client's own work appears as an example, what to lead with, what to cut. Do not ask the user to make an editorial call you are competent to make; make it, and mention it in one line if it is worth knowing.
 
 Never ask what's already in the packet, the brand profile, the opinion bank, or the registry — asking a question the state answers is how a user learns the system doesn't read its own files, and after that they stop maintaining them. Never ask for a target word count; that's what Phase 6 replaced.
 
 ## Confirm and stop
 
-Write the research down, then name, structure, and commit — but don't draft. No prose paragraph, no sample section, not one line "to show the tone." And nothing in the research file that no agent actually read.
+Write the research down, then name, structure, and commit — but don't draft. No prose paragraph, no sample section, not one line "to show the tone." Nothing in the research file that no agent actually read. And **the thesis you were given is the thesis you hand to `write`** — argue it better, never replace it.

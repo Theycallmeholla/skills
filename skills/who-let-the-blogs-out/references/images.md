@@ -6,6 +6,20 @@ Returns a concrete asset plan — for every image this article needs, what it mu
 **Writes:** `posts/<slug>/media.json`
 **Stops at:** Never edits the draft — not even to move an `[IMAGE:]` marker. Never writes alt text for an asset that doesn't exist. Never generates final assets unless you were asked and confirmed the list first.
 
+**Say which images materially improve the article. Don't invent busywork.** Three real assets beat six planned ones, and a post that genuinely needs one diagram gets one diagram.
+
+## Proportionality
+
+Rule 7 of `governing-rules.md` governs this command harder than any other, because images are where small imperfections are most visible and least consequential.
+
+**When the user supplies an image, use it.** Check it for one thing: does it state something false? A chart whose numbers are wrong publishes a false claim and is worth stopping for. Everything else — a bar drawn slightly short, a crop that could be tighter, a font that isn't quite the brand's — is **one sentence, one recommendation, and then move on.**
+
+> "The bar lengths don't quite match the labels. The numbers are right. I'll fix the bars, or use it as-is — say which."
+
+Then do one of them. Do not measure pixel coordinates, do not compute track percentages, do not explain implied axes, and do not ask for approval more than once. The real failure: a user supplied two images and said use them; the skill ran a forensic analysis of one chart across several turns and got told *"NO ONE CARES - KEEP THE RULER."*
+
+The budget for a cosmetic image issue is one sentence. If you are about to spend more than that, the question to ask yourself is what breaks if you are wrong — and if the answer is "a reader notices a small ugliness," you are already over budget.
+
 The test every asset has to pass: **does the article get worse without it?** If the honest answer is no, the asset is decoration, and the useful move is to mark it `role: decorative` and give it an empty alt attribute — not to dress it up as a diagram so the plan looks substantive. The failure this command exists to prevent is a photo of a smiling person at a laptop on an article about title tags. That image is not neutral: it costs page weight, it costs the reader a scroll, and it tells them the page was assembled rather than written.
 
 `registry.json` is not in your Writes, and that is deliberate. Nothing in the index derives from the media plan — no status advances, no version increments — and bumping `updated` alone would announce that the post record moved when only its asset list did.
@@ -73,7 +87,9 @@ When the asset does exist and you can see it, or its maker described it factuall
 
 ### Cadence
 
-You will need to ask who has what. Ask it once, as a single list of specific asks with a name against each, at the end — not one question per asset as you go. Three questions is the ceiling for a round.
+You will need to ask who has what. Ask it once, as a single list of specific asks with a name against each, at the end — not one question per asset as you go. **Three questions is the ceiling for a round, and one is usually right.**
+
+Never ask permission twice for the same thing. A user who said "use these two" has answered; the next message is what you did with them, not another confirmation.
 
 Never ask what the brief, the draft, or the packet already answers; a question the state answers teaches the user the system doesn't read its own files, and after that they stop maintaining them. Never ask the user to pick an art direction, a color, or a style — that isn't this command's job and it turns a five-minute gap list into a design review. Ask about generation exactly once, with the list attached, so a "yes" is a complete answer.
 
@@ -95,7 +111,7 @@ After generating: set `status: "generated"`, then write `altText` from what was 
 
 **1. `posts/<slug>/media.json`**, the full file per the schema in `state.md` — `version`, then `assets`, each with `id`, `role`, `concept`, `placement`, `status`, `altText`, `caption` and no other keys. `concept` says what it shows **and why the article is worse without it**, in that order, because the second half is what a reviewer uses to kill the asset if it's decoration.
 
-**2. A chat response** in these four sections, in this order:
+**2. A chat response.** Load `references/reporting.md` — the gap list is what was asked for and stays, but the surrounding bookkeeping does not. Four sections, in this order:
 
 ```
 Gap list — 4 of 6 assets still needed

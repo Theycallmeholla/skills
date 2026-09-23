@@ -101,6 +101,8 @@ If the post has no registry entry at all — it should, `plan` created it — ad
 
 A chat response in this order. No file artifact beyond the three state writes and any drawer entry.
 
+**Trim to what the user acts on.** The full re-verification schedule is written to `claims.json` and does not need to be read aloud — name the **next** expiry date and the count, and offer the rest. Open checklist items and anything blocking are said in plain words first, before any table. Rule 9 and `references/reporting.md` apply; a publish record is not a status dump.
+
 ```
 Recorded, not deployed — blog wrote the record; the post was published by you/your CMS.
 

@@ -981,7 +981,7 @@ author, verify claims, brief the angle, draft, plan images, score, revise, publi
 aging posts — all sharing a per-client memory. Shorthand: `wltbo`.
 
 **Commands** — `brand · plan · interview · verify · brief · write · images · review · revise ·
-publish · refresh · help`. A bare invocation shows a menu built from your actual state and never
+export · publish · refresh · help`. A bare invocation shows a menu built from your actual state and never
 auto-runs anything.
 
 **Input** — A `.blog/` state directory (created by `brand`), a client slug, a command, and — for
@@ -994,13 +994,20 @@ append-only `draft-vN.md` and `review-vN.json`. `review` emits two never-blended
 
 **Mechanics** — Each command's Writes are the next command's Reads. Rubric weights: intent 20,
 accuracy 20, original value 15, completeness 15, structure 10, brand fit 10, conversion 5, technical
-SEO 5. Four doctrines govern everything: published under a name means true under that name; depth is
-coverage, not length; the 500-companies test outranks every other score; drift is reported, never
-silently repaired. `review` may never edit the draft.
+SEO 5. A governing-rules file outranks every command playbook: an eight-level priority order (the
+user's thesis first, evidence second, workflow machinery last) and ten rules — the thesis is sticky,
+corrections win immediately, claims stay inside three evidence bands, original value never means
+manufactured disagreement, no author stance is written from AI inference, ordinary editorial calls
+get made without asking, effort matches consequence, confusion shortens the answer, the machinery
+stays internal, and steps whose output already exists are skipped. Still held: published under a
+name means true under that name; depth is coverage, not length; drift is reported, never silently
+repaired. `review` may never edit the draft.
 
 **Bundle** — One `references/*.md` per command, each declaring reads / writes / stops-at, plus
 `routing.md`, `state.md`, `evidence-rules.md`, `quality-rubric.md`, `voice-and-tells.md`,
-`headline-contract.md`, `research-protocol.md`; `scripts/tells_metrics.py`;
+`headline-contract.md`, `research-protocol.md`, `governing-rules.md` (priority order and the ten
+rules), `reporting.md` (what the chat reply shows), `acceptance-tests.md` (regression cases drawn
+from real failures in live sessions); `scripts/tells_metrics.py`;
 `assets/opinion-bank-template.md`. Frontmatter narrows `allowed-tools` to a single scripted Bash
 invocation.
 

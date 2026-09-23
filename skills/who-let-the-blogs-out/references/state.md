@@ -175,18 +175,40 @@ Two rules that matter more than the structure: **date every entry**, and **never
 
 Numbers do not live here. They live in `facts.json`, where they can expire.
 
-### Entries carry IDs
+### Entries carry IDs and provenance
 
 Positions and stories are addressable, allocated monotonically per client under the same discipline as `facts.json` — never reused, never renumbered.
 
 - `P-###` — standing positions and contrarian takes
 - `S-###` — war stories and first-hand evidence
 
-The ID rides in the entry's heading, so the file stays a voice archive rather than becoming a database:
+The ID rides in the entry's heading and the provenance rides on the line beneath it, so the file stays a voice archive rather than becoming a database:
 
 ```markdown
 ### The 40-page rollout that got manually actioned (S-004, 2026-03)
+*Provenance: stated — described unprompted during the 2026-03 location-pages interview.*
+
+<the story, in the author's words>
 ```
+
+**The provenance line is required on every `P-` and `S-` entry.** Its value is one of four, and nothing else:
+
+| `provenance` | What it means |
+|---|---|
+| `stated` | The author wrote the position themselves, in their own words. |
+| `selected` | The author picked a proposed option that stated the position. |
+| `confirmed` | A wording was proposed to them and they clearly agreed with it. |
+| `demonstrated` | They gave an example or story that plainly carries the position. |
+
+After the value comes a short note naming the moment it came from — which session, which question, which artifact. Enough that someone can go check.
+
+**Nothing else may become an entry.** Not assistant inference, not a research conclusion, not an assistant recommendation, not an interpretation of the author's confusion, not "probably believes," not silence, not the absence of an objection.
+
+**Material the author pasted is not the author speaking.** A documentation excerpt, another tool's output, or an article forwarded into the conversation is the *source's* words, arriving in a message from the author. It routes to `claims.json` or `research-vN.md` with its real origin recorded. It never becomes a `P-` entry and it is never quoted back as *"in his words."* This is Rule 5 of `governing-rules.md`, and it exists because it was violated: a pasted research summary became position `P-002` for a live client, annotated *"drew the line himself, unprompted."* He had not.
+
+**An entry that cannot name its provenance does not get written.** It gets recorded as a gap in the packet, which is a question someone can go ask.
+
+Entries written before provenance was required carry no line. That is a known legacy state, not drift: do not backfill a provenance value by guessing, and do not report the absence. Where an old entry is *actively suspected* of contamination, the correction is a deliberate, reported edit — never a silent rewrite.
 
 Why they need IDs at all: without one, a superseded position cannot be traced to the published posts still arguing it. The vault already solves that for numbers — `refresh` can answer "which posts assert a price the author changed in March." It could not answer the same question about a belief, and under doctrine point 1 a stale stated belief is the worse liability of the two.
 
@@ -248,7 +270,7 @@ Optional. Written only by `brand learn`, read only by `review`. Absent for most 
 | Rhythm — paragraph and sentence CVs | Upward only. A learned value below the global keeps the global and lands in `refused` | Uniformity is a symptom of generated writing, not a house style. Letting a corpus lower this floor is the gated failure arriving slowly. |
 | Lexicon — "delve", "leverage", "seamless" | Never | Not a style worth preserving. A corpus full of these is the reason the client called. |
 
-The judgment layer — stance, texture, audience fit, the 500-companies test — is not calibratable and must not be. `tells_metrics.py` states that it deliberately does not attempt that layer; a corpus cannot teach the system that this client is allowed to have no opinion.
+The judgment layer — stance, texture, audience fit, the author-value check — is not calibratable and must not be. `tells_metrics.py` states that it deliberately does not attempt that layer; a corpus cannot teach the system that this client is allowed to have no opinion.
 
 ## posts/&lt;slug&gt;/research-vN.md — the evidence
 
@@ -309,6 +331,23 @@ Same three-value logic as `altText` in `media.json`, and for the same reason.
 **`teardown` records the count, not just the results.** `planned` is what the protocol called for, `fetched` is what came back usable, `failed` is what errored, timed out, or failed the verbatim-heading check. A brief built on two of eight pages is a different artifact from one built on eight of eight, and the only way a later reader can tell is if the number is written down. `review` reads this the same way it reads `connectors`: thin research caps what `original-value` and `completeness` may honestly claim.
 
 **The `connectors` block is read by `review`.** Research gathered under degraded or unavailable connectors caps what the `original-value` and `completeness` scores can honestly assert, and the review says so rather than scoring as though the research were complete.
+
+## posts/&lt;slug&gt;/brief.md — the two keys other commands read
+
+The brief's full shape belongs to `brief`. Two of its frontmatter keys belong here, because other commands read them and a contract only one command knows is not a contract.
+
+```yaml
+thesis: "Its fucking important to respond to reviews. That is what the post argues."
+businessPurpose:
+  audience: owner-operators who have never replied to a review
+  searchIntent: whether replying is worth the time
+  serviceConnection: reputation management
+  readerAction: book a call
+```
+
+**`thesis` is copied verbatim from `packet.md`'s `## Thesis` section and is never rewritten by any command.** It is the article's argument under Rule 1. `write` drafts toward it; `review` raises an `intent` finding at `high` when the draft argues something else; `revise` may not close a finding by changing it. Only the user changes a thesis, and when they do, the packet changes first.
+
+`businessPurpose` carries priority 4 into the draft — who the piece is for, what ends their search, which offer it sits beside, and what the reader should do. Inferred values are marked inferred.
 
 ## posts/&lt;slug&gt;/post.json
 
@@ -460,6 +499,10 @@ Rubric scores run 0–100 where higher is better. Tells scores run 0–100 where
 The converse also holds: a command that changes nothing the registry mirrors leaves it alone. `images` writes a media plan and touches no registry field, so it does not bump `updated` — a timestamp change with nothing behind it falsely announces that the post record moved.
 
 **5. Report drift; don't repair it.** A command that finds malformed or stale state says so and continues with what it was asked to do. It does not migrate, reformat, or tidy as a side effect. This is the rule that gets violated first and hurts most — someone runs `review` on one draft and discovers six files were rewritten.
+
+Under Rule 9 of `governing-rules.md`, "report" means *record it in the files and surface it to the user only when it blocks the work.* Drift that changes nothing the user must decide is noted internally and not read aloud.
+
+**6. Provenance before durability.** Anything written to a durable, cross-post store — `opinion-bank.md`, `facts.json` — must trace to something the user actually said, selected, confirmed, or demonstrated. Per-post state (`packet.md`, `claims.json`, `research-vN.md`, `brief.md`) may hold your own analysis, clearly marked as such. The asymmetry is deliberate: a wrong per-post note costs one article, a wrong durable entry shapes every future one and is quoted back at the author as their own belief.
 
 ## Initializing
 
