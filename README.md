@@ -1,12 +1,12 @@
 # Skills
 
 [![Validate skills](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml/badge.svg)](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml)
-[![Skills](https://img.shields.io/badge/skills-32-6f42c1)](#skill-index)
+[![Skills](https://img.shields.io/badge/skills-35-6f42c1)](#skill-index)
 [![Spec](https://img.shields.io/badge/spec-Agent%20Skills-0b7285)](#authoring-a-skill)
 [![CI](https://img.shields.io/badge/CI-validator%20%2B%20secret%20scan%20%2B%20shellcheck%20%2B%20playwright-2b8a3e)](#continuous-integration)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-**32 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
+**35 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
 UX and conversion reviews, requirements interviews, documentation generation, content production,
 and the meta-work of building and maintaining skills themselves.
 
@@ -17,7 +17,7 @@ at a time.
 
 | | |
 |---|---|
-| **Skills** | 32 |
+| **Skills** | 35 |
 | **Bundled reference files** | 80 |
 | **Templates & assets** | 8 |
 | **Executable scripts** | 21 (12 shell, 8 Python, 1 Node) |
@@ -71,6 +71,7 @@ flowchart LR
         GS[gap-scan]
         FE[fresh-eyes]
         CS[cover-story]
+        SS[secret-shopper]
     end
 
     subgraph DOC["📚 Documentation"]
@@ -112,6 +113,7 @@ flowchart LR
     WA -->|first-visit confusion| FE
     CS -->|spoiler-free brief| FE
     FE -.checked against envelope.-> CS
+    SS -.expert follow-up.-> UX1
 
     BTI -->|opinion packet| SEO
     SEO -.scored by.-> AID
@@ -130,7 +132,7 @@ flowchart LR
     classDef meta fill:#e5e7eb,stroke:#374151,color:#111
     class SW,HS,NK,CC,WB,WBH disc
     class CA,TA,TS code
-    class WA,UX1,UO,CV,FE,CS ux
+    class WA,UX1,UO,CV,FE,CS,SS ux
     class TE,EL,WG doc
     class WLT,BTI,SEO,AID,CSB cont
     class NS,SSA,GPP,HO,EA,SRS,SRP meta
@@ -206,6 +208,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **conversion-audit** — audits a page against the ONE action it wants, using five cold-read persona agents and a belief-chain map
 - **fresh-eyes** — genuine first-time-user test that protects its own ignorance and logs every confusion at the moment of impact
 - **cover-story** — writes the spoiler-free brief a fresh-eyes tester is handed, plus a sealed envelope of everything deliberately withheld
+- **secret-shopper** — a regular customer drives the live site in a real browser, does real tasks, and logs every "what does this do?" in plain words, phone-first
 - **gap-scan** — finds the features that obviously should exist but don't, as a ranked punch list with a status-carrying `gap_packet.json` that can be rechecked later
 
 ### Documentation
@@ -265,6 +268,7 @@ website-audit (QA mode)
    ├─ ui-oddity-scan    (top 3 pages — per-page copy and layout oddities)
    ├─ ux-audit          (flow-level friction)
    ├─ conversion-audit  (does every element serve the ONE action?)
+   ├─ secret-shopper    (a regular customer tries the real tasks, phone-first)
    └─ cover-story  →  fresh-eyes  →  compare the report against the sealed envelope
 ```
 
@@ -817,6 +821,38 @@ term definition, sequencing, warning, or capability explanation.
 **Bundle** — `SKILL.md` only.
 
 **Not for** — Running the test (`fresh-eyes`) or writing real docs (`eli5-features`).
+</details>
+
+<details>
+<summary><b>secret-shopper</b> — a regular customer tries the real site and says what trips them up</summary>
+
+**What it does** — Drives the live site or web app in a real browser as an informed layperson who
+knows the field and how websites work but nothing about this product, does real tasks, and logs
+every "what does this do?", "why is this here twice?", and "did that work?" in plain words.
+
+**Say something like** — "secret shop this", "test it like a regular customer", "layman test",
+"click around and tell me what's confusing", "try to book X and tell me how it goes".
+
+**Input** — An entry point (URL, invite link, localhost) and optional tasks. A browser tool — Claude
+in Chrome, Playwright, or chrome-devtools MCP — with screenshots or a recording as the fallback.
+
+**Output** — A TL;DR-first report: persona card, first look, task results (easy / struggled / gave
+up / blocked / hard stop), a chronological moments log tagged WHAT'S THIS?, HUH?, TWICE?, DID IT
+WORK? and more, each rated Blocker / Slowdown / Papercut, then questions for the builder, what was
+easy, and three to five out-of-character fixes. Saved as `secret-shopper-<site>-<date>.md`.
+
+**Mechanics** — Nine in-character rules block the ways AI testers fail: eyes only (the DOM doesn't
+count until it's on screen), scan like a person, no typed URLs, predict-then-tap, no asking for help
+mid-run, plain voice, a real patience budget with a determined mode after giving up, no invented
+problems, and hard stops (passwords, payments, accounts, and deletes stay with you; final submits
+only when you asked). Tasks are rewritten in the shopper's words so the site's labels don't give the
+answer away. Phone-size by default for websites, desktop for apps.
+
+**Bundle** — `references/browser-playbook.md` (tool choice, viewport, the per-step loop, hard-stop
+mechanics, localhost and no-browser fallbacks), `agents/openai.yaml` (Codex display metadata).
+
+**Not for** — Zero-context cold reads of docs or code (`fresh-eyes`), expert audits (`ux-audit`),
+element-level page scans (`ui-oddity-scan`), or persuasion (`conversion-audit`).
 </details>
 
 <details>
