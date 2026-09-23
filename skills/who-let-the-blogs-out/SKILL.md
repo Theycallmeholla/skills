@@ -3,8 +3,8 @@ name: who-let-the-blogs-out
 description: >
   Blog and web-content system for agency work — plan topics, interview the author for
   their real take, brief the angle, draft the article, plan images, verify claims, score
-  drafts for quality and AI tells, revise, export into the site's code, publish, and refresh aging posts. Shorthand
-  "wltbo" also triggers it. Commands share a per-client memory of brand voice,
+  drafts for quality and AI tells, revise, export to site code, publish, and refresh aging
+  posts. "wltbo" also triggers it. Commands share a per-client memory of brand voice,
   the author's positions and stories, verified facts with expiry dates, and every
   published post. Use for blog posts, articles, long-form content, refreshes, keyword
   targeting, search intent, titles and H1s, meta descriptions, internal linking,
