@@ -1,6 +1,8 @@
 # Plan
 
-Returns 3–5 candidate topics — each with a primary keyword, an intent, a format-fit verdict, and a cannibalization decision — plus a reserved slug for the ones worth writing. Not an outline.
+Gives the best topics and angles to write next, and why each one is worth it — 3–5 candidates, each with a primary keyword, an intent, a format-fit verdict, and a cannibalization decision, plus a reserved slug for the ones worth writing. Not an outline.
+
+**If the user has already chosen, this command is done.** "Let's start on the first one," "do #2," "the GBP one" — that is a selection. Under Rule 10 of `governing-rules.md`, reserve the slug, write the post record, and move to the next useful step. Do not re-run candidate generation, do not re-present the list, and do not ask them to confirm a choice they just made.
 
 **Reads:** `.blog/registry.json` · `.blog/clients/<client>/brand.md` · SERP (web search)
 **Writes:** `.blog/posts/<slug>/post.json` (status `idea`) · `.blog/registry.json`
@@ -118,14 +120,16 @@ If `posts/<slug>/` already exists, don't overwrite it. Report what's there, pick
 
 Rank the `create` candidates on four things, in this order:
 
-1. **Does the client have something first-hand to bring?** A keyword where they have no story, no data, and no scar tissue produces a generic article no matter how well it's written. The 500-companies test starts here, not at review.
+1. **Does the client have something first-hand to bring?** A keyword where they have no story, no data, and no scar tissue produces a generic article no matter how well it's written. The author-value check starts here, not at review.
 2. **Buyer proximity** — how close is this searcher to needing what the client sells?
 3. **Beatability** — is the ranking set weak, dated, or repetitive, or is it three excellent pages from people with more authority?
 4. **Internal-link fit** — does anything already published naturally point at this, and vice versa?
 
 Recommend one to run next, in one or two sentences, and give the literal next command: `who-let-the-blogs-out interview <slug>`.
 
-Then stop. Don't run it.
+Then stop. Don't run it — **unless the user already told you which one they want**, in which case the recommendation phase is moot and you proceed to that post's next step. Rule 10.
+
+**Capture the business purpose while you have it.** For the recommended candidate, note who it is for, which service it sits beside, and what the reader should do at the end. It is priority 4, `brief` needs it, and it is cheap to write down now.
 
 ### Cadence
 

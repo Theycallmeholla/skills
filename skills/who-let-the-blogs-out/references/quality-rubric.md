@@ -1,6 +1,6 @@
 # Quality Rubric
 
-Loaded by `review` when scoring a draft and by `refresh` when judging whether an aging post still holds up. Score the draft across these weighted categories. The weighting is the point: a perfectly formatted article with no original insight fails; a useful, authoritative article with a 163-character meta description does not. Fix the weakest high-weight category first.
+Loaded by `review` when scoring a draft and by `refresh` when judging whether an aging post still holds up. Scores here are a safeguard at priority 8 — they measure how well the article does its job. They never decide what the article's job is. Score the draft across these weighted categories. The weighting is the point: a perfectly formatted article with no original insight fails; a useful, authoritative article with a 163-character meta description does not. Fix the weakest high-weight category first.
 
 | Category | Weight |
 |---|---:|
@@ -15,6 +15,7 @@ Loaded by `review` when scoring a draft and by `refresh` when judging whether an
 
 ## Intent satisfaction (20%)
 
+- **Does the article argue the thesis it was given?** A draft that drifted into a different argument fails this category outright, however well it executes the other one. This is priority 1 and it is checked first.
 - Does the article deliver the outcome the searcher wanted — an answer, a decision, a plan — not just words about the topic?
 - Was the format-fit question honestly answered? If a blog post was the wrong page type, was that flagged?
 - Would a reader arriving from this query leave satisfied, or search again?
@@ -25,13 +26,15 @@ Loaded by `review` when scoring a draft and by `refresh` when judging whether an
 - Every material claim verified, qualified, or removed — no unresolved claim-ledger rows.
 - Statistics and time-sensitive facts carry current, dated, preferably primary sources.
 - No fabricated experience, credentials, outcomes, quotes, or case studies.
+- **No source over-reach.** Every sourced claim sits in the band its evidence supports — explicit, reasonably implied, or openly uncertain. A source's silence is never written as a denial; a scoped instruction is never written as a general rule; a one-paragraph qualifier is never promoted to the article's headline. See the hierarchy in `references/evidence-rules.md`.
 - Competing SEO articles used for positioning only, never as factual backbone.
 - YMYL topics: authoritative sources only, education distinguished from advice, expert review recommended.
 
 ## Original value (15%)
 
 - The stated unique value is actually delivered in the article, not just promised.
-- At least one meaningful element the ranking pages don't provide.
+- At least one meaningful element the ranking pages don't provide. Any of these counts equally: first-hand experience · better examples · proprietary observations · useful synthesis · clearer explanations · better frameworks · screenshots · original diagrams · case patterns · operator experience · original data · practical recommendations · implementation details · business-specific perspective.
+- **Disagreement is not required and never manufactured.** A contrarian claim not supported by the packet or the bank is scored as a `fabrication`, not as original value.
 - Where original value depends on client input, the gap is honestly flagged under "Client evidence needed" instead of papered over.
 
 ## Completeness and usefulness (15%)
@@ -55,8 +58,8 @@ Loaded by `review` when scoring a draft and by `refresh` when judging whether an
 - Voice matches the brand and the audience's sophistication level.
 - Verified business expertise is used where the user's context supports it; nothing is invented.
 - The article sounds like the brand's expert wrote it, not like every other AI SEO article.
-- Passes the 500-companies test: swapping the company name and city would break the article. If it wouldn't, this category fails regardless of polish.
-- At least one genuine stance or judgment; basics the intended reader already knows are not re-explained.
+- **Author-value check:** the article contains meaningful value specific to this author or business — real experience, a real example, a real number, a real process, or a perspective only they have. Swapping the company name should cost the article something. If it wouldn't, this category fails regardless of polish, and the fix is more of the author, never a manufactured disagreement.
+- At least one genuine judgment the author actually holds; basics the intended reader already knows are not re-explained. Agreement with the consensus is not a failure — a stance the packet doesn't support is.
 
 ## Conversion alignment (5%)
 

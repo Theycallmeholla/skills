@@ -4,12 +4,13 @@ Generation-side rules for writing that survives close reading. Detection lists d
 
 The governing principle: **no single phrase marks writing as AI — a cluster of patterns does, and the strongest tells are absences, not words.** No stance, no texture, no evidence trail, no audience awareness. Specificity is the tell-killer; lexicon fixes are cosmetics on top. Every article must pass two tests:
 
-1. **The 500-companies test.** Could this article be published by 500 different companies after swapping the company name and city? If yes, rewrite — it has no voice and no value regardless of how clean it reads.
-2. **Information gain.** Does the reader learn something not available on page one of the SERP? (Enforced by the research protocol; restated here because it is also the strongest anti-tell.)
+1. **The author-value check.** Does the article contain meaningful value specific to this author or business — real experience, a real example, a real number, a real process, a perspective only they have? If swapping the company name would cost the article nothing, strengthen it with more of the author. **Never by manufacturing a disagreement.**
+2. **Information gain.** Does the reader learn something not available on page one? First-hand experience, better examples, clearer explanations, real frameworks, screenshots, original data, and implementation detail all count. Disagreeing with somebody is not required and is not a substitute.
 
 ## Point of view (most important)
 
 - Take **at least one defensible stance** a competitor's article wouldn't publish: which option is overrated, which common advice fails in practice, which tradeoff most articles ignore. An expert risks being wrong; a content mill doesn't.
+- **Every stance must be one the author actually holds** — in `packet.md` or the opinion bank. A stance invented to satisfy this rule is a `fabrication`, and it is a worse outcome than a draft with no stance at all, because it reads better. Where the author has no quarrel with the consensus, the piece takes its stance on *how* to do the thing, not on *who is wrong about it*.
 - Don't equal-weight weak positions. If one approach is better for most readers, say so and say for whom the exception applies.
 - Replace hedges with conditions. Not "results typically vary" but "if your lot is under a quarter acre, skip this entirely." "Typically", "in most cases", "more often than not" are hedge-flags — each one should become a concrete condition or a confident claim.
 - Measured criticism is allowed and valuable. Relentless positivity — every option an "exciting opportunity" — is a tell in itself.
@@ -57,8 +58,10 @@ This list is a moving target — models migrate to new safe words as old ones ge
 
 Run against the finished draft; fix before delivering:
 
-- [ ] 500-companies test passed — swap the name and the article breaks
-- [ ] At least one real stance taken; no silly position given equal weight
+- [ ] Argues the thesis it was given — not a more interesting one found during research
+- [ ] Author-value check passed — swap the name and the article loses something real
+- [ ] At least one real stance, and it is one the packet or bank actually records
+- [ ] No manufactured disagreement; no claim stronger than its source supports
 - [ ] At least one edge case / failure mode / tradeoff covered
 - [ ] Every "typically"-class hedge converted to a condition or confident claim
 - [ ] No placeholder-name anecdotes; no "studies show" without a citation

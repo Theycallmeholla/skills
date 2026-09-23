@@ -4,6 +4,8 @@ Loaded when blog is invoked with no command. The job is to answer "what should I
 
 **Never auto-run a command from here.** A bare invocation is a question. Answering it by doing something is how a system loses trust in its first week.
 
+**A bare invocation is not the same as an invocation with intent attached** (`references/governing-rules.md`, Rule 10). `wltbo` alone is a question. `wltbo lets get started on the first one` is an instruction, and it routes to the work — not to this menu. Under Rule 10, an argument that names a choice the user already made is a choice already made. Read the state, find what they mean, and do the next useful thing.
+
 ## Procedure
 
 1. Read `.blog/registry.json`. If it's missing, that's case A below — don't read anything else.
@@ -69,7 +71,9 @@ Keep it short. This file is loaded on every bare invocation, which is the most f
 
 ## Reporting drift
 
-If the registry disagrees with the records — a post listed as `published` with no URL, a `currentVersion` pointing at a draft that doesn't exist, a client directory with no registry entry — say so in one line and continue presenting the menu.
+If the registry disagrees with the records — a post listed as `published` with no URL, a `currentVersion` pointing at a draft that doesn't exist, a client directory with no registry entry — note it and continue presenting the menu.
+
+**Surface it to the user only when it changes what they should do next.** A `currentVersion` pointing at a missing draft changes the menu, so say it in plain words. A stale timestamp does not, so keep it internal. Rule 9.
 
 Do not repair it. Rule 5 of the state contract applies here as much as anywhere: someone asking "what should I do?" has not asked for six files to be rewritten.
 

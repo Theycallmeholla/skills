@@ -8,6 +8,19 @@ Rules for maintaining this file:
   `S-###` for war stories. Monotonic per client, never reused, never renumbered — drafts cite these
   IDs in their `uses_bank` front matter, which is how a superseded position gets traced to the posts
   still arguing it. Voice fingerprints and boundaries get no IDs; nothing cites them individually.
+- **Every `P-` and `S-` entry carries a provenance line**, directly under the heading:
+  `*Provenance: stated | selected | confirmed | demonstrated — <where it came from>*`
+  - `stated` — the author wrote the position themselves
+  - `selected` — the author picked an option that stated it
+  - `confirmed` — a wording was proposed and they clearly agreed
+  - `demonstrated` — they gave an example that plainly carries it
+- **Nothing else may become an entry.** Not assistant inference, not a research conclusion, not an
+  assistant recommendation, not a reading of the author's confusion, not "probably believes", not
+  silence, not the absence of an objection.
+- **Material the author pasted is not the author speaking.** A doc excerpt, another tool's output, or
+  an article forwarded into the conversation is the *source's* words. It goes to the post's
+  `claims.json` or `research-vN.md` with its real origin — never here, and never quoted back as
+  "in his words." An entry that cannot name its provenance is not written; it is recorded as a gap.
 - Store durable material only — standing positions and reusable stories, not one-off post details.
 - Numbers do not live here. Prices, timelines, thresholds, and measurable results go to `facts.json`, where they carry a verification date and an expiry. A number in prose can't be checked for staleness; a number in the vault can.
 - Keep the author's actual wording. This file is a voice archive, not a summary.
@@ -28,6 +41,8 @@ Rules for maintaining this file:
 
 <!-- The author's core beliefs about their field. Format:
 ### [Topic] (P-001, YYYY-MM)
+*Provenance: stated — asked what he tells clients about X, 2026-09 interview.*
+
 Position in the author's own words. -->
 
 ## Contrarian takes
@@ -39,6 +54,8 @@ Position in the author's own words. -->
 <!-- Real client stories, projects, mistakes, results. These are the ONLY experiences
 that may ever be presented as first-hand in published content. Format:
 ### [Short story title] (S-001, YYYY-MM)
+*Provenance: demonstrated — described the job unprompted, 2026-09 interview.*
+
 What happened, with the specifics. Note any anonymization the author requested. -->
 
 ## Voice fingerprints

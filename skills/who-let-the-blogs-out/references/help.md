@@ -20,7 +20,7 @@ For a brand-new post, in order:
 interview   →   brief   →   write   →   review   →   revise   →   publish
 ```
 
-- **interview** — asks what you actually think about the topic. Your opinions, your war stories, your real numbers, and what you refuse to say. Takes 8–12 questions, in small batches.
+- **interview** — asks what you actually think about the topic. Your opinions, your war stories, your real numbers, and what you refuse to say. Two or three questions at a time, and only ones it can't answer from what you've already told it.
 - **brief** — reads the pages already ranking for the topic, picks the angle, and commits to the list of questions the article must answer. This is the cheap thing to reject before an expensive draft exists.
 - **write** — drafts the article from the brief and that research. It can only claim experience you actually gave it. **Scores itself automatically when it's done** — you get the draft and the findings together.
 - **review** — scores the draft two ways and lists what's wrong. It never edits.
@@ -63,7 +63,14 @@ Plus an index of every post published, which is what makes "you already wrote th
 
 - It does not push to WordPress or any CMS. It produces the file; a human ships it.
 - It does not invent experience. If you didn't say it, it won't claim it.
+- It does not change what your post argues. You say what the article is about; research can qualify a claim inside it, but it can't quietly turn your post into a different one.
+- It does not save an opinion as yours unless you actually said it, picked it, or agreed to it. Something you pasted in for it to read is a source, not your opinion.
+- It does not make you decide things an editor should decide. If a call is ordinary, it makes it and tells you.
 - It does not write social posts, emails, or case studies. Those are other skills.
+
+### If it's talking like a robot
+
+Say so. "Talk to me like I'm an idiot," "I don't understand," or just "what?" makes it shorter and plainer for the rest of the session — that's a rule, not a courtesy. It should also never be reading you ID numbers and scores unless you asked for them.
 
 ## Shorthand
 

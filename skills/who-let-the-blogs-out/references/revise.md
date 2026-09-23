@@ -21,6 +21,7 @@ Pull every finding with `status: "open"`. Findings already `resolved` or `accept
 
 Then load, without restating them:
 
+- `references/governing-rules.md` — the priority order. Rule 1 in particular: **a finding is never closed by changing what the article argues.** If a finding appears to require a different thesis, it is the finding that is wrong, and it gets escalated, not applied.
 - `references/voice-and-tells.md` — the rulebook you are fixing toward. Its **What NOT to do** section is the specific trap this command falls into, so read that section twice.
 - `references/evidence-rules.md` — the three tiers. You will be rewriting sentences that got flagged for tier drift, and the rewrite has to land in a real tier.
 
@@ -31,7 +32,7 @@ Read `packet.md`, the client's `facts.json`, and `opinion-bank.md` **before** yo
 Severity says how bad a finding is. Impact says how much the draft improves per edit, and those are different numbers. Work in these tiers, using severity only to break ties inside a tier:
 
 1. **Blocking:** `boundary` and `fabrication`. They stop `publish` outright and they cannot be accepted. Phase 3 governs them.
-2. **Findings whose fix changes what the article says:** `original-value`, `completeness`, `accuracy`, `intent`, and any `voice-tells` finding about stance, texture, or the 500-companies test. `review` carries this insight forward from the tells model: the strongest tells are absences — no position, no specifics, no evidence trail. Adding one real stance moves `substance` at 35% weight. Deleting nine instances of "leverage" moves `lexicon` at 8%.
+2. **Findings whose fix changes what the article says:** `original-value`, `completeness`, `accuracy`, `intent`, and any `voice-tells` finding about stance, texture, or author-specific value. `review` carries this insight forward from the tells model: the strongest tells are absences — no position, no specifics, no evidence trail. Adding one real stance moves `substance` at 35% weight. Deleting nine instances of "leverage" moves `lexicon` at 8%.
 3. **Findings about how it says it:** `structure`, `brand-fit`, `conversion`, rhythm and construction `voice-tells`.
 4. **Cosmetic:** lexicon hits, `technical-seo` field tweaks, `media` placement.
 
@@ -45,7 +46,8 @@ The characteristic failure of this command is closing a tells finding by install
 
 - `voice-tells` says the draft hedges. You change "results typically vary" to "results can vary depending on several factors." That is a longer hedge. The fix is a condition: *"if your lot is under a quarter acre, skip this entirely."*
 - `voice-tells` says there's no texture. You write "last spring a client in Katy called us at 11pm." Nothing in the packet says that. You have closed a `voice-tells` finding by committing a `fabrication` — a strictly worse draft that scores better.
-- `voice-tells` says there's no stance. You add "everyone telling you to do X is flat-out wrong." Manufactured contrarianism is forced sass, and it reads exactly as generated as omniscient neutrality does. A stance the author didn't take is a fabrication wearing a personality.
+- `voice-tells` says there's no stance. You add "everyone telling you to do X is flat-out wrong." Manufactured contrarianism is forced sass, and it reads exactly as generated as omniscient neutrality does. A stance the author didn't take is a fabrication wearing a personality. The legitimate fix is a stance the packet or bank actually records, or more specificity where the author has real experience — never an invented quarrel.
+- `original-value` says the article is generic. You reframe it as an argument against something the sources say. That closes a 15% finding by breaking priority 1 and priority 2 at once. Original value comes from the author's examples, numbers, and process — Rule 4.
 - `rhythm` says paragraphs are uniform. You chop sentences at random. Uneven rhythm comes from cutting what is padding and expanding where the expertise is, so length follows value.
 - Any temptation toward deliberate typos, "humanizing" mess, or edits aimed at a detector. The target is writing that survives close reading by an expert in the subject. A classifier is not the reader.
 
@@ -95,46 +97,39 @@ Optional smoke check: `python3 scripts/tells_metrics.py posts/<slug>/draft-v3.md
 
 ## Output
 
-The new draft file, plus this in chat:
+The new draft file, plus the changelog — and the changelog is written to `review-v<N>.json`'s resolution fields, not read aloud in full.
+
+### What the user sees
+
+Load `references/reporting.md`. Short, in plain words, and about the article rather than the record:
 
 ```
-## local-seo-location-pages — draft-v2 → draft-v3
+## why-respond-to-google-reviews — v2 → v3
 
-**9 findings: 6 resolved · 1 accepted · 2 still open**
+Fixed 6 of 9. What changed that's worth knowing:
+- Cut the "dozens of clients" line — you never told me that.
+- The middle section now argues your position: reply to everything, make each one real.
+- Answered the two reader questions it was ducking: upkeep cost, and what to do about a review you can't fix.
 
-### Changelog
-BL-014  fabrication     resolved   opening, ¶2
-        was  "we've rebuilt this for dozens of clients"
-        now  cut — no packet line or first-hand fact behind it
+Still open (2) — neither is closable by rewriting:
+- The "cuts bounce ~20%" number has no source. Cut it, or tell me where it's from.
+- Reader question 3 needs a maintenance cost the packet doesn't have.
 
-BL-011  original-value  resolved   H2 'What Google actually wants'
-        was  restated the ranking pages with no added judgment
-        now  takes the packet's position that title rewrites are a
-             relevance signal worth reading, not a bug to fight
+You're living with one thing on purpose: the 40-page rollout timeline isn't in there, carried as client-evidence-needed.
 
-(one block per finding: ID, category, new status, location, was → now)
-
-### Accepted
-BL-009  completeness — client hasn't supplied the 40-page rollout timeline.
-        Shipping without it, carried as client-evidence-needed. Author, 2026-08-01.
-
-### Still open — carried into the next review under these IDs
-BL-006  fabrication  high  — "cuts bounce roughly 20%" has no source.
-        Not closable by rewriting. Run `verify`, or cut the number.
-BL-013  completeness medium — reader question 3 needs the maintenance
-        cost the packet doesn't have. Run `interview`.
-
-### Unflagged edits
-Tightened two paragraphs in the intro while rewriting around BL-011.
-
-Written: posts/local-seo-location-pages/draft-v3.md ·
-         review-v2.json (finding status fields only) ·
-         post.json (currentVersion 3) · registry.json (openFindings: 2)
-Then: review ran automatically on draft-v3 — see its scores above.
+Draft: .blog/posts/why-respond-to-google-reviews/draft-v3.md
 ```
 
-The changelog is the deliverable, not the draft. A revision nobody can audit is a revision nobody trusts, and "applied the feedback" is not auditable. Every ID gets a line, including the ones that didn't move — a finding that silently vanishes from the report is indistinguishable from one that was quietly ignored.
+Rules for that response:
+
+- **Every finding is named by what it was about**, not by ID. The IDs are in the JSON, where the audit trail belongs.
+- **Report what is still open and why**, always — a finding that silently vanishes is indistinguishable from one quietly ignored. But say it as a thing to do, not as a record entry.
+- **Accepted findings get one line each**, in the user's terms.
+- **Unflagged edits get one line total** if there were any.
+- No `was → now` diff blocks by default, no category names, no severity labels, no file manifest, no open-count arithmetic.
+
+If the user asks for the full changelog, give them the whole thing — every ID, every before and after, every path written.
 
 ## Confirm and stop
 
-Apply the findings, version the draft, mark each one resolved or accepted — but never score the result, never trade one tell for another, and never close a fabrication or boundary finding by writing a more convincing version of it.
+Apply the findings, version the draft, mark each one resolved or accepted — but never score the result, never trade one tell for another, never close a fabrication or boundary finding by writing a more convincing version of it, and never close any finding by changing what the article argues.
