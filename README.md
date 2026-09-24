@@ -72,6 +72,7 @@ flowchart LR
         FE[fresh-eyes]
         CS[cover-story]
         SS[secret-shopper]
+        OSA[open-saysai]
     end
 
     subgraph DOC["📚 Documentation"]
@@ -210,6 +211,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **cover-story** — writes the spoiler-free brief a fresh-eyes tester is handed, plus a sealed envelope of everything deliberately withheld
 - **secret-shopper** — a regular customer drives the live site in a real browser, does real tasks, and logs every "what does this do?" in plain words, phone-first
 - **gap-scan** — finds the features that obviously should exist but don't, as a ranked punch list with a status-carrying `gap_packet.json` that can be rechecked later
+- **open-saysai** — audits how AI search and answer engines crawl, retrieve, and cite a site: per-crawler robots and WAF checks, citation readiness, clean-channel prompt tests, and a portable `ai_visibility_packet.json`
 
 ### Documentation
 
@@ -885,6 +887,41 @@ recheck can tell "moved" from "gone". RECHECK mode reloads the packet instead of
 **Not for** — Things that exist but are broken (`code-audit`), confusing (`ux-audit`), or
 unpersuasive (`conversion-audit`), or underexploited assets worth productizing (WWBD-style
 analysis).
+</details>
+
+<details>
+<summary><b>open-saysai</b> — audit how AI search and answer engines crawl, retrieve, and cite a site</summary>
+
+**What it does** — Treats AI visibility as a retrieval problem, not a magic ranking. Checks whether
+ChatGPT, Claude, Google AI, Copilot, and Perplexity crawlers can actually reach a site, whether its
+pages make good citable sources, and what original information would earn citations.
+
+**Say something like** — "why doesn't ChatGPT cite us", "AI visibility audit", "check our robots.txt
+for AI crawlers", "is our firewall blocking GPTBot", "GEO audit", "run a prompt visibility test".
+
+**Input** — A URL or domain is enough to start. Optional: target topics, prompts, Search Console or
+Bing data, server logs, or site code.
+
+**Output** — An executive finding, a platform access matrix that keeps robots policy, HTTP/WAF
+results, and index/citation evidence in separate columns, P0/P1/P2/Experimental findings each with
+evidence and an exact fix, citable-content opportunities, a prompt test suite, and a portable
+`ai_visibility_packet.json`.
+
+**Mechanics** — Keeps search crawlers, user fetchers, and training crawlers separate and never
+guarantees rankings. The probe computes robots decisions with longest-rule matching and `*`/`$`
+support, fetches the page once per crawler user agent against a real-browser baseline, and labels
+blocks that may only be fake-bot protection as Unverified rather than P0. Platform facts come from a
+dated cache that is reverified only when older than 90 days or in dispute. Prompt tests run only
+through a clean channel, never answered in the audit conversation itself; otherwise they are marked
+Not run. `llms.txt` is treated as experimental.
+
+**Bundle** — `scripts/probe_site.py` (page, robots, per-agent HTTP/WAF, and sitemap probe),
+`scripts/test_probe_site.py` (regression tests), `references/platforms.md` (dated platform cache),
+`references/audit-framework.md`, `references/output-templates.md`,
+`references/ai-visibility-packet.md`.
+
+**Not for** — Quick generic "how do I show up in ChatGPT" tips, or general non-AI site QA
+(`website-audit`).
 </details>
 
 ### Documentation
