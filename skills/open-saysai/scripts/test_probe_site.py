@@ -47,3 +47,12 @@ check('cf-mitigated header is a challenge', probe.classify_access({'status': 403
 check('403 challenge page is a challenge', probe.classify_access({'status': 403, 'headers': {}, 'text': '<title>Just a moment...</title>'})['state'] == 'blocked_or_challenged')
 check('plain 403 is blocked', probe.classify_access({'status': 403, 'headers': {}, 'text': 'Forbidden'})['state'] == 'blocked_or_limited')
 check('baseline uses a normal browser user-agent', 'Chrome/' in probe.BROWSER_UA and 'Open-SaysAI-Audit' not in probe.BROWSER_UA)
+
+agent_info = {'purpose': 'search/retrieval', 'ua': 'OAI-SearchBot'}
+reachable_entry = probe.build_agent_entry(agent_info, {'status': 200, 'headers': {}, 'text': '<h1>Hi</h1>'}, 'reachable')
+check('reachable agent result is labeled synthetic-UA evidence', reachable_entry['state'] == 'reachable' and reachable_entry['evidence_tier'] == 'synthetic_ua')
+check('reachable agent result carries no block caveat', 'spoofed_ua_caveat' not in reachable_entry)
+blocked_entry = probe.build_agent_entry(agent_info, {'status': 403, 'headers': {}, 'text': 'Forbidden'}, 'reachable')
+check('UA-only block gets spoofed-UA caveat', blocked_entry['state'] == 'blocked_or_limited' and 'spoofed_ua_caveat' in blocked_entry)
+error_entry = probe.build_agent_entry(agent_info, {'url': 'https://example.com', 'error': 'URLError: offline'}, 'unknown')
+check('network error stays unknown with synthetic-UA tier', error_entry['state'] == 'unknown' and error_entry['evidence_tier'] == 'synthetic_ua' and 'error' in error_entry)

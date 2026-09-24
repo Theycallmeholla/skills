@@ -372,6 +372,28 @@ SPOOFED_UA_CAVEAT = (
 )
 
 
+def build_agent_entry(info: dict, probe: dict, baseline_state: str) -> dict:
+    # Every per-agent result is synthetic-UA evidence: this machine presenting the crawler's
+    # user-agent. Neither "reachable" nor "blocked" says how the real crawler's IPs are treated.
+    entry = {
+        "purpose": info["purpose"],
+        "user_agent": info["ua"],
+        "evidence_tier": "synthetic_ua",
+        **classify_access(probe),
+    }
+    if "error" in probe:
+        entry["error"] = probe["error"]
+    else:
+        entry.update({
+            "status": probe.get("status"),
+            "final_url": probe.get("url"),
+            "headers": selected_headers(probe.get("headers", {})),
+        })
+    if baseline_state == "reachable" and entry["state"] in {"blocked_or_challenged", "blocked_or_limited"}:
+        entry["spoofed_ua_caveat"] = SPOOFED_UA_CAVEAT
+    return entry
+
+
 def parse_sitemap_xml(text: str) -> dict:
     try:
         root = ET.fromstring(text)
@@ -460,7 +482,8 @@ def main() -> int:
         "sitemaps": [],
         "notes": [
             "This probe does not prove search-engine index status or citation eligibility.",
-            "Per-agent fetches can reveal user-agent-based blocking, but they do not verify crawler IP ranges and cannot bypass a WAF/CAPTCHA.",
+            "Per-agent results are synthetic-UA evidence: requests from this machine presenting each crawler's user-agent. A reachable result does not prove the real crawler (from its own IP ranges) is accepted, and a blocked result does not prove it is refused. They do not verify crawler IP ranges and cannot bypass a WAF/CAPTCHA.",
+            "Sitemap url_count is per fetched file. Declared and common sitemap URLs can be the same file, and child sitemaps of a sitemap index are not fetched; do not sum counts across entries or treat them as the site's URL total.",
             "Robots decisions are computed from observed robots.txt using longest-rule matching with * and $ support; platform-specific exceptions still require current primary documentation.",
         ],
     }
@@ -504,22 +527,7 @@ def main() -> int:
     if not args.skip_agent_fetch:
         for name, info in agents.items():
             probe = fetch(url, args.timeout, info["ua"])
-            entry = {
-                "purpose": info["purpose"],
-                "user_agent": info["ua"],
-                **classify_access(probe),
-            }
-            if "error" in probe:
-                entry["error"] = probe["error"]
-            else:
-                entry.update({
-                    "status": probe.get("status"),
-                    "final_url": probe.get("url"),
-                    "headers": selected_headers(probe.get("headers", {})),
-                })
-            if baseline["state"] == "reachable" and entry["state"] in {"blocked_or_challenged", "blocked_or_limited"}:
-                entry["spoofed_ua_caveat"] = SPOOFED_UA_CAVEAT
-            result["agent_access"][name] = entry
+            result["agent_access"][name] = build_agent_entry(info, probe, baseline["state"])
 
     rob = fetch(robots_url, args.timeout)
     robots_parsed = None
