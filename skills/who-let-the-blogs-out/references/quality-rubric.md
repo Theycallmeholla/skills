@@ -49,7 +49,7 @@ Loaded by `review` when scoring a draft and by `refresh` when judging whether an
 - One H1; heading hierarchy is logical; headings reflect the searcher's questions and decisions, and skimming them tells the story.
 - No heading exists primarily to hold a keyword.
 - Paragraph lengths deliberately uneven; sections asymmetric where value is asymmetric; lists and tables only where they aid scanning — the article doesn't default to listicle form.
-- Opening leads with the reader's problem or payoff — no throat-clearing.
+- Opening leads with the reader's problem or payoff and delivers the answer — the recommendation, range, or verdict, with its governing condition — before the first H2. No throat-clearing, and no burying the answer under the setup.
 - **Sections stand on their own.** Each H2's central claim is recoverable without the section before it — the reader who lands mid-page from a search result, or skims to the heading matching their question, gets a complete answer there. Cross-references that add something are fine; a section whose point is *unavailable* without its predecessor is not. This is a reader-first rule, not chunking: no question-shaped headings are required, no word band applies, and a page split into small pieces to satisfy a formula fails this criterion rather than passing it.
 - Sentence lengths vary; claims made confidently; hedges converted to conditions; passes the full checklist in references/voice-and-tells.md (stance, texture, rhythm, constructions, lexicon).
 
@@ -58,12 +58,14 @@ Loaded by `review` when scoring a draft and by `refresh` when judging whether an
 - Voice matches the brand and the audience's sophistication level.
 - Verified business expertise is used where the user's context supports it; nothing is invented.
 - The article sounds like the brand's expert wrote it, not like every other AI SEO article.
-- **Author-value check:** the article contains meaningful value specific to this author or business — real experience, a real example, a real number, a real process, or a perspective only they have. Swapping the company name should cost the article something. If it wouldn't, this category fails regardless of polish, and the fix is more of the author, never a manufactured disagreement.
+- **Author-value check:** the article contains meaningful value specific to this author or business — real experience, a real example, a real number, a real process, or a perspective only they have. Swapping the company name should cost the article something. If it wouldn't, this category fails regardless of polish, and the fix is more of the author, never a manufactured disagreement. The mirror holds too: strip the company name and the article must still be worth reading — if it isn't, it is a pitch shaped like an article, and more of the author makes that worse, not better.
 - At least one genuine judgment the author actually holds; basics the intended reader already knows are not re-explained. Agreement with the consensus is not a failure — a stance the packet doesn't support is.
 
 ## Conversion alignment (5%)
 
-- CTA aligned to the stated business goal, placed where it follows naturally from the content.
+- CTA is the brief's `businessPurpose.readerAction`, placed where it follows naturally from the content.
+- CTA depth matches the post's `intent`: informational → next article, tool, or checklist; commercial → service or pricing page; transactional or local → quote or contact. A CTA that asks for more commitment than the intent supports is a mismatch even when it matches the business goal.
+- A missing CTA, or one mismatched to intent, is a `conversion` finding at `medium`. At 5% this category can't fail a post on its own; the finding is what gets it fixed.
 - Internal links help the reader continue a relevant journey (no quota-filling).
 
 ## Technical on-page SEO (5%)
