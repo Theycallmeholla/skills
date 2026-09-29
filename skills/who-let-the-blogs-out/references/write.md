@@ -42,11 +42,11 @@ Before drafting, build a working map (in your head or in scratch, not on disk): 
 
 - **One H1**, exactly the brief's `titleSet.h1`. Copy it; do not improve it.
 - **Dek** immediately under the H1 as a paragraph, not a heading — the brief's `titleSet.dek` verbatim.
-- **Opening:** lead with the reader's problem or a concrete payoff. No throat-clearing, no "in today's landscape." Work the primary keyword in naturally if it fits the sentence; if it doesn't, leave it out — it will appear on its own in a body that actually covers the subject.
+- **Opening:** lead with the reader's problem or a concrete payoff, then answer it before the first H2 — the recommendation, the range, the verdict, plus the one condition that changes it. A comparison opens on which wins for whom; a pricing post on the range; a how-to on the short version. Nobody searched for the introduction, so the reader never earns the answer by scrolling. No throat-clearing, no "in today's landscape." Work the primary keyword in naturally if it fits the sentence; if it doesn't, leave it out — it will appear on its own in a body that actually covers the subject.
 - **H2s are the brief's coverage targets**, phrased as the reader's questions rather than keyword slots. Order them the way the reader's thinking moves, not the way the outline happened to be typed.
 - **Paragraphs deliberately uneven**, sections asymmetric — the 400 words go where the real expertise is. Lists and tables only for genuinely parallel items.
 - **FAQ, conditional:** only when distinct questions remain that the body genuinely didn't answer. Never for length, keywords, or rich results — Google no longer shows FAQ rich results, so an FAQ added for schema is pure padding with a false justification attached.
-- **CTA** aligned to the business goal in `brand.md`, not a generic "contact us."
+- **CTA:** the brief's `businessPurpose.readerAction`, scaled to the post's `intent`. An informational reader gets the next article, a tool, or a checklist; a commercial reader gets the service or pricing page; a transactional or local reader gets the quote or the call. Never a generic "contact us," and never five steps ahead of where the reader is — someone learning what a service *is* does not need "book your strategy call now." One next step, placed where it follows from the content; `review` raises a `conversion` finding when it is missing or asks for more than the intent supports.
 
 ### Sections that stand on their own
 
