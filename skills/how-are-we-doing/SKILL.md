@@ -17,6 +17,7 @@ This skill works for any business. Everything specific to one business lives in 
 
 ```
 profile.json     sources + pointers to credentials (never values), market, people, noise
+.env             this business's API keys (from templates/.env.example); never committed
 notes.md         business context the reader must apply (why certain numbers mislead)
 watchlist.md     dated reads, parked changes, standing checks
 history/         one snapshot per run (<date>.json), the basis for "what changed"
@@ -30,7 +31,7 @@ clarity-calls.json  Clarity API call ledger (10/day limit)
 3. If several exist, use the one the user named. If they didn't name one, ask with AskUserQuestion.
 4. If none exists, or the user asks to add a business, run **Setup**.
 
-**Keep profiles private.** They hold client contact IDs and names. Before writing one inside a git repo, check `git check-ignore <path>`. If it isn't ignored, add `.claude/how-are-we-doing/` to that repo's `.gitignore` and tell the user you did. Deploy scripts that rsync through `.gitignore` also depend on this. Never copy a profile into the skills repo.
+**Keep profiles private.** They hold keys (`.env`), client contact IDs and names. Before writing one inside a git repo, check `git check-ignore <path>`. If it isn't ignored, add `.claude/how-are-we-doing/` to that repo's `.gitignore` and tell the user you did. Deploy scripts that rsync through `.gitignore` also depend on this. Never copy a profile into the skills repo.
 
 ## Setup (first run for a business)
 
@@ -38,9 +39,24 @@ Read `references/setup.md` and follow it. In short:
 1. Run `scripts/discover.py --root . --domain <domain>`. It finds the access that already exists: env key names, which Search Console and GA4 properties each service-account key can read, the site's tags (GA4, GTM, Clarity), sitemaps, and MCP servers.
 2. Ask only what discovery couldn't answer, with AskUserQuestion (the questionnaire is in `references/setup.md`).
 3. Write `profile.json` (start from `templates/profile.example.json`), `notes.md` and `watchlist.md`.
-4. Do a first pull, show it, and confirm the profile is right.
+4. Run `--check` (below) until nothing the user wants is broken. Show the table.
+5. Do a first pull, show it, and confirm the profile is right.
+
+## Connections: what it needs and what works
+
+```bash
+python3 <skill dir>/scripts/pull.py --profile <profile dir> --check
+```
+
+It lists every source this skill can read, with what that source needs and its status. Each status comes from one real test call, not from a key merely existing:
+`OK` connected · `WARN` to confirm (MCP- or browser-based, which the script can't call) · `FAIL` broken, with the exact error and the fix · `--` not set up, with how to add it.
+Clarity isn't live-tested by default (10 calls/day); add `--test-clarity` to spend one. For a `WARN` GA4-via-MCP row, make one tiny report call yourself (1 day, `sessions`) and report the result.
+Show this table whenever the user asks what's connected, what the skill needs, or why a source is missing.
+
 
 ## Run
+
+**0. Check.** Run `--check` first. A broken source is reported up front, not discovered halfway through the report. If everything is OK, say so in one line and move on.
 
 **1. Pull, all in one parallel batch.** Tell the user it takes about 10 s to 3 min; the first indexing pass is the slow part.
 
@@ -65,4 +81,4 @@ Read `references/setup.md` and follow it. In short:
 - **Counts at small volume.** 49 → 50 clicks is "flat". Don't turn single-digit changes into percentages.
 - **Leads come from the system of record** (the CRM or calendar), never from GA4 events alone. GA4 misses some and counts tests.
 - **Never guess an API, endpoint, or UI path.** `references/sources.md` holds what's been verified. Anything else gets checked against vendor docs first.
-- **Credentials:** read values only inside scripts, from the pointer in the profile. Never print, log, or store a value.
+- **Credentials:** read values only inside scripts, from the pointer in the profile. Never print, log, or store a value, and never ask for one in chat. The user pastes keys into the profile's `.env` themselves.

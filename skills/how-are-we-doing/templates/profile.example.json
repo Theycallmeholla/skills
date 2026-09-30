@@ -1,32 +1,74 @@
 {
-  "_comment": "Copy to <root>/.claude/how-are-we-doing/<slug>/profile.json. Credential fields are POINTERS only (env file + key name, or a key-file path). Delete any source that isn't set up.",
+  "_comment": "Copy to <root>/.claude/how-are-we-doing/<slug>/profile.json. Credential fields are POINTERS only: env_key alone = the profile's own .env; add env_file to read a project's existing env file instead; key_file = path to a Google service-account JSON. Delete any source that isn't set up.",
   "business": {
     "name": "Example Plumbing Co",
     "slug": "example-plumbing",
-    "domains": ["example.com"],
+    "domains": [
+      "example.com"
+    ],
     "what_it_sells": "Residential plumbing repair, water heaters, drain cleaning in Houston. Service pages: /water-heaters, /drain-cleaning, /emergency-plumbing.",
     "lead_definition": "A booked appointment on the GHL calendar. Soft signals: phone_click, form_submit."
   },
   "root": "../../..",
   "default_days": 28,
-  "market": { "description": "Houston homeowners", "gsc_country": "usa" },
+  "market": {
+    "description": "Houston homeowners",
+    "gsc_country": "usa"
+  },
   "sources": {
-    "gsc": { "site": "sc-domain:example.com", "key_file": "~/.config/gcloud-keys/<key>.json" },
-    "indexing": { "sitemap": "https://example.com/sitemap.xml" },
-    "ga4": { "property_id": "123456789", "method": "mcp", "mcp_tool": "<the GA4 run_report tool name>" },
-    "clarity": { "env_file": ".env.local", "env_key": "CLARITY_EXPORT_TOKEN", "project_id": "<id>", "dimensions": ["URL", "Channel"], "num_days": 3, "daily_budget": 8 },
-    "ghl": {
-      "env_file": ".env.local", "env_key": "GHL_PRIVATE_INTEGRATION_KEY", "location_id": "<location id>",
-      "calendar_ids": ["<calendar id>"], "pipeline_id": "<pipeline id>",
-      "count_tags": [], "report_tags": [], "report_tag_prefixes": ["source:"]
+    "gsc": {
+      "site": "sc-domain:example.com",
+      "key_file": "~/.config/gcloud-keys/<key>.json"
     },
-    "ahrefs_dr": { "env_file": ".env.local", "env_key": "AHREFS_API_KEY", "target": "example.com" },
-    "commands": { "list": [] }
+    "indexing": {
+      "sitemap": "https://example.com/sitemap.xml"
+    },
+    "ga4": {
+      "property_id": "123456789",
+      "method": "mcp",
+      "mcp_tool": "<the GA4 run_report tool name>"
+    },
+    "clarity": {
+      "env_key": "CLARITY_EXPORT_TOKEN",
+      "project_id": "<id>",
+      "dimensions": [
+        "URL",
+        "Channel"
+      ],
+      "num_days": 3,
+      "daily_budget": 8
+    },
+    "ghl": {
+      "env_key": "GHL_PRIVATE_INTEGRATION_KEY",
+      "location_id": "<location id>",
+      "calendar_ids": [
+        "<calendar id>"
+      ],
+      "pipeline_id": "<pipeline id>",
+      "count_tags": [],
+      "report_tags": [],
+      "report_tag_prefixes": [
+        "source:"
+      ]
+    },
+    "ahrefs_dr": {
+      "env_key": "AHREFS_API_KEY",
+      "target": "example.com"
+    },
+    "commands": {
+      "list": []
+    }
   },
   "browser": {
     "_comment": "Only what someone can actually log into. Claude reads these through a browser tool.",
-    "clarity_heatmaps": { "url": "https://clarity.microsoft.com/projects/view/<projectId>/dashboard", "browser": "<which browser/profile is signed in>" },
-    "google_business_profile": { "login": "<which Google account>", "business": "<profile name as shown>" }
+    "clarity_heatmaps": {
+      "url": "https://clarity.microsoft.com/projects/view/<projectId>/dashboard",
+      "browser": "<which browser/profile is signed in>"
+    },
+    "google_business_profile": {
+      "login": "<which Google account>",
+      "business": "<profile name as shown>"
+    }
   },
   "noise": {
     "queries_by_page": {},
@@ -37,9 +79,15 @@
     "internal_contact_ids": {},
     "internal_email_domains": [],
     "internal_emails": [],
-    "internal_tags": ["test"],
+    "internal_tags": [
+      "test"
+    ],
     "test_word_rule": true,
     "confirmed_real": {}
   },
-  "opportunity_rules": { "min_impressions": 20, "position_min": 4, "position_max": 20 }
+  "opportunity_rules": {
+    "min_impressions": 20,
+    "position_min": 4,
+    "position_max": 20
+  }
 }

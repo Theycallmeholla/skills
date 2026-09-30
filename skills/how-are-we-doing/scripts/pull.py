@@ -5,9 +5,10 @@ and print a compact summary that leads with what changed.
     python3 pull.py --profile <dir>            # the folder holding profile.json
     python3 pull.py --profile <dir> --days 7   # shorter windows
     python3 pull.py --profile <dir> --no-inspect
+    python3 pull.py --profile <dir> --check    # test every connection, list what's missing
 
-Profiles store POINTERS to credentials (env file + key name, key-file path),
-never values. Sources not enabled in the profile are skipped. A source that
+Profiles store POINTERS to credentials (a key name in the profile's .env or in
+another env file, or a key-file path), never values. Sources not enabled in the profile are skipped. A source that
 fails records its exact error and the rest still run.
 
 Sources here: gsc, indexing, ga4 (service_account method only), clarity,
@@ -58,18 +59,29 @@ def resolve(path):
     return p if p.is_absolute() else ROOT / p
 
 
+def env_path(ref):
+    """Where a key is read from: the profile's own .env unless the source
+    names another file (e.g. a project's existing .env.local)."""
+    return resolve(ref["env_file"]) if ref.get("env_file") else PDIR / ".env"
+
+
 def secret(ref):
-    """ref = {"env_file": ".env.local", "env_key": "NAME"} or {"env": "NAME"}."""
+    """ref = {"env_key": "NAME"} (profile .env), {"env_file": ".env.local",
+    "env_key": "NAME"}, or {"env": "NAME"} (shell environment)."""
     if ref.get("env"):
         v = os.environ.get(ref["env"])
         if not v:
             raise RuntimeError(f"environment variable {ref['env']} is not set")
         return v
-    f = resolve(ref["env_file"])
+    f = env_path(ref)
+    if not f.exists():
+        raise RuntimeError(f"{f} does not exist")
     for line in f.read_text().splitlines():
         if line.startswith(ref["env_key"] + "="):
-            return line.split("=", 1)[1].strip().strip('"').strip("'")
-    raise RuntimeError(f"{ref['env_key']} not found in {f}")
+            v = line.split("=", 1)[1].strip().strip('"').strip("'")
+            if v:
+                return v
+    raise RuntimeError(f"{ref['env_key']} is missing or empty in {f}")
 
 
 def section(fn, *a):
@@ -618,12 +630,142 @@ def summary(out, prev):
     return "\n".join(L)
 
 
+# ---------------------------------------------------------------- --check
+
+SOURCES = [
+    ("gsc", "Search Console", "Google service-account key file with Full access to the property",
+     "Add the key's client_email as a Full user: GSC > Settings > Users and permissions. Put the key JSON somewhere private and set sources.gsc.key_file."),
+    ("indexing", "Indexing", "Search Console access (Full) + a sitemap URL",
+     "Set sources.indexing.sitemap (discover.py lists it from robots.txt). Needs the GSC key as a Full user; Restricted can't run URL Inspection."),
+    ("ga4", "GA4", "a GA4 MCP tool, or a service-account key with Viewer on the property",
+     "GA4 Admin > Property access management > add the service account's client_email as Viewer, or connect a GA4 MCP server."),
+    ("clarity", "Clarity metrics", "CLARITY_EXPORT_TOKEN (Clarity project admin makes it)",
+     "Clarity > Settings > Data Export > Generate new API token. Paste it into the profile .env as CLARITY_EXPORT_TOKEN=..."),
+    ("ghl", "GoHighLevel (leads)", "GHL private integration token + location id",
+     "GHL sub-account > Settings > Private Integrations: token with contacts, calendars/events and opportunities read. Paste into the profile .env as GHL_PRIVATE_INTEGRATION_KEY=..."),
+    ("ahrefs_dr", "Domain Rating", "AHREFS_API_KEY (free tier works)",
+     "Ahrefs account > API keys. Paste into the profile .env as AHREFS_API_KEY=..."),
+]
+BROWSER_FIX = {
+    "clarity_heatmaps": ("Clarity heatmaps", "Someone signs into clarity.microsoft.com in a browser Claude can drive; list it under browser.clarity_heatmaps."),
+    "google_business_profile": ("Business Profile", "Someone signs into the profile's Google account in a browser Claude can drive; list it under browser.google_business_profile."),
+}
+
+
+def check_source(key, clarity_live):
+    """(status, detail) from one real call. 'ok', 'warn' or 'fail'."""
+    cfg = enabled(key)
+    if key == "gsc":
+        tok = sa_token(cfg["key_file"], "webmasters.readonly")
+        sites = {s["siteUrl"]: s.get("permissionLevel") for s in
+                 http("GET", "https://www.googleapis.com/webmasters/v3/sites", {"Authorization": f"Bearer {tok}"}).get("siteEntry", [])}
+        if cfg["site"] not in sites:
+            return "fail", f"key can't see {cfg['site']} (it sees: {', '.join(sites) or 'nothing'})"
+        return "ok", f"{cfg['site']} readable ({sites[cfg['site']]})"
+    if key == "indexing":
+        gsc = enabled("gsc") or {}
+        site, kf = cfg.get("site") or gsc.get("site"), cfg.get("key_file") or gsc.get("key_file")
+        tok = sa_token(kf, "webmasters.readonly")
+        urllib.request.urlopen(urllib.request.Request(cfg["sitemap"], headers={"User-Agent": UA}), timeout=30).read(200)
+        home = "https://" + P["business"]["domains"][0] + "/"
+        r = http("POST", "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect",
+                 {"Authorization": f"Bearer {tok}"}, {"inspectionUrl": home, "siteUrl": site})
+        v = r.get("inspectionResult", {}).get("indexStatusResult", {}).get("coverageState")
+        return "ok", f"sitemap loads; test inspection of {home} works ({v})"
+    if key == "ga4":
+        if cfg.get("method") == "mcp":
+            return "warn", f"read through MCP tool {cfg.get('mcp_tool')}; the script can't call MCPs, Claude tests it with one tiny report"
+        tok = sa_token(cfg["key_file"], "analytics.readonly")
+        r = http("POST", f"https://analyticsdata.googleapis.com/v1beta/properties/{cfg['property_id']}:runReport",
+                 {"Authorization": f"Bearer {tok}"}, {"dateRanges": [{"startDate": str(dt.date.today() - dt.timedelta(days=1)), "endDate": str(dt.date.today() - dt.timedelta(days=1))}],
+                                                      "metrics": [{"name": "sessions"}]})
+        rows = r.get("rows") or []
+        return "ok", f"property {cfg['property_id']} readable (yesterday: {rows[0]['metricValues'][0]['value'] if rows else 0} sessions)"
+    if key == "clarity":
+        secret(cfg)  # raises if the key is missing
+        ledger_f = PDIR / "clarity-calls.json"
+        if not clarity_live:
+            last = None
+            for h in sorted((PDIR / "history").glob("*.json"), reverse=True):
+                if "pages" in (json.loads(h.read_text()).get("clarity") or {}):
+                    last = h.stem
+                    break
+            if last:
+                return "ok", f"key present; last successful pull {last} (live test skipped: Clarity allows 10 calls/day; use --test-clarity)"
+            return "warn", "key present, never used successfully; run --check --test-clarity (spends 1 of 10 daily calls)"
+        http("GET", "https://www.clarity.ms/export-data/api/v1/project-live-insights?numOfDays=1&dimension1=Device",
+             {"Authorization": f"Bearer {secret(cfg)}"})
+        led = json.loads(ledger_f.read_text()) if ledger_f.exists() else {}
+        led[dt.date.today().isoformat()] = led.get(dt.date.today().isoformat(), 0) + 1
+        ledger_f.write_text(json.dumps(led))
+        return "ok", "live test call worked (1 of today's 10 used)"
+    if key == "ghl":
+        g = Ghl(cfg)
+        r = http("POST", f"{GHL}/contacts/search", g.h28, {"locationId": cfg["location_id"], "page": 1, "pageLimit": 1})
+        parts = [f"contacts readable ({r.get('total')} total)"]
+        if cfg.get("pipeline_id"):
+            pipes = http("GET", f"{GHL}/opportunities/pipelines?locationId={cfg['location_id']}", g.h28).get("pipelines", [])
+            parts.append("pipeline found" if any(p["id"] == cfg["pipeline_id"] for p in pipes) else "PIPELINE ID NOT FOUND")
+        if cfg.get("calendar_ids"):
+            now = int(time.time() * 1000)
+            for cal in cfg["calendar_ids"]:
+                http("GET", f"{GHL}/calendars/events?locationId={cfg['location_id']}&calendarId={cal}&startTime={now}&endTime={now + 86400000}", g.h21)
+            parts.append(f"{len(cfg['calendar_ids'])} calendar(s) readable")
+        return ("fail" if "NOT FOUND" in " ".join(parts) else "ok"), "; ".join(parts)
+    if key == "ahrefs_dr":
+        return "ok", f"DR {pull_ahrefs()['domain_rating']} for {cfg['target']}"
+    raise RuntimeError(f"no check for {key}")
+
+
+def check(clarity_live=False):
+    ICON = {"ok": "OK  ", "warn": "WARN", "fail": "FAIL", "off": "--  "}
+    rows = []
+    for key, label, needs, fix in SOURCES:
+        if not enabled(key):
+            rows.append(("off", label, needs, "not set up. To add: " + fix))
+            continue
+        try:
+            st, detail = check_source(key, clarity_live)
+        except Exception as e:
+            st, detail = "fail", f"{type(e).__name__}: {e}. Fix: {fix}"
+        rows.append((st, label, needs, detail))
+    for c in (enabled("commands") or {}).get("list", []):
+        try:
+            r = subprocess.run(c["run"], shell=True, cwd=str(PDIR), capture_output=True, text=True, timeout=c.get("timeout", 120))
+            if r.returncode != 0:
+                raise RuntimeError(f"exit {r.returncode}: {r.stderr.strip()[-200:]}")
+            n = len(json.loads(r.stdout.strip().splitlines()[-1]))
+            rows.append(("ok", f"command: {c['name']}", c.get("run"), f"ran, {n} rows"))
+        except Exception as e:
+            rows.append(("fail", f"command: {c['name']}", c.get("run"), f"{type(e).__name__}: {e}"))
+    browser = {k: v for k, v in (P.get("browser") or {}).items() if not k.startswith("_")}
+    for k, (label, fix) in BROWSER_FIX.items():
+        if k in browser:
+            rows.append(("warn", label, "browser login", f"listed ({browser[k].get('browser') or browser[k].get('login')}); only confirmed when Claude opens it"))
+        else:
+            rows.append(("off", label, "browser login", "not set up. To add: " + fix))
+    for k, v in browser.items():
+        if k not in BROWSER_FIX:
+            rows.append(("warn", k, "browser login", "listed; only confirmed when Claude opens it"))
+
+    envf = PDIR / ".env"
+    print(f"CONNECTIONS for {P.get('business', {}).get('name')} (profile {PDIR})")
+    print(f"profile .env: {'present' if envf.exists() else 'none (sources point at other env files or none needed)'}")
+    for st, label, needs, detail in rows:
+        print(f"[{ICON[st]}] {label:<22} needs: {needs}\n         {detail}")
+    counts = Counter(r[0] for r in rows)
+    print(f"\n{counts['ok']} connected, {counts['warn']} to confirm, {counts['fail']} broken, {counts['off']} not set up")
+    return 1 if counts["fail"] else 0
+
+
 def main():
     global P, PDIR, ROOT
     ap = argparse.ArgumentParser()
     ap.add_argument("--profile", required=True, help="folder holding profile.json")
     ap.add_argument("--days", type=int, default=None)
     ap.add_argument("--no-inspect", action="store_true")
+    ap.add_argument("--check", action="store_true", help="test every connection and print what's missing; pulls nothing")
+    ap.add_argument("--test-clarity", action="store_true", help="with --check: make a live Clarity call (1 of 10/day)")
     a = ap.parse_args()
     PDIR = Path(a.profile).expanduser().resolve()
     P = json.loads((PDIR / "profile.json").read_text())
@@ -632,6 +774,8 @@ def main():
     root = os.path.expanduser(P.get("root", "../../.."))
     ROOT = Path(root) if os.path.isabs(root) else (PDIR / root).resolve()
     days = a.days or P.get("default_days", 28)
+    if a.check:
+        raise SystemExit(check(a.test_clarity))
 
     hist = PDIR / "history"
     hist.mkdir(exist_ok=True)

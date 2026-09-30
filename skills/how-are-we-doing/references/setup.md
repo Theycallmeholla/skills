@@ -43,7 +43,7 @@ Use **AskUserQuestion** (up to 4 questions per call; the user can always type "O
 4. *Which of these can Claude log into with the browser?* (multiSelect) Clarity dashboard, Google Business Profile, GA4 UI, other.
 
 **Round 2: access gaps** (only for sources the user wants that aren't ready)
-- Offer the exact fix from the table above: "add `<sa email>` to GSC as Restricted", "generate a Clarity export token and put it in `.env.local` as `CLARITY_EXPORT_TOKEN`". Never ask for a secret's value in chat. Ask the user to put it in an env file, and store only the file + key name.
+- Offer the exact fix from the table above, e.g. "add `<sa email>` to GSC as a Full user", "generate a Clarity export token". Never ask for a secret's value in chat. Copy `templates/.env.example` to `<profile>/.env` and have the user paste keys there. If a key already lives in the project's own env file (e.g. `.env.local`), point at it with `env_file` instead of duplicating it.
 
 **Round 3: what would mislead** (short, optional, skippable)
 - *Anything in the numbers we should ignore?* E.g. staff test bookings, internal email domains, bot-heavy channels, a page that ranks for the wrong audience, or a known ranking oddity. These go in `people` / `noise` and in `notes.md`.
@@ -56,7 +56,9 @@ Create `<root>/.claude/how-are-we-doing/<slug>/` from `templates/`:
 - `profile.json`: start from `templates/profile.example.json`. Delete sources that aren't set up rather than leaving placeholders. Credential fields are **pointers only**: `{"env_file": ".env.local", "env_key": "NAME"}`, `{"env": "NAME"}` for a shell variable, or `"key_file": "<path to SA json>"`. Relative paths resolve against `root` (default `"../../.."`, the project root for this folder layout).
 - `notes.md`: this business's reading context, in the owner's words where possible.
 - `watchlist.md`: dated items from Round 3, plus the standing checks that apply.
-- Gitignore check, as described in SKILL.md.
+- `.env`: copy `templates/.env.example` if any key isn't already in a project env file.
+- Gitignore check, as described in SKILL.md. The `.env` sits inside the profile folder, so ignoring `.claude/how-are-we-doing/` covers it. Confirm with `git check-ignore <profile>/.env`.
+- Run `pull.py --check` and fix every FAIL the user cares about before the first pull.
 
 ## 4. First pull
 
