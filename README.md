@@ -206,6 +206,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **website-audit** — end-to-end crawl and scored report in two modes: PROSPECT (outreach evidence plus a portable `audit_packet.json`) and QA (pre-launch ship gate)
 - **ux-audit** — reconstructs a flow from code, a live app, or a spec, then audits it across 11 phases for confusion, friction, and drop-off
 - **ui-oddity-scan** — per-page scan for repeated facts, restated sections, stray text, placeholder copy, and mismatched imagery, with pinned screenshot crops
+- **slop-scan** — renders a page and answers one question: does it visually have AI-generated-site fingerprints? Measures em dashes, heading accent words, gradients, glow, pills, icon tiles, card rows, rounding, and spacing rhythm, then removes them without swapping in the next cliché
 - **conversion-audit** — audits a page against the ONE action it wants, using five cold-read persona agents and a belief-chain map
 - **fresh-eyes** — genuine first-time-user test that protects its own ignorance and logs every confusion at the moment of impact
 - **cover-story** — writes the spoiler-free brief a fresh-eyes tester is handed, plus a sealed envelope of everything deliberately withheld
@@ -923,6 +924,40 @@ Not run. `llms.txt` is treated as experimental.
 
 **Not for** — Quick generic "how do I show up in ChatGPT" tips, or general non-AI site QA
 (`website-audit`).
+</details>
+
+<details>
+<summary><b>slop-scan</b> — does the rendered page visually look AI-generated, and remove the tells</summary>
+
+**What it does** — Loads the page in Chromium and answers one question: does it visually carry the
+common fingerprints of an AI-generated website? Visual only. It never judges whether photos, reviews,
+stats, or content are real, or whether the design fits the business.
+
+**Say something like** — "does this look AI-generated", "is this slop", "de-AI this site", "remove
+the AI look", "why does this look AI", "audit the AI tells".
+
+**Input** — A URL, localhost, a local folder or HTML file, a repo with a dev server, or screenshots.
+
+**Output** — A Yes / Some / No verdict with every fingerprint marked Present, Partial, Absent, or
+Not checked, where each one sits on the page, any matching cluster (v0/shadcn kit, Lovable/Bolt
+purple SaaS, Claude-style cream editorial, dark glow SaaS, bento product page), and a fix order.
+Desktop and mobile screenshots plus `render-scan.json`.
+
+**Mechanics** — Measures the rendered page, not the source: em-dash density in visible text,
+script/italic/colored accent words inside headings, gradient text and decorative gradients (photo
+fades ignored), blur glow, glassmorphism, pills and tracked-caps eyebrows, icons in rounded tiles,
+rounding and hairline cards, identical 3-up rows and bento grids, section padding and column
+uniformity, the centered hero + two-button formula, and hidden-until-scroll motion. The screenshots
+decide the verdict; one tell alone is a trend. Fixes remove each fingerprint and are checked against
+a banned-replacement list (cream + terracotta, outlined giant words, watermark numbers, grain,
+rotated badges, safe-grotesk swaps) so the fix doesn't become the next tell.
+
+**Bundle** — `scripts/render.sh` + `scripts/render-scan.cjs` (Playwright renderer, installs itself
+into `~/.cache/slop-scan` on first run), `scripts/scan.py` (source locator for fixes),
+`references/tells.md`, `references/banned-replacements.md`.
+
+**Not for** — AI-sounding copy (`ai-writing-detector`), placeholder text and repeated facts
+(`ui-oddity-scan`), usability (`ux-audit`), or persuasion (`conversion-audit`).
 </details>
 
 ### Documentation
