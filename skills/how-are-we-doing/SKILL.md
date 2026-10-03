@@ -1,11 +1,13 @@
 ---
 name: how-are-we-doing
-description: Per-business snapshot of how a website and its digital footprint are performing and which way they are moving. Covers Search Console clicks, rankings, near-miss queries and movers, Google indexing of every sitemap URL, GA4, Microsoft Clarity (scroll depth, dead/rage clicks, heatmaps), Google Business Profile, CRM leads (GoHighLevel), and Domain Rating. Leads with what changed since the last snapshot and names the few opportunities worth acting on. Each business gets a profile, made once by auto-discovering existing access plus a short setup questionnaire. Use when someone asks "how are we doing", "how is the site doing", "any leads", "are we growing", "what changed", "SEO check", "analytics check", "check GSC", "where are people clicking", "heatmaps", "digital footprint", or "what should we work on next". Also use to set up a new business ("add a client", "set up how-are-we-doing for X") and when a dated watchlist read comes due.
+description: Per-business snapshot of how a website and its digital footprint are performing and which way they are moving. Covers Search Console clicks, rankings, near-miss queries and movers, Google indexing of every sitemap URL, GA4, Microsoft Clarity (scroll depth, dead/rage clicks, heatmaps), Google Business Profile, CRM leads (GoHighLevel), and Domain Rating. Leads with what changed since the last snapshot and publishes a visual dashboard (a private claude.ai page, counts only, same link every run). Measures only: deciding what to do about it is the what-next skill's job. Each business gets a profile, made once by auto-discovering existing access plus a short setup questionnaire. Use when someone asks "how are we doing", "how is the site doing", "show me the dashboard", "any leads", "are we growing", "what changed", "SEO check", "analytics check", "check GSC", "where are people clicking", "heatmaps", or "digital footprint". Also use to set up a new business ("add a client", "set up how-are-we-doing for X") and when a dated watchlist read comes due.
 ---
 
 # How are we doing
 
-Give one honest, fast read of how a business is showing up online and **which way it's moving**. Every number is measured and labeled with its source and window, or it says "not measured". Opportunities come from the data and must pass the buyer test.
+Give one honest, fast read of how a business is showing up online and **which way it's moving**, as a picture the owner can glance at. Every number is measured and labeled with its source and window, or it says "not measured".
+
+**This skill measures; it doesn't prescribe.** It ends with the dashboard link and a short read. Turning the read into actions belongs to the `what-next` skill, which works from the snapshots this skill saves. Keeping them apart stops a measurement run from quietly turning into a to-do list that nobody asked to act on, and it means the advice always works from a complete, saved snapshot.
 
 This skill works for any business. Everything specific to one business lives in its **profile folder**, never in this skill.
 
@@ -20,7 +22,8 @@ profile.json     sources + pointers to credentials (never values), market, peopl
 .env             this business's API keys (from templates/.env.example); never committed
 notes.md         business context the reader must apply (why certain numbers mislead)
 watchlist.md     dated reads, parked changes, standing checks
-history/         one snapshot per run (<date>.json), the basis for "what changed"
+history/         one snapshot per run (<date>.json), the basis for "what changed" and for what-next
+dashboard.html   the page published as the dashboard (built from history/, counts only)
 custom/          optional scripts named in profile.json "commands"
 clarity-calls.json  Clarity API call ledger (10/day limit)
 ```
@@ -65,18 +68,34 @@ Show this table whenever the user asks what's connected, what the skill needs, o
 - **Right now (optional):** if a GA4 MCP has a realtime report tool, show active users from the last 30 minutes. That's the only truly real-time number. GSC lags 2–3 days and Clarity's API covers the last 1–3 days.
 - **Browser reads** listed under `browser` in the profile (Clarity heatmaps, Google Business Profile, anything else behind a login): follow `references/sources.md`. Only do these when the profile says a login exists, and only for pages the pull flagged or the user asked about. Heatmaps are the evidence for *why* a page's numbers look the way they do. Screenshots of every page are not the point.
 
-**2. Read it.** Apply `references/reading.md` (the general traps) and then the profile's `notes.md` (this business's traps). notes.md wins when they conflict.
+**2. Record what the script couldn't fetch.** pull.py saves only what it fetched itself, and the dashboard and what-next see nothing else. Write the GA4 MCP results (the raw reports, plus the two windows) and any browser read (GBP numbers with their on-screen labels and range) to JSON files in your scratchpad, then merge them into today's snapshot:
+```bash
+python3 <skill dir>/scripts/record.py --profile <profile dir> --ga4 <ga4.json> --gbp <gbp.json>
+```
+The file formats are in the script's docstring. Run it after pull.py: a second pull on the same day rewrites the snapshot and drops what was recorded. Channels (cur + prev) and events (cur + prev) are required; landing, cities and realtime are optional. Keep landing and cities to their top 40 rows and say `"trimmed": true`.
 
-**3. Opportunities.** At most 3, each passing every test in `references/reading.md`. Fewer is fine. "Nothing worth changing this week" is a valid answer.
+**3. Build and publish the dashboard.**
+```bash
+python3 <skill dir>/scripts/dashboard.py --profile <profile dir>
+```
+That writes `<profile>/dashboard.html` from every snapshot. Publish it with the Artifact tool, always the same file path:
+- `profile.dashboard.artifact_url` set: first `Artifact read` that URL (a session that hasn't read it can't publish to it), then publish with `url` = that URL and `file_path` = the dashboard file. Omit `icon` on these updates.
+- Not set (first run): publish with `icon: "chart"` and a one-sentence description, then write the returned URL into `profile.dashboard.artifact_url`.
+The page holds counts only: no contact names, emails or free-tool business names. Don't add them by hand. It's private to the owner until they share it from the page's Share menu.
 
-**4. Ask what only the owner knows.** Unconfirmed leads, unknown tool users, anything the data can't settle: one AskUserQuestion each. Record answers in `profile.json` (`people.confirmed_real` / `people.internal_contact_ids`, with a short label).
+**4. Read it.** Apply `references/reading.md` (the general traps) and then the profile's `notes.md` (this business's traps). notes.md wins when they conflict.
 
-**5. Report.** Use the template in `references/reading.md`: TL;DR, **what changed**, a scoreboard with sources, opportunities, due reads, and what's not measured. If the user will share it, offer an artifact page in one line.
+**5. Ask what only the owner knows.** Unconfirmed leads, unknown tool users, anything the data can't settle: one AskUserQuestion each. Record answers in `profile.json` (`people.confirmed_real` / `people.internal_contact_ids`, with a short label). Rebuild and republish the dashboard if an answer changed a count.
 
-**6. Close the loop.** Update `watchlist.md`: move read items to Done with their result, and add anything this run parked, with a date and baseline. The snapshot in `history/` is the record, so don't write a memory per run. Save a memory only for a durable, cross-session fact about the business (a new access gotcha, a confirmed lead source).
+**6. Report.** Use the template in `references/reading.md`: the dashboard link, TL;DR, **what changed**, a short scoreboard, due reads, and what's not measured. No action list. End with one line pointing to `/what-next` for what to do about it.
+
+**7. Close the loop.** Update `watchlist.md` for what this skill owns: record the result of every read that came due (move it to Done with the result) and anything measured that needs re-reading later. Proposed actions and their follow-up reads are parked by what-next, not here. The snapshot in `history/` is the record, so don't write a memory per run. Save a memory only for a durable, cross-session fact about the business (a new access gotcha, a confirmed lead source).
+
+**Who owns watchlist.md.** Both skills write to it, so each sticks to its half. how-are-we-doing *measures*: it reads due items, writes their results, and parks re-reads of things it measured. what-next *proposes*: it parks a dated read, with a baseline, for every action the owner approves. Neither rewrites the other's open items.
 
 ## Rules that never bend
 
+- **Measure, don't prescribe.** If the user asks "what should we do?" mid-run, finish the read and hand off to `what-next`. Don't improvise an action list here.
 - **Measured or "not measured".** No estimates next to measured numbers, no "probably", no invented ratios. If something is unknown, say where it would be measured.
 - **Counts at small volume.** 49 → 50 clicks is "flat". Don't turn single-digit changes into percentages.
 - **Leads come from the system of record** (the CRM or calendar), never from GA4 events alone. GA4 misses some and counts tests.

@@ -37,7 +37,7 @@ Probe each "ready" source once with a real read before trusting it. Discovery sa
 Use **AskUserQuestion** (up to 4 questions per call; the user can always type "Other"). Put what discovery found in the options so the user confirms instead of typing. Skip any question discovery already answered.
 
 **Round 1: the business**
-1. *Which business is this for, and what does it sell?* Offer the site's title and main service pages as the draft. This feeds the buyer test for opportunities.
+1. *Which business is this for, and what does it sell?* Offer the site's title and main service pages as the draft. This feeds the buyer test what-next applies to every proposed action.
 2. *Who are the buyers, and where?* E.g. "Houston homeowners", "US SMBs". Sets `market.gsc_country` (GSC uses ISO-3166 alpha-3, lowercase: `usa`, `can`, `gbr`) and tells the reader which clicks matter.
 3. *What counts as a lead?* Offer what exists: CRM calendar bookings, form fills (with the CRM tag), calls, GA4 key events discovery saw. Name the **one** that matters most.
 4. *Which of these can Claude log into with the browser?* (multiSelect) Clarity dashboard, Google Business Profile, GA4 UI, other.

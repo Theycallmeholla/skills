@@ -20,14 +20,14 @@ Every endpoint here was verified against vendor docs or a live call. The date is
 
 ## GA4 (script with `method: service_account`, or Claude via MCP)
 
-- **MCP method** (verified 2026-09-30 with the `ga4-gtm` MCP's `ga4_run_report`): make these calls in parallel. Current window = N days ending **yesterday**, prior = the N days before. Pass exact `YYYY-MM-DD` dates. The MCP takes no filters, so filter rows yourself.
+- **MCP method** (verified 2026-09-30 with the `ga4-gtm` MCP's `ga4_run_report`): make these calls in parallel. Current window = N days ending **yesterday**, prior = the N days before. Pass exact `YYYY-MM-DD` dates. The MCP takes no filters, so filter rows yourself. Channels and events are required for the dashboard; landing and cities are optional and kept to 40 rows, because every row gets re-typed into the file `record.py` reads.
 
   | Call | dimensions | metrics | window | limit |
   |---|---|---|---|---|
   | channels-cur / channels-prev | `sessionDefaultChannelGroup` | `sessions, totalUsers, engagementRate, averageSessionDuration` | cur / prev | 20 |
-  | landing | `sessionDefaultChannelGroup, landingPage` | `sessions, engagedSessions, averageSessionDuration` | cur | 250 |
+  | landing | `sessionDefaultChannelGroup, landingPage` | `sessions, engagedSessions, averageSessionDuration` | cur | 40 |
   | events-cur / events-prev | `eventName` | `eventCount, totalUsers` | cur / prev | 100 |
-  | cities | `sessionDefaultChannelGroup, city` | `sessions, engagementRate` | cur | 100 |
+  | cities | `sessionDefaultChannelGroup, city` | `sessions, engagementRate` | cur | 40 |
 
 - **Service-account method:** POST `https://analyticsdata.googleapis.com/v1beta/properties/{id}:runReport`, scope `analytics.readonly`. A 403 "User does not have sufficient permissions" means the SA isn't a user on the property. The success path is written to the Data API contract but **hasn't yet been confirmed against a live property**. On the first profile that uses it, compare one number with the GA4 UI and record the result here.
 - Realtime: if the MCP has a realtime report tool, active users over the last 30 minutes is the only real-time number available.

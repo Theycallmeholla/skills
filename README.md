@@ -213,7 +213,8 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **secret-shopper** — a regular customer drives the live site in a real browser, does real tasks, and logs every "what does this do?" in plain words, phone-first
 - **gap-scan** — finds the features that obviously should exist but don't, as a ranked punch list with a status-carrying `gap_packet.json` that can be rechecked later
 - **open-saysai** — audits how AI search and answer engines crawl, retrieve, and cite a site: per-crawler robots and WAF checks, citation readiness, clean-channel prompt tests, and a portable `ai_visibility_packet.json`
-- **how-are-we-doing** — per-business performance snapshot that leads with what changed: Search Console movers and near-miss queries, indexing of every sitemap URL, GA4, Clarity scroll and dead/rage clicks plus heatmaps, GBP, CRM leads, and DR, from a profile built by auto-discovery and a short setup questionnaire
+- **how-are-we-doing** — per-business performance read that leads with what changed and publishes a private visual dashboard: Search Console movers and near-miss queries, indexing of every sitemap URL, GA4, Clarity, GBP, CRM leads, and DR, from a profile built by auto-discovery and a short setup questionnaire; measures only
+- **what-next** — turns a how-are-we-doing read into a short ranked plan, closest to a booked customer first, each step with one measured number, who does it, and a dated check; respects pending experiments and starts nothing without the owner's pick
 
 ### Documentation
 
