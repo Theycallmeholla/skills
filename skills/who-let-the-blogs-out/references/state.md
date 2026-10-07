@@ -105,12 +105,14 @@ These are fixed. Adding a value is a deliberate schema change, not a judgment ca
 | `status` (asset) | `needed` · `client-supplied` · `sourced` · `generated` · `placed` |
 | `severity` | `high` · `medium` · `low` |
 | `category` (finding) | `intent` · `accuracy` · `original-value` · `completeness` · `structure` · `brand-fit` · `conversion` · `technical-seo` · `voice-tells` · `media` · `boundary` · `fabrication` |
-| `kind` (fact) | `statistic` · `price` · `timeline` · `threshold` · `tool` · `result` · `credential` |
+| `kind` (fact) | `statistic` · `price` · `timeline` · `threshold` · `tool` · `result` · `credential` · `company` |
 | `source` (fact) | `first-hand` · `primary` · `secondary` · `client-supplied` |
 | `role` (asset) | `hero` · `diagram` · `screenshot` · `data-viz` · `proof-photo` · `decorative` |
 | `clusterRole` (post) | `hub` · `spoke` · `null` |
 | `pageType` (research snapshot) | `article` · `tool` · `comparison` · `location-page` · `hub` · `forum` · `video` · `product` · `service-page` · `news` · `doc` |
 | `connectors.<name>` (research) | `ok` · `degraded` · `unavailable` · `skipped` |
+
+`company` is a fact about what the client's own business does or offers — a service, a process, a capability — that fits none of the measurable kinds. It still needs a first-hand or primary source and an expiry, because offerings change.
 
 `pageType` extends the `formatFit` vocabulary `brief` already uses rather than inventing a parallel taxonomy for the same idea.
 
