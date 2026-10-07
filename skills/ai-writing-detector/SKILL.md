@@ -20,22 +20,23 @@ The scoring model inverts the usual detector logic: the strongest tells are **ab
 - **Stance**: Does the writer make at least one judgment that could be disagreed with? Are weak options given false equal weight? Are hedges doing the work of actual conditions?
 - **Texture**: Specifics (numbers, dates, prices, named tools, edge cases, failure modes) vs. adjectives. Placeholder-people anecdotes ("imagine Sarah, a small business owner"). "Studies show" with no citation. Does anything here suggest someone actually did the work?
 - **Audience awareness**: Are basics the intended reader obviously knows being explained? Are the reader's real objections addressed or dodged?
-- **The 500-companies test**: Could this be published by 500 different companies/authors after swapping names and places? This is the single heaviest question in the model.
+- **The author-value check**: Does the text carry value specific to this writer or business — real experience, a real example, a real number, a real process, a perspective only they have? If swapping the name would cost it nothing, that is the single heaviest signal in the model. The fix is more of the author, never a manufactured disagreement.
+- **Agreement is not a tell**: Text that says what the sources say and adds the writer's own specifics has substance. Don't raise Substance & stance because nothing in it picks a fight.
 - **Structural intent**: Are sections evenly sized regardless of value? Does the conclusion restate the intro? Does anything digress, or does it march through an outline?
 
 **4. Score.** Weighted categories, each scored 0–100 where **higher = more tell-like**:
 
 | Category | Weight | Primary evidence |
 |---|---:|---|
-| Substance & stance | 35% | Judgment pass: 500-companies test, stance, false balance, hedging |
+| Substance & stance | 35% | Judgment pass: author-value check, stance, false balance, hedging |
 | Texture & specificity | 25% | Judgment pass: specifics, anecdote authenticity, evidence trail |
 | Rhythm & structure | 20% | Script CVs + judgment: uniformity, symmetric sections, signposts, restating conclusion |
 | Constructions & tics | 12% | Script: triads, em dashes, "not just X but Y", bold/colon density, bullet share |
 | Lexicon | 8% | Script: banned-phrase hits per 1000 words |
 
-Overall = weighted sum. Bands: **0–20 clean** (reads like a person who knows the subject), **21–40 light tells** (publishable; minor cleanup), **41–60 noticeable** (an attentive reader will clock it), **61–80 strong** (reads generated), **81–100 template-grade** (the 500-companies article).
+Overall = weighted sum. Bands: **0–20 clean** (reads like a person who knows the subject), **21–40 light tells** (publishable; minor cleanup), **41–60 noticeable** (an attentive reader will clock it), **61–80 strong** (reads generated), **81–100 template-grade** (swap the name and nothing changes).
 
-Calibration guardrails: a text with genuine stance and texture should never score above 40 on lexicon hits alone — cap the influence of low-weight categories at their weight, no halo effects. Conversely, spotless mechanics cannot rescue a text that fails the 500-companies test; Substance & stance below is scored on content, not polish.
+Calibration guardrails: a text with genuine stance and texture should never score above 40 on lexicon hits alone — cap the influence of low-weight categories at their weight, no halo effects. Conversely, spotless mechanics cannot rescue a text that fails the author-value check; Substance & stance below is scored on content, not polish.
 
 **5. Report.** Deliver in chat (create a file only if asked):
 
@@ -66,6 +67,6 @@ If given two versions ("did my edits help?"), score both, show the deltas per ca
 ## Hard rules
 
 - Never render an authorship verdict ("this was written by AI") — report tell density and evidence only.
-- Never recommend fake typos, invented anecdotes, fabricated experience, or detector-evasion tricks as fixes. Fixes add stance, specificity, and asymmetry — they never manufacture fake humanity.
+- Never recommend fake typos, invented anecdotes, fabricated experience, manufactured disagreement, or detector-evasion tricks as fixes. Fixes add stance the writer actually holds, specificity, and asymmetry — they never manufacture fake humanity.
 - Quote flagged excerpts at one sentence maximum; the report analyzes the text, it doesn't reproduce it.
 - Score the text as its intended reader would experience it: a technical audience tolerates more structure; a narrative audience tolerates less.

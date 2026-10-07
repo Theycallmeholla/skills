@@ -198,7 +198,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **connotation-cop** — polices project vocabulary, keeps a `CONTEXT.md` glossary sharp, and books qualifying decisions as numbered ADRs
 - **whiteboard** — plans work too big for one session as a map of investigation tickets on GitHub Issues; works tickets back-to-back and stops only when you're the blocker
 - **whiteboard-help** — display-only cheat sheet for the whiteboard system: the flow, the exact phrases, the rules, where artifacts live
-- **blog-topic-interview** — pre-writing interview that captures the author's real stances and stories, producing an Opinion Packet
+- **blog-topic-interview** — who-let-the-blogs-out's interview step on its own: captures the author's real stances and stories as an Opinion Packet and a per-client opinion bank in `.blog/`
 - **what-would-bezos-do** — mines a codebase for assets already built that could produce far more value, gated at five opportunities with a mandatory kill list
 
 ### Site, UX & conversion
@@ -225,7 +225,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 ### Content
 
 - **who-let-the-blogs-out** — thirteen-command blog system with per-client memory: brand, plan, interview, verify, brief, write, images, review, revise, export, publish, refresh, help
-- **seo-blog-writer** — research-driven SEO articles built on SERP analysis, a verified claim ledger, and a weighted quality rubric
+- **seo-blog-writer** — who-let-the-blogs-out's brief, verify, write, review, and revise steps on their own: SERP teardown, committed reader questions, a verified claim ledger, and a scored draft
 - **ai-writing-detector** — weighted 0–100 AI-tells scorecard with quoted evidence and fixes ranked by score impact
 - **case-study-builder** — mines existing files, asks only the gap questions, and ships web-ready case study copy plus a media plan
 
@@ -289,10 +289,16 @@ who-let-the-blogs-out:
   a draft never reaches the author unscored. refresh re-enters the loop for aging posts.
 ```
 
-The standalone `blog-topic-interview → seo-blog-writer → ai-writing-detector` chain is the earlier,
-lighter version of the same pipeline. `who-let-the-blogs-out` supersedes all three and aliases their
-names to `interview`, `brief` + `write`, and `review`. Reach for the standalone skills when you want
-one step without adopting the `.blog/` state directory.
+The standalone `blog-topic-interview → seo-blog-writer → ai-writing-detector` chain is the same
+pipeline split into single steps, for setups that install only one or two of them.
+`blog-topic-interview` and `seo-blog-writer` carry byte-identical copies of `who-let-the-blogs-out`'s
+rule files and write the same `.blog/` state, so a project can move to the full system without
+migrating anything. `ai-writing-detector` scores any text and saves nothing. When
+`who-let-the-blogs-out` is installed it handles all three jobs, and its aliases route those names to
+`interview`, `brief` + `write`, and `review`.
+
+The copies are listed in `shared-files.yaml`. Edit the original in `who-let-the-blogs-out`, then run
+`python3 scripts/sync_shared.py`; `validate_skills.py` fails the build when a copy has drifted.
 
 **Build a skill system, then keep it honest**
 
@@ -598,27 +604,31 @@ you the phrase and stops.
 <details>
 <summary><b>blog-topic-interview</b> — capture the author's real take before anything is drafted</summary>
 
-**What it does** — Interviews the author about a topic before a post is written under their name,
-then compiles an Opinion Packet the writer skill consumes.
+**What it does** — The `interview` step of `who-let-the-blogs-out`, packaged on its own. Interviews
+the author before a post is written under their name and files what they said where every later post
+can find it.
 
 **Say something like** — "interview me about this topic", "get my take first", "ask me what I
-think", "update my opinion bank". It also fires implicitly whenever a post is about to be drafted in
-your voice.
+think", "update my opinion bank". When `who-let-the-blogs-out` is installed, that skill's `interview`
+handles these instead.
 
-**Input** — The topic, your live answers, and an existing `opinion-bank.md` if there is one.
+**Input** — The topic, your live answers, and the project's `.blog/` state if it exists. With no
+`.blog/` yet, it creates the same starting tree `who-let-the-blogs-out`'s `brand` would, with an empty
+brand profile.
 
-**Output** — `opinion-packet-<topic-slug>.md` with fixed sections — Thesis, Defensible stances,
-First-hand evidence, Specifics, Voice notes, Boundaries (do not say), Gaps, Suggested angle — plus
-an updated, dated opinion bank.
+**Output** — `.blog/posts/<slug>/packet.md` (Thesis, Business purpose, Defensible stances, First-hand
+evidence, Specifics, Voice notes, Boundaries, Gaps, Suggested angle), new opinion-bank entries with
+provenance, and measurable specifics filed as dated facts in `facts.json`.
 
-**Mechanics** — Load bank → interview → compile → update bank → hand off. 8–12 questions in batches
-of two or three, podcast-host style, with a third of the budget reserved for follow-ups. Honest gaps
-get recorded rather than filled; if you're unavailable it builds from the bank alone and flags the
-research-only sections.
+**Mechanics** — At most three questions at a time, never re-asks what the bank already answers, and
+never saves an opinion the author didn't state, pick, confirm, or demonstrate. Nothing is ever written
+into the skill's own folder.
 
-**Bundle** — `references/interview-guide.md`, `references/opinion-bank.md`.
+**Bundle** — Copies of `who-let-the-blogs-out`'s `references/interview.md`,
+`references/governing-rules.md`, `references/state.md`, `references/reporting.md`, and
+`assets/opinion-bank-template.md`, checked against the originals in CI.
 
-**Not for** — Emails, proposals, social posts, or writing the article itself.
+**Not for** — Emails, proposals, social posts, or writing the article itself (`seo-blog-writer`).
 </details>
 
 <details>
@@ -1092,32 +1102,33 @@ invocation.
 <details>
 <summary><b>seo-blog-writer</b> — SERP research, a claim ledger, then the article</summary>
 
-**What it does** — Researches a keyword's search intent and competing results, builds a ledger of
-verified claims, then writes a publication-ready markdown article and scores it.
+**What it does** — The `brief`, `verify`, `write`, `review`, and `revise` steps of
+`who-let-the-blogs-out`, packaged on their own. Researches what ranks, commits to the reader questions
+the post must answer, verifies claims, drafts under the author's own thesis, and scores the draft.
 
-**Say something like** — "write a blog post about X", "content for our site", "post targeting this
-keyword", "refresh this article", "improve our organic traffic".
+**Say something like** — "write a blog post about X", "post targeting this keyword", "give me title
+options", "outline this post". When `who-let-the-blogs-out` is installed, that skill handles these
+instead.
 
-**Input** — A topic or primary keyword; ideally audience, brand voice, business goal, word count,
-the client domain, and any first-hand evidence they can supply.
+**Input** — A topic or primary keyword, and ideally the Opinion Packet `blog-topic-interview` wrote to
+`.blog/posts/<slug>/packet.md`. Without one it says the post will have no first-hand layer and
+proceeds only if you want it to.
 
-**Output** — A markdown file with full frontmatter (title plus `title_options`, `meta_description`,
-`slug`, `primary_keyword`, `search_intent`, `unique_value`, `schema_recommendation`, `reviewer`,
-`review_date`, `word_count`), the article, and a publish checklist with internal-link placeholders,
-image concepts, and the client evidence still needed. Refresh mode adds a keep/update/remove/add
-change plan.
+**Output** — All in `.blog/posts/<slug>/`: `research-v1.md`, `brief.md` (thesis, angle, reader
+questions, outline, title set), `claims.json`, `media.json`, a versioned `draft-vN.md` with a publish
+checklist and CMS paste block, and `review-vN.json` with two scores and findings.
 
-**Mechanics** — Four stages: gather inputs and challenge the format fit (a keyword that wants a
-calculator shouldn't get a "10 Tips" post) → research (SERP analysis, a mandatory information-gain
-statement, a claim ledger with verification status, freshness and cannibalization checks) → write →
-score against an eight-category weighted rubric where intent satisfaction and accuracy are 20% each
-and technical on-page SEO is only 5%.
+**Mechanics** — Stops after the brief unless you asked for the whole post in one go, and always at a
+real decision: wrong format, an existing page that already covers it, nothing original to add. The
+draft is scored by the chained review on two scales that are never blended, and `revise` fixes
+findings on request. Refreshing a published post is `who-let-the-blogs-out`'s `refresh`.
 
-**Bundle** — `references/research-protocol.md`, `references/quality-rubric.md`,
-`references/voice-and-tells.md` (stance and rhythm rules, banned phrases, the 500-companies test).
+**Bundle** — Copies of `who-let-the-blogs-out`'s brief, verify, write, review, revise, evidence,
+research, headline, rubric, voice, state, and reporting references plus `scripts/tells_metrics.py`,
+checked against the originals in CI.
 
-**Not for** — Inventing credentials, anecdotes, or customer outcomes; faking humanity to beat
-detectors; emails, docs, or social posts.
+**Not for** — Inventing credentials, anecdotes, opinions, or customer outcomes; faking humanity to
+beat detectors; emails, docs, or social posts.
 </details>
 
 <details>
@@ -1138,7 +1149,7 @@ flagged-evidence list of 5–10 quoted items, ranked fixes, and a standing discl
 **Mechanics** — Two passes. The mechanical pass runs `scripts/tells_metrics.py` and returns JSON:
 lexicon hits, signposts, hedge/em-dash/triad/bold/colon density, sentence and paragraph coefficients
 of variation, bullet share. The judgment pass is Claude reading for stance, texture, audience
-awareness, the 500-companies test, and structural intent. Weights: substance and stance 35%, texture
+awareness, the author-value check, and structural intent. Weights: substance and stance 35%, texture
 25%, rhythm and structure 20%, constructions 12%, lexicon 8%. Bands run clean (0–20) to
 template-grade (81–100), with a guardrail against low-weight halo effects.
 
