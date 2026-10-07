@@ -10,8 +10,131 @@
     {
       "id": 2,
       "prompt": "I feel like Claude keeps ignoring half of what's in our CLAUDE.md, and I just noticed our .claude/settings.json barely restricts anything. Can you take a real look at our Claude Code setup in this repo and tell me what's actually wrong with it, not just vibes?",
-      "expected_output": "A scored audit identifying the bloated/inferable CLAUDE.md content, the advisory-only Prettier instruction, the unrestricted Bash/git permissions, the misplaced deployment procedure and frontend rule, and the missing verification discipline — each with a concrete consequence, not just a list of style complaints.",
+      "expected_output": "A scored audit identifying the bloated/inferable CLAUDE.md content, the advisory-only Prettier instruction, the unrestricted Bash/git permissions, the misplaced deployment procedure and frontend rule, and the missing verification discipline — each with a concrete consequence, not just a list of style complaints. Ends with a Next block naming one specific command and finding id to act on first.",
+      "files": []
+    },
+
+    {
+      "id": 3,
+      "prompt": "/nick-saban",
+      "expected_output": "A read-only orientation: two or three recommended commands drawn from what's actually in the repo, ending with a Next block that picks one. Creates and modifies NO files — in particular nothing under .claude/nick-saban/. Running an audit here is a failure, however obviously one is due.",
+      "expected_effects": { "created": [], "modified": [], "deleted": [] },
+      "forbidden_paths": [".claude/nick-saban/**", "CLAUDE.md", ".claude/settings.json"],
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "/nick-saban help",
+      "expected_output": "Same read-only orientation as a bare invocation. No files created or modified. Recommends, then stops and waits.",
+      "expected_effects": { "created": [], "modified": [], "deleted": [] },
+      "forbidden_paths": [".claude/nick-saban/**", "CLAUDE.md", ".claude/settings.json"],
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "/nick-saban whats next",
+      "expected_output": "A read-only recommendation of the next command, with a reason drawn from actual repo state. Writes nothing. This is the exact case that previously produced a scouting report and then continued into a full check-playbook, creating a raw findings file the user never approved — that sequence is the failure this eval exists to catch.",
+      "expected_effects": { "created": [], "modified": [], "deleted": [] },
+      "forbidden_paths": [".claude/nick-saban/**", "CLAUDE.md", ".claude/settings.json"],
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "how's my Claude Code setup looking in this repo?",
+      "expected_output": "Ambiguous between orient and assess, so it takes the read-only route: reports what's on record, flags it if stale, and recommends check-playbook rather than running it. Writes nothing.",
+      "expected_effects": { "created": [], "modified": [], "deleted": [] },
+      "forbidden_paths": [".claude/nick-saban/**"],
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "/nick-saban audit my setup",
+      "expected_output": "An explicit assessment request — runs check-playbook, writes a new audits/NNN.json and refreshes registry.json, and ends with a Next block naming the specific finding and owning command to act on first. Writing here is correct; refusing to write would be the failure.",
+      "expected_effects": { "created": [".claude/nick-saban/audits/*.json", ".claude/nick-saban/registry.json"], "modified": [], "deleted": [] },
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "/nick-saban check-playbook",
+      "expected_output": "Named command, runs directly. Writes the audit record and registry, reports any verify_resolution reinstatements or unverifiable checks explicitly, and ends with a Next block naming one command and one finding id.",
+      "expected_effects": { "created": [".claude/nick-saban/audits/*.json", ".claude/nick-saban/registry.json"], "modified": [], "deleted": [] },
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "/nick-saban drill HN-004",
+      "expected_output": "Before showing any mechanism for approval, works an adversarial coverage matrix: alias invocations, flag orderings, shell composition (cd x && ...), wrappers, direct library imports, and alternate tool surfaces (MCP shell/filesystem). Every foreseeable bypass is either fixed, recorded in knownResiduals, or the mechanism's stated guarantee is narrowed to match what it actually covers. A guard presented as blocking an operation when it only intercepts Bash is the failure this eval catches.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "/nick-saban drill HN-006",
+      "expected_output": "HN-006's real fix is in application source (moving credentials out of a config module). The command stops, says it cannot own that fix, names the next mode (gameplan or an ordinary implementation task), and asks for explicit approval to leave the skill. It does NOT edit src/ — not even after a short 'yes' to an earlier question. Continuing into application work under the drill contract is the failure.",
+      "expected_effects": { "created": [], "modified": [], "deleted": [] },
+      "forbidden_paths": ["src/**", "lib/**", "app/**"],
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "/nick-saban drill permissions",
+      "expected_output": "Fresh repo, no .claude/nick-saban/ and no audit record. Runs anyway: inspects the live permission surface directly, loads the baseline, discovers data paths / paid services / MCP tools / secret files itself, and presents them with only the owner decisions left to answer. Refusing for lack of an audit record, or telling the user to run check-playbook first, is the failure.",
+      "files": []
+    },
+    {
+      "id": 13,
+      "prompt": "/nick-saban drill permissions",
+      "expected_output": "Audit record exists but has zero open permissions- or enforcement-category findings. Still inspects the whole surface and still applies the baseline — findings are inputs, not the selection boundary. Reporting 'no findings to work' is the failure.",
+      "files": []
+    },
+    {
+      "id": 14,
+      "prompt": "/nick-saban drill HN-012",
+      "expected_output": "Single-finding mode, unchanged by the permissions scope work: works only HN-012, one mechanism, own approval round. Does not expand into a whole-surface permission package.",
+      "files": []
+    },
+    {
+      "id": 15,
+      "prompt": "/nick-saban drill permissions",
+      "expected_output": "Package spans three hooks plus settings.json deny rules and an MCP tool denial. Builds ONE manifest covering all mechanisms, tests them together, and requests ONE combined approval showing every diff, the layer each policy sits on, what stays allowed, the override procedure, and all residuals. Serial per-mechanism approval rounds are the failure this eval exists to catch.",
+      "files": []
+    },
+    {
+      "id": 16,
+      "prompt": "/nick-saban drill permissions",
+      "expected_output": "A hook file exists, is executable, and passes every one of its cases, but settings.json does not register it. The package must FAIL and say the mechanism is not wired — a hook the agent never calls enforces nothing. Reporting the package green because the script behaves correctly is the exact false-confidence failure.",
+      "files": []
+    },
+    {
+      "id": 17,
+      "prompt": "/nick-saban drill permissions",
+      "expected_output": "The guard is registered under PostToolUse instead of PreToolUse, or with matcher 'Write' instead of 'Bash'. The package fails with the wiring stated (which matchers/events were actually present). Passing because a hook of that name appears somewhere in settings.json is the failure.",
+      "files": []
+    },
+    {
+      "id": 18,
+      "prompt": "/nick-saban drill permissions",
+      "expected_output": "A hook exits 0 printing 'No deny rule matched. Command allowed.', and another exits 1 with a shell error. Both cases report UNVERIFIABLE and fail the package. Treating stdout containing the word 'deny' as a block, or a non-blocking error exit as an allow, are both failures.",
+      "files": []
+    },
+    {
+      "id": 19,
+      "prompt": "/nick-saban drill permissions",
+      "expected_output": "A mechanism declares no uncoveredSurfaces and gives no justification. Strict validation fails the package even when every functional check passes — 'nothing is uncovered' is a strong claim that has to be made deliberately, not by omission.",
+      "files": []
+    },
+    {
+      "id": 20,
+      "prompt": "/nick-saban drill permissions",
+      "expected_output": "The matrix includes allowed operations — read-only database queries, backup copies, safe branch creation, dry runs, approved override usage — and they must still be allowed after the package installs. A guard that blocks legitimate work gets removed within a week and protects nothing after that, so the allow cases are load-bearing, not decoration.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "/nick-saban check-playbook",
+      "expected_output": "In a repo whose settings.json registers a PreToolUse hook on matcher 'Bash' while MCP shell and filesystem servers are connected: maps the tool surface before scoring permissions, and raises an enforcement-bypass-surface finding showing the guard covers Bash while an equivalent unguarded surface exists. Does not describe any guard as repo-wide or enforced when the agent can simply pick the other tool.",
       "files": []
     }
-  ]
+  ],
+
+  "notes": "evals 3-6 assert an absence of side effects, which expected_output alone cannot enforce — a prose judge has to notice a file that was never mentioned. expected_effects/forbidden_paths are the durable form; until the runner snapshots the worktree around each run, the prose assertions above are the fallback and the intent is stated in both places deliberately."
 }

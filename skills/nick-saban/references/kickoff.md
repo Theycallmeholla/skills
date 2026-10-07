@@ -36,7 +36,9 @@ What to draft:
 
 ## Phase 3: Write on approval
 
-Once approved, write every file, then assemble a baseline `audits/001.json` — not from a real detection pass (there's nothing to find yet in a freshly-scaffolded repo, by construction), but as the record format's first entry, with `categoriesScanned` set to all six and an empty or near-empty findings list. Use `scripts/merge_pass.py` with an empty raw-findings array so the record is correctly formed and `registry.json` gets built the normal way via `scripts/build_registry.py`, rather than hand-writing pass 1 differently from every pass after it.
+Once approved, write every file, then assemble a baseline `audits/001.json` — not from a real detection pass (there's nothing to find yet in a freshly-scaffolded repo, by construction), but as the record format's first entry. Use `scripts/merge_pass.py` with an empty raw-findings array and **`--pass-type scaffold`**, then `scripts/build_registry.py`, rather than hand-writing pass 1 differently from every pass after it.
+
+`--pass-type scaffold` is what stops this record from claiming a score of 100. An empty findings list here means "nothing was looked for," which is not the same fact as "nothing is wrong" — and a metric where the best possible number also means *unexamined* is a metric that has to be explained away every time someone reads it. The record scores `null` with `status: "unassessed"` instead. Report it that way in the output; never round it up to a number.
 
 ## Output
 
@@ -48,9 +50,17 @@ Scaffolded for: <one-line description of what was detected about the repo>
 **Created:**
 [file tree]
 
-**Baseline score: 100** (nothing to find yet — this is pass 1)
+**State: UNASSESSED** — this pass scaffolded the playbook; no detection has run
+against it yet. That is not a score of 100, and don't report it as one.
 
-Run `check-playbook` after your next real changes to start tracking drift.
+### Next
+
+**Do this:** `check-playbook`
+Scores what was just scaffolded and gives you a real baseline — right now there's
+a playbook but no evidence it holds.
+
+**Instead, if you want to start building immediately:** `gameplan <what you're building>`
+The audit will still be there afterward.
 ```
 
 ## Confirm and stop
