@@ -148,6 +148,8 @@ taxonomy:
 
 `sitemap` is read by `brief`'s cannibalization crawl, which enumerates the client's real URLs instead of hoping a `site:` search surfaces them. The crawl result is cached per client so `brief` doesn't re-crawl for every post.
 
+`export` is optional, absent until `export` first learns how this client's site stores posts and the user confirms it: `postsDir`, `filePattern`, `format`, `index`, `reference` (a real existing post), `notes`, and `learnedOn`. It is the one `brand.md` key `export` writes; everything else in the file belongs to `brand`. See `references/export.md`.
+
 `taxonomy` is the controlled vocabulary `write` selects categories and tags from for its paste-ready CMS block. It never invents a value. When no taxonomy is recorded, `write` proposes one and says plainly that the client has no vocabulary yet — a gap for `brand` to close, not a licence to freestyle. Invented tags produce forty near-synonyms across a client's blog within months, which is the same rot closed enums exist to prevent.
 
 `source: import` marks a profile seeded from `.blog/clients/<slug>/import.json` — the file-drop seam for upstream tooling. If an import exists for the domain, ingest it rather than re-deriving what something else already produced.

@@ -88,7 +88,7 @@ If `.blog/` does not exist, say so and point at `brand`. Do not create a partial
 | `images` | Draft | Say which images materially improve the article, and what each must show | `brief.md`, `draft-vN.md`, `media.json` | `media.json` | `references/images.md` |
 | `review` | Ship | Say what is actually wrong and fix-worthy, with evidence | `draft-vN.md`, `brief.md`, `research-vN.md`, `packet.md`, `brand.md`, `voice-baseline.json` | `review-vN.json`, `post.json`, `registry.json` | `references/review.md` |
 | `revise` | Ship | Apply open findings; produce the next draft version | `review-vN.json`, `draft-vN.md`, `packet.md` | `draft-v(N+1).md`, `review-vN.json` | `references/revise.md` |
-| `export` | Ship | Write the post into the site's code (`lib/posts/<slug>.ts` + `lib/blog.ts`); never deploys | `post.json`, `draft-vN.md`, `media.json`, `claims.json`, `review-vN.json` | site files only | `references/export.md` |
+| `export` | Ship | Write the post into the site's own files, in the format its existing posts use; never deploys | `post.json`, `draft-vN.md`, `media.json`, `claims.json`, `review-vN.json`, `brand.md` | site files only, plus `brand.md`'s `export` block the first time | `references/export.md` |
 | `publish` | Ship | Record the live URL; set re-verify dates; index the post | `post.json`, `claims.json`, `media.json`, `draft-vN.md` | `post.json`, `claims.json`, `registry.json` | `references/publish.md` |
 | `refresh` | Ship | Find aging posts; re-research; change plan plus a new version | `registry.json`, `claims.json`, `draft-vN.md` | `draft-v(N+1).md`, `claims.json`, `post.json` | `references/refresh.md` |
 
@@ -118,8 +118,8 @@ Two things the table can't show. **`write`, `revise`, and `refresh` each chain i
 - `audit`, `score`, `check` → `review`
 - `outline`, `research` → `brief`
 - `draft`, `post` → `write`
-- `seo-blog-writer` → `brief`, then `write` *(standalone version of those steps; this skill wins when both are installed)*
-- `blog-topic-interview`, `opinion-interview` → `interview` *(blog-topic-interview is the standalone version)*
+- `seo-blog-writer` → `brief`, then `write`, when typed inside a who-let-the-blogs-out session *(otherwise the standalone seo-blog-writer skill runs itself)*
+- `blog-topic-interview`, `opinion-interview` → `interview`, when typed inside a who-let-the-blogs-out session *(otherwise the standalone blog-topic-interview skill runs itself)*
 - `ai-writing-detector` → `review` *(standalone tells scorer for any text; same as review's stateless mode)*
 
 ## State

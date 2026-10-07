@@ -25,7 +25,7 @@ interview   →   brief   →   write   →   review   →   revise   →   expo
 - **write** — drafts the article from the brief and that research. It can only claim experience you actually gave it. **Scores itself automatically when it's done** — you get the draft and the findings together.
 - **review** — scores the draft two ways and lists what's wrong. It never edits.
 - **revise** — fixes what review found, then re-scores automatically.
-- **export** — for sites whose posts live in code, writes the finished post into the site's files. It never deploys; a human does that.
+- **export** — for sites whose posts live in the site's own files, writes the finished post in the same format the site's existing posts use. It never deploys; a human does that.
 - **publish** — records that it went live, and sets expiry dates on every fact in it.
 
 You never have to remember to run `review`. Anything that produces a draft runs it — a draft never reaches you unscored.

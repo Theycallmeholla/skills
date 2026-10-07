@@ -1,6 +1,6 @@
 ---
 name: secret-shopper
-description: >
+description: >-
   Test a live website, web app, or chat/command-line product (including a Claude Code skill)
   as a secret shopper: an informed layperson who knows the field's basics and how websites
   work, but nothing about this product, its jargon, or where things live. Uses the real
@@ -8,10 +8,10 @@ description: >
   "what does this do?", "why is this here twice?", "I'd give up here". Reports results and
   every confusing moment, TL;DR first. Use whenever someone wants to know if a site or app is
   user-friendly or makes sense to a normal person, or wants a customer's voice: "test it like
-  a regular customer", "layman test", "secret shop this", "click around and tell me what's
-  confusing", "try to book X and tell me how it goes", "would a normal person get this?" -
-  even casually. Not for expert audits (ux-audit), zero-context reads of docs or code
-  (fresh-eyes), or element-level page scans (ui-oddity-scan).
+  a regular customer", "layman test", "secret shop this", "run it again after the fixes",
+  "click around and tell me what's confusing", "try to book X and tell me how it goes", "would
+  a normal person get this?" - even casually. Not for expert audits (ux-audit), zero-context
+  reads of docs or code (fresh-eyes), or element-level page scans (ui-oddity-scan).
 ---
 
 # Secret Shopper
@@ -85,6 +85,7 @@ An AI tester fails in predictable ways: it sees too much, persists too long, tal
 - **Mode:**
   - **Tasks** — the user gave tasks.
   - **Explore** — the default when there are none: first look, then the 2–3 jobs this site obviously exists for (run like tasks), then a short wander through the main menu.
+  - **Re-run** — the user wants to know what changed since a previous report ("run it again after the fixes", "did they fix it?"). Load `references/rerun.md` before opening anything: it reuses the old shopper and tasks, runs blind, and compares only after.
 - **Rewrite every task as the shopper's goal, in their words — never the site's labels.** If the button says "Request Service," the task is "I need someone to look at my AC this week." Using the site's own words hands the shopper the answer and hides exactly the problem you're testing for.
 - **Device:** phone-size (about 390 wide) for public and local-business sites — that's how most of their visitors arrive. Desktop for web apps, dashboards, and back-office tools. If both are wanted: phone first, then re-run just the main task on desktop.
 - **Browser:** read `references/browser-playbook.md` before the first click. Short version: the user's own Chrome (Claude in Chrome) when you need their logged-in session; Playwright (Chromium or Firefox, clean profile) for a true first visit or when they ask for Firefox; if Playwright isn't connected, a chrome-devtools isolated context is the clean-visit fallback.
@@ -139,7 +140,7 @@ Use this structure:
 
 ```
 # Secret Shopper: [site or app] — [date]
-**Shopper:** [one line] · **Device:** [phone 390 / desktop 1440] · **Browser:** [Chrome / Firefox] · **Mode:** [tasks / explore] · **Clicks:** [coordinates / snapshot]
+**Shopper:** [one line] · **Device:** [phone 390 / desktop 1440] · **Browser:** [Chrome / Firefox] · **Mode:** [tasks / explore / re-run] · **Clicks:** [coordinates / snapshot]
 
 ## TL;DR
 - **Verdict:** [one sentence, in the shopper's voice]
