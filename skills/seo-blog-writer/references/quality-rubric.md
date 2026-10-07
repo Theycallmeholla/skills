@@ -64,7 +64,7 @@ Loaded by `review` when scoring a draft and by `refresh` when judging whether an
 ## Conversion alignment (5%)
 
 - CTA is the brief's `businessPurpose.readerAction`, placed where it follows naturally from the content.
-- CTA depth matches the post's `intent`: informational → next article, tool, or checklist; commercial → service or pricing page; transactional or local → quote or contact. A CTA that asks for more commitment than the intent supports is a mismatch even when it matches the business goal.
+- CTA depth matches the post's `intent`: informational → next article, tool, or checklist; commercial → service or pricing page; transactional or local → quote or contact. A CTA that asks for more commitment than the intent supports is a mismatch even when it matches the business goal. Exception: when that CTA is the author's own stated reader action, it stays (priority 4), and the finding is only about a missing lighter step for readers who aren't ready.
 - A missing CTA, or one mismatched to intent, is a `conversion` finding at `medium`. At 5% this category can't fail a post on its own; the finding is what gets it fixed.
 - Internal links help the reader continue a relevant journey (no quota-filling).
 

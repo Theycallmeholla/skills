@@ -46,7 +46,7 @@ Before drafting, build a working map (in your head or in scratch, not on disk): 
 - **H2s are the brief's coverage targets**, phrased as the reader's questions rather than keyword slots. Order them the way the reader's thinking moves, not the way the outline happened to be typed.
 - **Paragraphs deliberately uneven**, sections asymmetric — the 400 words go where the real expertise is. Lists and tables only for genuinely parallel items.
 - **FAQ, conditional:** only when distinct questions remain that the body genuinely didn't answer. Never for length, keywords, or rich results — Google no longer shows FAQ rich results, so an FAQ added for schema is pure padding with a false justification attached.
-- **CTA:** the brief's `businessPurpose.readerAction`, scaled to the post's `intent`. An informational reader gets the next article, a tool, or a checklist; a commercial reader gets the service or pricing page; a transactional or local reader gets the quote or the call. Never a generic "contact us," and never five steps ahead of where the reader is — someone learning what a service *is* does not need "book your strategy call now." One next step, placed where it follows from the content; `review` raises a `conversion` finding when it is missing or asks for more than the intent supports.
+- **CTA:** the brief's `businessPurpose.readerAction`, scaled to the post's `intent`. An informational reader gets the next article, a tool, or a checklist; a commercial reader gets the service or pricing page; a transactional or local reader gets the quote or the call. Never a generic "contact us," and never five steps ahead of where the reader is — someone learning what a service *is* does not need "book your strategy call now." One next step, placed where it follows from the content; `review` raises a `conversion` finding when it is missing or asks for more than the intent supports. When the author's own stated reader action asks for more than the intent supports, keep it: business purpose (priority 4) outranks this scaling rule. Place one lighter step beside it for readers who aren't ready.
 
 ### Sections that stand on their own
 
@@ -129,7 +129,7 @@ Run this on yourself before emitting. It is a pass/fail check for the three thin
 3. **Every coverage target answered.** Walk the brief's numbered list against the finished sections. Anything unanswered gets written or gets named in the checklist and in your return message — never quietly dropped.
 4. **Title set unchanged.** If the article ended up making a different argument than the brief promised, keep the title set as-is and say so plainly in your return message so `review` can raise it. A brief the draft can silently overwrite has stopped being a gate.
 
-Then run the tells checklist at the bottom of `voice-and-tells.md` and fix what it catches. `scripts/tells_metrics.py <path>` gives a mechanical read; treat it as a smoke alarm, not a grade.
+Then run the tells checklist at the bottom of `voice-and-tells.md` and fix what it catches. `scripts/tells_metrics.py`, run on the body only as `review.md` Phase 1 describes, gives a mechanical read; treat it as a smoke alarm, not a grade.
 
 ## Phase 4 — Emit the version
 
@@ -145,7 +145,7 @@ If anything you read was malformed or stale — a claim ledger with IDs the brie
 
 ## Phase 5 — Hand off to `review`
 
-Run `review` on the version you just wrote. Always, with no flag to skip it.
+Run `review` on the version you just wrote. Always, with no flag to skip it. Where subagents are available, run it in one that gets only the file paths, so the scoring has no stake in the draft. In a single session, say that writing and scoring happened in the same pass.
 
 This is a chained command, not a mode of this one: `review` reads the rubric and the tells model, writes `review-v(N+1).json`, and moves `post.json` to `reviewed`. Both commands keep their own declared paths, and the rule that a writer never grades its own work is preserved — `review` has no stake in the draft.
 
