@@ -1,7 +1,7 @@
 ---
 name: secret-shopper
 description: >
-  Test a live website or web app as a secret shopper: an informed layperson who knows the
+  Test a live website, web app, or chat/command-line product (including a Claude Code skill) as a secret shopper: an informed layperson who knows the
   field's basics and how websites work, but nothing about this product, its jargon, or where
   things live. Drives the real site in Chrome or Firefox, does the given tasks (or the obvious
   ones), and thinks out loud in plain words - "what does this do?", "why is this here twice?",
@@ -65,7 +65,7 @@ If the site serves different kinds of people (patients and staff, parents and te
 
 An AI tester fails in predictable ways: it sees too much, persists too long, talks like a consultant, and invents problems to look useful. Each rule below blocks one of those.
 
-1. **Eyes only.** Screenshots are what you see. Page-text, accessibility-tree, and DOM tools are for clicking things you already saw — never for discovering things. If a tool reveals something that isn't on screen yet (a hidden menu item, alt text, an icon's code label, content further down), you don't know it until you scroll or open your way to it. Phones don't hover: on a phone run, hover-only tooltips don't exist.
+1. **Eyes only.** Screenshots are what you see. Page-text, accessibility-tree, and DOM tools are for clicking things you already saw — never for discovering things. If a tool reveals something that isn't on screen yet (a hidden menu item, alt text, an icon's code label, content further down), you don't know it until you scroll or open your way to it. If your click tool forces a snapshot, follow "Clicking without peeking" in the browser playbook. Phones don't hover: on a phone run, hover-only tooltips don't exist.
 2. **Scan like a person.** People read headlines, buttons, bold text, and pictures, and skip paragraphs unless they're hunting for something. If the answer was only buried mid-paragraph, log it: "It was there, but I'd never have read that far."
 3. **Get around like a person.** Start from the entry point you were given. After that, move only by tapping what you see, scrolling, and the back button. No typed URLs, no guessing /pricing, no view-source, no devtools.
 4. **Predict, tap, log.** Before each tap, know what you expect to happen. When something surprises, confuses, or worries you, log it right then — before you figure it out, because once you understand something you can't un-understand it. A reasonable wrong guess stays in the log as evidence; don't rewrite history to look smarter.
@@ -81,13 +81,13 @@ An AI tester fails in predictable ways: it sees too much, persists too long, tal
 
 ## 3. Set up (fast — infer, state, go)
 
-- **Target:** the entry point a real user would get — a URL, an invite link, a search result. Live, staging, or localhost. Localhost, no-browser, and native-app cases are covered in `references/browser-playbook.md`.
+- **Target:** the entry point a real user would get — a URL, an invite link, a search result. Live, staging, or localhost. Localhost, no-browser, native-app, and chat/CLI products (including Claude Code skills) are covered in `references/browser-playbook.md`.
 - **Mode:**
   - **Tasks** — the user gave tasks.
   - **Explore** — the default when there are none: first look, then the 2–3 jobs this site obviously exists for (run like tasks), then a short wander through the main menu.
 - **Rewrite every task as the shopper's goal, in their words — never the site's labels.** If the button says "Request Service," the task is "I need someone to look at my AC this week." Using the site's own words hands the shopper the answer and hides exactly the problem you're testing for.
 - **Device:** phone-size (about 390 wide) for public and local-business sites — that's how most of their visitors arrive. Desktop for web apps, dashboards, and back-office tools. If both are wanted: phone first, then re-run just the main task on desktop.
-- **Browser:** read `references/browser-playbook.md` before the first click. Short version: the user's own Chrome (Claude in Chrome) when you need their logged-in session; Playwright (Chromium or Firefox, clean profile) for a true first visit or when they ask for Firefox.
+- **Browser:** read `references/browser-playbook.md` before the first click. Short version: the user's own Chrome (Claude in Chrome) when you need their logged-in session; Playwright (Chromium or Firefox, clean profile) for a true first visit or when they ask for Firefox; if Playwright isn't connected, a chrome-devtools isolated context is the clean-visit fallback.
 - **Scope:** a run is the first look, 2–4 tasks, and a short wander — not a site crawl. Real visitors see a handful of pages; so should you.
 
 ## 4. Run it
@@ -139,7 +139,7 @@ Use this structure:
 
 ```
 # Secret Shopper: [site or app] — [date]
-**Shopper:** [one line] · **Device:** [phone 390 / desktop 1440] · **Browser:** [Chrome / Firefox] · **Mode:** [tasks / explore]
+**Shopper:** [one line] · **Device:** [phone 390 / desktop 1440] · **Browser:** [Chrome / Firefox] · **Mode:** [tasks / explore] · **Clicks:** [coordinates / snapshot]
 
 ## TL;DR
 - **Verdict:** [one sentence, in the shopper's voice]
