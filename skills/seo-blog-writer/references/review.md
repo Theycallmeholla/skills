@@ -3,7 +3,7 @@
 Returns two scores on opposite scales and a ranked findings list with stable IDs, quoting evidence for each — and touches nothing.
 
 **Reads:** `posts/<slug>/draft-vN.md`, `posts/<slug>/brief.md`, `posts/<slug>/research-vN.md`, `posts/<slug>/packet.md`, `clients/<c>/brand.md`, `clients/<c>/opinion-bank.md`, `clients/<c>/voice-baseline.json` *(when present)*, `posts/<slug>/claims.json`, `posts/<slug>/media.json`
-**Writes:** `posts/<slug>/review-vN.json`, `posts/<slug>/post.json` (status → `reviewed`), `registry.json` (`openFindings`, `status`)
+**Writes:** `posts/<slug>/review-vN.json`, `posts/<slug>/post.json` (status → `reviewed`), `registry.json` (`openFindings`, `staleClaims`, `status`)
 **Stops at:** NEVER EDITS THE DRAFT. Not a typo, not a banned word, not a heading level.
 
 That prohibition is in caps because it is the one the model is most tempted to break — you will read a sentence with an obvious fix and the fix will take four seconds. Do it once and the system loses the ability to say "score it, don't touch it," which is the entire reason `review` and `revise` are different commands. Every fix you can see goes in a finding; `revise` applies it.
@@ -30,7 +30,7 @@ If `posts/<slug>/review-v<N>.json` already exists for that same draft version, d
 
 ## Phase 1 — Mechanical pass
 
-Run `python3 scripts/tells_metrics.py posts/<slug>/draft-v2.md`. It returns JSON: lexicon hits, signpost phrases and paragraph openers, hedge density, em-dash / triad / bold / colon densities, "not just X but Y" frames, paragraph and sentence rhythm as coefficients of variation, bullet share, and a `reference_thresholds` block.
+Run `python3 scripts/tells_metrics.py` on the article body only: copy `draft-v<N>.md` to a temp file without its front matter, its `[IMAGE: …]` markers, and everything from the publish checklist down, and run it on that. Front matter, URLs, and the checklist inflate the word, colon, and em-dash counts and produce false findings. It returns JSON: lexicon hits, signpost phrases and paragraph openers, hedge density, em-dash / triad / bold / colon densities, "not just X but Y" frames, paragraph and sentence rhythm as coefficients of variation, bullet share, and a `reference_thresholds` block.
 
 Read the thresholds as rules of thumb, not verdicts — that's what the script's own note says. A lower CV means more uniform means more tell-like. A technical audience tolerates more structure than a narrative one, so a 0.31 sentence CV in a spec-adjacent piece is worth less than the same number in a customer story.
 
@@ -151,7 +151,7 @@ Also give each finding a `location` precise enough to act on (`H2 'What Google a
 
 Severity: `high` when it blocks publishing or misleads a reader, `medium` when it costs the post real value, `low` when it's craft. `boundary` and `fabrication` are locked to `high` regardless of how minor the instance looks.
 
-Write `posts/<slug>/review-v<N>.json` in the schema from `references/state.md` with `status: "open"` on every finding and the three resolution fields `null`. Then update the post's `openFindings` in `registry.json` in the same operation, along with `updated`. A registry that lags its records starts recommending things that aren't true.
+Write `posts/<slug>/review-v<N>.json` in the schema from `references/state.md` with `status: "open"` on every finding and the three resolution fields `null`. Then update the post's `openFindings` and `staleClaims` (computed the way `state.md` defines it) in `registry.json` in the same operation, along with `updated`. A registry that lags its records starts recommending things that aren't true.
 
 Set `post.json` status to `reviewed` and mirror it in the registry alongside `openFindings`. This is the only status transition this command makes, and it says "a score exists for the current draft" — nothing more. It does not mean the findings were addressed; `revise` moves the post back toward `drafted` when it produces the next version.
 
@@ -189,6 +189,8 @@ Rules for that response:
 - **No category names, no IDs, no weights, no metric densities, no threshold sourcing, no connector or teardown blocks.** All of that is in the JSON.
 - **Rank by what the user should do first**, not by severity order or discovery order.
 - **Say what's fine.** A review that only lists problems reads as a verdict on the writer. One line on what holds up keeps the report usable.
+
+Caveats this command is told to state — a partial teardown, a degraded connector, which thresholds came from a client baseline — go in `review-v<N>.json`'s `limitations` list. Say one in chat only when it changes what the article can honestly claim, in plain words.
 
 ### When the full detail comes out
 

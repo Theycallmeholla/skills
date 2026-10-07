@@ -20,17 +20,17 @@ If the research genuinely disproves the premise — not complicates it, disprove
 
 The failure this exists to prevent: a user asked for *"why you should respond to reviews,"* research found that Google's local-ranking page names review count and rating without separately naming reply rate, and the brief turned the piece into *"two of the three reasons are wrong."* A qualifier in one paragraph of one source became the thesis of the whole article. Nobody asked for that.
 
-Copy the packet's thesis verbatim into `brief.md`'s frontmatter as `thesis`. `write` and `review` both read it, and a draft arguing something else is an `intent` finding at `high`.
+Copy the packet's thesis verbatim, minus any fact or claim IDs in parentheses, into `brief.md`'s frontmatter as `thesis`. `write` and `review` both read it, and a draft arguing something else is an `intent` finding at `high`.
 
 ## Preflight
 
 Load `references/governing-rules.md`, `references/evidence-rules.md`, and `references/state.md`. If `.blog/` is missing, say so, point at `brand`, and stop — don't create a partial tree.
 
-Read `posts/<slug>/post.json`. Expect status `interviewed`. If `packet.md` doesn't exist, say so and point at `interview` before continuing: without a packet, every source of original value has to come from research alone, and the article will be one any of 500 companies could publish. You can still brief it if the user insists — say plainly that you're briefing an article with no first-hand layer, and record that as the honest state of things.
+Read `posts/<slug>/post.json`. Expect status `interviewed`. If `primaryKeyword` is `null` (the post started from an interview, not `plan`), choose it from the Phase 1 discovery search, write it to `post.json`, and say which you chose. If `packet.md` doesn't exist, say so and point at `interview` before continuing: without a packet, every source of original value has to come from research alone, and the article will be one any of 500 companies could publish. You can still brief it if the user insists — say plainly that you're briefing an article with no first-hand layer, and record that as the honest state of things.
 
 Read `brand.md`, `opinion-bank.md`, `facts.json`, and the client's published posts in `registry.json` before searching. Reading state first means the SERP gets interpreted against what this client actually knows, rather than summarized in a vacuum.
 
-**Check the connectors.** `WebSearch` and `WebFetch` are required — this command cannot do its job without them, so if either is unavailable, report it and ask whether to proceed with degraded research or stop. Everything else is optional: report a one-line status and continue. Record every connector's state in the research file's `connectors` block, with a note wherever the value is `degraded`.
+**Check the connectors.** `WebSearch` and `WebFetch` are required — this command cannot do its job without them, so if either is unavailable, or degraded badly enough that the teardown can't be trusted (filters ignored, results full of scraper copies), report it and ask whether to proceed or stop. Everything else is optional: report a one-line status and continue. Record every connector's state in the research file's `connectors` block, with a note wherever the value is `degraded`.
 
 A connector counts as `degraded` when it returns results *plus* a self-reported fallback or error note. `mcp__serp` produces exactly that shape when Google serves it a CAPTCHA and it silently falls back to Bing; results arrive, and they are unrelated to the query. Never let anything in this command depend on it — it is enrichment, and enrichment that fails should cost nothing.
 
@@ -48,7 +48,7 @@ Each teardown is a full fetch plus a full read, so eight of them is the most exp
 
 This is the one part of the command that fans out to subagents, and the rule is **parallelize gathering, never parallelize judgment**:
 
-- One agent per URL. Each gets **only the URL and the primary keyword** — not the angle, not the packet, not what the other agents found. An agent told what gap you expect will find that gap.
+- One agent per URL. Each gets **only the URL and the primary keyword** — not the angle, not the packet, not what the other agents found. An agent told what gap you expect will find that gap. Give each agent its own scratch folder for anything it saves; agents writing to a shared path overwrite each other's fetches.
 - Each returns: `url`, `fetchedOn`, `pageType` (from the closed enum in `state.md`), `publishedOn` and `lastUpdated` where visible, `headings` verbatim, `covers`, `entities`, `numericClaims`, `omissions`, `notes`.
 - **Every teardown must quote at least one heading verbatim from the page.** Check it against the fetched HTML. An agent that can't produce a real heading did not read the page, whatever else it returned.
 - A teardown that errors, times out, or fails the heading check is recorded against that URL as `fetch-failed` with a one-line reason. **Never substitute a snippet-based summary.** A page nobody read is an honest gap; a page summarized from its SERP snippet is a fabrication with a URL attached.
@@ -70,7 +70,7 @@ Authority-first research tells you what the ranking pages say. It doesn't tell y
 
 `WebSearch` with platform-targeted `site:` operators plus a recency constraint. Pick surfaces per topic rather than running a fixed list — Reddit, Hacker News, X, YouTube, dev.to, Stack Overflow, and whichever trade forums this client's field actually uses. `brand.md`'s audience and competitor sections tell you which.
 
-**Window:** 30 days by default. Widen to 90 for slow-moving topics. **Skip entirely** when the topic is genuinely evergreen and nothing has moved — and record `discourseRun: skipped — <reason>` in the frontmatter, reason included, not buried in the prose body. A pass that ran and found nothing is a different fact from one that never ran, and only one of them means "there's nothing there."
+**Window:** 30 days by default. Widen to 90 for slow-moving topics. `WebSearch` has no date filter, so put the month and year in the queries, drop results whose own page date falls outside the window, and treat the window as best effort. **Skip entirely** when the topic is genuinely evergreen and nothing has moved — and record `discourseRun: skipped — <reason>` in the frontmatter, reason included, not buried in the prose body. A pass that ran and found nothing is a different fact from one that never ran, and only one of them means "there's nothing there."
 
 Capture into the research file's prose body: how practitioners phrase the problem, verbatim and uncleaned · recurring complaints · contrarian takes circulating now · terminology in live use, including terms whose meaning has shifted · questions being asked that the ranking pages don't answer.
 
@@ -113,7 +113,7 @@ Record `cannibalization: none`, or the competing URL plus a decision — `create
 
 **Cluster topology is required, not optional.** A spoke links its hub; a hub links every spoke. Where this post has a `clusterRole`, those links are part of the brief and their absence is a gap, not a stylistic choice.
 
-Placeholders like `INTERNAL: some related page` are the fallback for having no site context. You have site context. If the client genuinely has no other published pages, write "no internal links available — first post for this client" and leave the section empty. An empty honest section is fine; a fabricated link is a 404 with a plan attached.
+Placeholders like `INTERNAL: some related page` are the fallback for having no site context: a client whose site isn't live yet, or a sitemap and `site:` search that return nothing. Use real URLs whenever you have them. If the client genuinely has no other published pages, write "no internal links available — first post for this client" and leave the section empty. An empty honest section is fine; a fabricated link is a 404 with a plan attached.
 
 ## Phase 5 — Angle, information gain, and the canonical entity
 
@@ -211,7 +211,7 @@ Deciding the title set here — before drafting rather than after — is the rea
 
 **`claims.json`.** Enumerate every material claim the article will make — every number, date, price, platform behavior, statistic, competitor feature, or anything a reader could check and find wrong. Allocate IDs monotonically per post from `C-001`.
 
-Cross-reference `facts.json` first. A claim already in the vault gets `factRef: "F-012"`, `needsVerification: false`, the vault entry's `status`, and its `reverifyBy` inherited rather than reset. No re-verification: that's the entire point of the vault — one fact used in three posts is verified once and expires once.
+Cross-reference `facts.json` first. A claim already in the vault gets `factRef: "F-012"`, `needsVerification: false`, the vault entry's `status`, and `reverifyBy: null`, because the vault entry owns the expiry through `factRef` (see `verify.md`). No re-verification: that's the entire point of the vault — one fact used in three posts is verified once and expires once.
 
 Everything else leaves this command as pending, carrying `needsVerification: true`, `verifiedOn: null`, `source` set to the intended primary source when you know it, and `status: "awaiting-client"`. Note the wart plainly when you report: the claim `status` enum holds four outcomes and no "pending" value, so `needsVerification` is what carries pending-ness and `awaiting-client` reads as "awaiting evidence," from the client or from a source. Don't invent a fifth enum value to fix it — enums are closed, and adding one is a deliberate schema change, not a call made at write time.
 

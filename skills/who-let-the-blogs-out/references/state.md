@@ -88,7 +88,7 @@ Read on every invocation, so it stays small. It holds identity plus exactly two 
 
 "Effective expiry" means the claim's own `reverifyBy`, or the linked vault fact's `reverifyBy` when `factRef` is set. `awaiting-client` counts because a claim still waiting on evidence is as unshippable as an expired one, and leaving it out lets a post look clean while resting on something nobody ever supplied.
 
-`verify`, `publish`, and `refresh` all compute this number. They must compute it the same way, or the menu starts recommending work that isn't there. All three therefore read the current draft file as well as the ledger — `verify` and `publish` gained that Read when `appearsIn` was removed, and the trade was deliberate: reads are safe, and writes are what the declared-paths rule exists to constrain.
+`verify`, `publish`, `refresh`, and `review` all compute this number. They must compute it the same way, or the menu starts recommending work that isn't there. All of them therefore read the current draft file as well as the ledger — `verify` and `publish` gained that Read when `appearsIn` was removed, and the trade was deliberate: reads are safe, and writes are what the declared-paths rule exists to constrain.
 
 ## Closed enums
 
@@ -148,7 +148,7 @@ taxonomy:
 
 `sitemap` is read by `brief`'s cannibalization crawl, which enumerates the client's real URLs instead of hoping a `site:` search surfaces them. The crawl result is cached per client so `brief` doesn't re-crawl for every post.
 
-`export` is optional, absent until `export` first learns how this client's site stores posts and the user confirms it: `postsDir`, `filePattern`, `format`, `index`, `reference` (a real existing post), `notes`, and `learnedOn`. It is the one `brand.md` key `export` writes; everything else in the file belongs to `brand`. See `references/export.md`.
+`export` is optional, absent until `export` first learns how this client's site stores posts and the user confirms it: `postsDir`, `filePattern` (built from any field the posts carry), `byKind` (folders that depend on the post's kind, or `null`), `format`, `index`, `reference` (a real existing post), `notes`, and `learnedOn`. It is the one `brand.md` key `export` writes; everything else in the file belongs to `brand`. See `references/export.md`.
 
 `taxonomy` is the controlled vocabulary `write` selects categories and tags from for its paste-ready CMS block. It never invents a value. When no taxonomy is recorded, `write` proposes one and says plainly that the client has no vocabulary yet — a gap for `brand` to close, not a licence to freestyle. Invented tags produce forty near-synonyms across a client's blog within months, which is the same rot closed enums exist to prevent.
 
@@ -476,6 +476,8 @@ One file per draft version. Never mutated except to move a finding's `status`, `
 }
 ```
 
+An optional `limitations` array of short strings records what bounded the review: a partial teardown, a degraded connector, which thresholds came from a client baseline. It gives `review`'s caveats a home outside the chat.
+
 Rubric scores run 0–100 where higher is better. Tells scores run 0–100 where **higher is worse** — they measure the density of generated-writing patterns. Keeping the two scales opposite is deliberate: a single blended number would let clean mechanics disguise an article that says nothing.
 
 ## Five schema rules
@@ -494,7 +496,7 @@ Rubric scores run 0–100 where higher is better. Tells scores run 0–100 where
 
 ## Write rules
 
-**1. Declared paths only.** Each command's header names exactly what it reads and writes. Undeclared paths are untouchable, even when editing one would be convenient.
+**1. Declared paths only.** Each command's header names exactly what it reads and writes. Undeclared paths are untouchable, even when editing one would be convenient. The one exception is each entity's `notes.md` drawer (schema rule 5): any command may create it or append to it, and no command parses it.
 
 **2. Append-only.** New draft → `draft-v(N+1).md`. New review → `review-v(N+1).json`. Never mutate a prior version. Disk is free; a lost history is not, and `refresh` reads the history to tell what actually changed.
 
