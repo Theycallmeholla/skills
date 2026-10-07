@@ -27,7 +27,7 @@ Even though this command can move faster than `drill`, still show the actual bef
 
 ## Phase 4: Apply
 
-Write the changes. If the user declines a specific relocation mid-review, load `references/decline.md` for that one finding rather than silently skipping it and moving on — an unaddressed finding needs a recorded reason, not just an absence.
+Write the changes, then append one line per worked finding to `notes.md`: `<date> worked <id> (adjust) — awaiting re-check`. Orientation reads it so it doesn't recommend the same finding again. If the user declines a specific relocation mid-review, load `references/decline.md` for that one finding rather than silently skipping it and moving on — an unaddressed finding needs a recorded reason, not just an absence.
 
 ## Phase 5: Point at the next check
 

@@ -7,6 +7,7 @@ Loaded for the read-only intent: a bare invocation, `help`, `what next`, `what s
 ## Read first
 
 - `.claude/nick-saban/registry.json`, if it exists.
+- `.claude/nick-saban/notes.md`, if it exists — only the `worked … awaiting re-check` lines.
 - `git status --porcelain` — cheap, tells you if the tree is dirty.
 - `git log -1 --format=%cI -- CLAUDE.md .claude/` — cheap, tells you when the harness itself last changed.
 
@@ -14,7 +15,7 @@ Loaded for the read-only intent: a bare invocation, `help`, `what next`, `what s
 
 1. **No `.claude/nick-saban/` and no `CLAUDE.md`** → lead with `kickoff`. "There's no playbook here yet — want me to scaffold one?"
 2. **No `.claude/nick-saban/` but `CLAUDE.md` exists** → lead with `check-playbook`. "There's a setup here already — worth scoring it before anyone changes it."
-3. **`registry.json` shows `openHigh > 0`** → lead with whichever of `drill` / `adjust` owns the highest-severity open finding's rung (see `state.md`'s rung-ownership table), and quote that finding's `claim` verbatim so the recommendation is concrete, not generic.
+3. **`registry.json` shows `openHigh > 0`** → lead with whichever of `drill` / `adjust` owns the highest-severity open finding's rung (see `state.md`'s rung-ownership table), and quote that finding's `claim` verbatim so the recommendation is concrete, not generic. First set aside findings that `notes.md` marks `worked … awaiting re-check` with a date after `lastAuditAt`: they've been acted on, and only a re-check can close them. (Declines are already left out of `openHigh` by `build_registry.py`.) If that sets aside every open high, lead with `check-playbook <their categories>` instead.
 4. **Open findings exist, all medium/low** → lead with whichever rung-owner (`drill` or `adjust`) has more open findings assigned to it; name the count.
 5. **An order exists with `lastAttest: null` and the tree is dirty** → lead with `watch-film <slug>`, naming how many criteria are still unverified.
 6. **`lastAuditAt` predates the last commit touching `CLAUDE.md` or `.claude/`** → lead with `check-playbook`. "The last score is older than your most recent config change — it might not reflect what's actually here now."

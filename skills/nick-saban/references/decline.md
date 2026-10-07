@@ -3,7 +3,7 @@
 Records a finding as a deliberate, accepted choice, keyed by its signal, so no future pass raises it again — and revokes that decision cleanly when asked.
 
 **Reads:** latest `audits/` record
-**Writes:** `.claude/nick-saban/waived.json`
+**Writes:** `.claude/nick-saban/waived.json`, then `registry.json` via `scripts/build_registry.py`
 **Stops at:** Never edits the finding itself, never touches config, never recomputes a score directly (that happens naturally on the next `check-playbook`, since `merge_pass.py` reads `waived.json`). Refuses to decline a `high` severity finding without a written sentence naming the actual risk being accepted — a one-word "sure" is not enough for that severity.
 
 ## Why this is the only writer of waived.json
@@ -39,13 +39,15 @@ Add or update the entry in `waived.json`:
 }
 ```
 
+Then run `scripts/build_registry.py --project-dir <project-root>`, so `openHigh` stops counting this finding right away.
+
 ## Phase 4: Confirm the effect
 
 Tell the user plainly what this does: the finding will show as declined (not resolved) on the next `check-playbook`, it stops counting against the score, and it'll appear under a collapsed "Declined" section in `scouting-report` rather than disappearing entirely.
 
 ## Revocation
 
-If asked to un-decline something, remove its entry from `waived.json` entirely — nothing else. The next `check-playbook` will pick it back up as open if the underlying signal still fires, exactly as if it had never been declined.
+If asked to un-decline something (`undecline <id>`, `revoke`, `unwaive`), remove its entry from `waived.json` entirely and re-run `scripts/build_registry.py` — nothing else. Never tell the user to edit the JSON by hand; this is the command for it. The next `check-playbook` will pick it back up as open if the underlying signal still fires, exactly as if it had never been declined.
 
 ## Output
 

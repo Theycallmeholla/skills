@@ -38,9 +38,17 @@ def main():
         latest_score = latest.get("score")
         score = latest_score["overall"] if isinstance(latest_score, dict) else None
         status = latest.get("status", "assessed")
+        # A decline written after this audit takes effect here immediately, so
+        # orientation doesn't keep recommending a finding the user already accepted.
+        waived_path = sdir / "waived.json"
+        waived = set()
+        if waived_path.exists():
+            with open(waived_path) as f:
+                waived = set((json.load(f).get("signals") or {}).keys())
         open_high = sum(
             1 for finding in latest["findings"]
             if finding["status"] == "open" and finding["severity"] == "high"
+            and finding["signal"] not in waived
         )
     else:
         current_audit = 0

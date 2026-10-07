@@ -27,7 +27,7 @@ Before evaluating any permission or enforcement finding, establish what tools th
 3. Mark every tool capable of: shell execution, file read, file write, git operations, network calls, database access.
 4. For each existing guard in the repo, record which of those surfaces it intercepts and which it doesn't.
 
-Record the result in the audit as `toolSurface`:
+Write the result to a temp file and pass it to `merge_pass.py --tool-surface`, which records it in the audit as `toolSurface`:
 
 ```json
 "toolSurface": {
@@ -76,6 +76,7 @@ python3 <skill-path>/scripts/merge_pass.py \
   --raw-findings <temp-file> \
   --categories-scanned <comma-separated list from phase 3> \
   --verification-surface <temp-file-with-verificationSurface> \
+  --tool-surface <temp-file-with-toolSurface> \
   --resolutions <temp-file-with-resolution-claims>
 ```
 
