@@ -8,7 +8,9 @@ Read this before running `kickoff` or `check-playbook`. Every other command trus
 .claude/nick-saban/
 ├── registry.json      cheap index, read every session
 ├── waived.json         declined findings, keyed by signal — the only file mutated in place
-├── notes.md            free-text drawer, explains decisions that aren't formal waivers
+├── notes.md            free-text drawer, explains decisions that aren't formal waivers; drill/adjust append "worked … awaiting re-check" lines
+├── manifests/          drill's guard-matrix manifests, kept so a guard can be re-tested later
+├── backups/            drill's pre-write backups and pre-approval stage (gitignored)
 ├── audits/
 │   ├── 001.json
 │   ├── 002.json

@@ -12,6 +12,7 @@ Usage:
         --raw-findings /path/to/raw_findings.json \\
         --categories-scanned context,mechanism,enforcement,verification,permissions,bounds \\
         --verification-surface /path/to/verification_surface.json \\
+        [--tool-surface /path/to/tool_surface.json] \\
         [--pass-number N]   # auto-detected from audits/ if omitted
 
 raw_findings.json is a JSON array of objects, each with:
@@ -21,6 +22,9 @@ raw_findings.json is a JSON array of objects, each with:
 
 verification_surface.json is the verificationSurface object (see state.md),
 or omit --verification-surface to write an empty {}.
+
+tool_surface.json is the toolSurface object from check-playbook Phase 2b
+(which tools are guarded and which aren't); omit it to write an empty {}.
 
 Writes .claude/nick-saban/audits/<NNN>.json (zero-padded to 3 digits) and
 prints the path. Does NOT touch registry.json — run build_registry.py after.
@@ -286,6 +290,7 @@ def main():
     ap.add_argument("--raw-findings", required=True, help="Path to a JSON array of raw finding objects")
     ap.add_argument("--categories-scanned", required=True, help="Comma-separated list, e.g. context,mechanism,enforcement")
     ap.add_argument("--verification-surface", default=None, help="Path to a verificationSurface JSON object")
+    ap.add_argument("--tool-surface", default=None, help="Path to a toolSurface JSON object (check-playbook Phase 2b)")
     ap.add_argument("--pass-number", type=int, default=None, help="Override auto-detected pass number")
     ap.add_argument("--resolutions", default=None,
                     help="Path to a JSON array of {signal, basis, evidence} objects: explicit "
@@ -323,6 +328,7 @@ def main():
     this_pass = args.pass_number if args.pass_number is not None else prior_pass + 1
 
     verification_surface = load_json(args.verification_surface, default={}) if args.verification_surface else {}
+    tool_surface = load_json(args.tool_surface, default={}) if args.tool_surface else {}
 
     # The verify_resolution gate is only a guarantee if it actually ran. Skipping
     # it silently would let every mechanically-checkable finding resolve on the
@@ -369,6 +375,7 @@ def main():
         "created": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "categoriesScanned": categories_scanned,
         "verificationSurface": verification_surface,
+        "toolSurface": tool_surface,
         "score": computed_score,
         "findings": findings,
     }

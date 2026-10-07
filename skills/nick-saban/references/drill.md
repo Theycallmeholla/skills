@@ -7,7 +7,7 @@ Works the findings whose remedy sits on the `hook`, `permission`, `ci`, or `test
 - `drill permissions` — establish or harden the complete permission surface as a single coordinated package. Open findings are *inputs* to this, not its boundary. It runs against a repo with twenty findings, two, or none at all — including a fresh setup where `check-playbook` has never run.
 
 **Reads:** latest `audits/` record (if one exists); `verificationSurface`; `notes.md`; `references/ladder.md`; `references/permission-baseline.md` in `permissions` scope
-**Writes:** `.claude/hooks/**`, `.claude/settings.json`, `.github/workflows/**` (or wherever CI is actually configured), `package.json#scripts` or `Makefile`, `notes.md`
+**Writes:** `.claude/hooks/**`, `.claude/settings.json`, `.github/workflows/**` (or wherever CI is actually configured), `package.json#scripts` or `Makefile`, `CLAUDE.md` (only the prose a mechanism supersedes, Phase 3), `.gitignore` (the backups line, Phase 6), `.claude/nick-saban/backups/**` (backups and the pre-approval stage), `.claude/nick-saban/manifests/**`, `notes.md`
 **Stops at:** Never writes anything without showing the exact file diffs, the test matrix result, and getting approval — one connected system per round. Never weakens or removes an existing guard. Never writes application tests — drafts one and stops. **Never edits application source**; when a finding's real fix lives there, hand off per Phase 3c instead of continuing. **Never claims a mechanism enforces more than its tested surface**, and never describes a partial command denylist as resource protection. Never marks a finding resolved; that's `check-playbook`'s job alone. Never writes `waived.json` directly — if the user declines a proposed mechanism, load `references/decline.md` and follow it instead of just moving on silently.
 
 ## Why this one is slower than `adjust`
@@ -114,7 +114,7 @@ Installing enforcement should not erase the explanation for the policy. A repo w
 
 A guard that passes the examples its own author wrote has demonstrated nothing except that its author was consistent. In `permissions` scope the matrix covers the **entire package at once**, not each mechanism in isolation — the point is to find the route around the defense, and routes don't respect which file you're editing.
 
-Write a **package manifest** and run `scripts/test_guard_matrix.py --manifest`. The manifest lists every mechanism in the package — hooks, `settings.json` deny rules, denied MCP/alternate tools — and the script returns one package result. Never report one mechanism's result as the package's.
+Write a **package manifest** and run `scripts/test_guard_matrix.py --manifest`. Before approval nothing is installed yet, so stage the draft files under `.claude/nick-saban/backups/stage-<ISO-timestamp>/` (same relative paths as the live files) and point `--project-dir` at that stage. Save the manifest to `.claude/nick-saban/manifests/<finding-id or permissions>.json` and keep it: it's what lets a later session re-run the same matrix after someone edits the guard. The manifest lists every mechanism in the package — hooks, `settings.json` deny rules, denied MCP/alternate tools — and the script returns one package result. Never report one mechanism's result as the package's.
 
 Two properties of that script matter to how you write the manifest:
 
@@ -208,7 +208,7 @@ On approval:
 3. Re-run the package manifest against the live files (Phase 4).
 4. Report anything that now fails, anything unwired, and anything still uncovered.
 
-Do not touch any finding's status in the audit record — that's `check-playbook`'s, once, afterward.
+Do not touch any finding's status in the audit record — that's `check-playbook`'s, once, afterward. Instead, append one line to `notes.md`: `<date> worked <id> (drill) — awaiting re-check`. Orientation reads it so it doesn't recommend the same finding again.
 
 ## Output
 
