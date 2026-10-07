@@ -121,6 +121,39 @@ def check_denylist(root, skills):
                 break
 
 
+def check_shared(root, skills):
+    """Copies listed in shared-files.yaml must match their owner byte for byte."""
+    path = os.path.join(root, "shared-files.yaml")
+    if not os.path.isfile(path):
+        return
+    try:
+        data = yaml.safe_load(open(path, encoding="utf-8")) or {}
+    except yaml.YAMLError as e:
+        return err("shared-files.yaml", f"not valid YAML — {e}")
+    for group in data.get("groups") or []:
+        owner = group.get("owner")
+        if owner not in skills:
+            err("shared-files.yaml", f"owner '{owner}' has no skill folder")
+            continue
+        for rel in group.get("files") or []:
+            source = os.path.join(root, "skills", owner, rel)
+            if not os.path.isfile(source):
+                err(owner, f"shared file `{rel}` is missing from its owner")
+                continue
+            original = open(source, "rb").read()
+            for skill in group.get("copies_in") or []:
+                if skill not in skills:
+                    err("shared-files.yaml", f"'{skill}' has no skill folder")
+                    continue
+                copy = os.path.join(root, "skills", skill, rel)
+                if not os.path.isfile(copy):
+                    err(skill, f"missing shared copy `{rel}` from {owner} — "
+                               "run python3 scripts/sync_shared.py")
+                elif open(copy, "rb").read() != original:
+                    err(skill, f"`{rel}` differs from {owner}'s copy — edit the owner, "
+                               "then run python3 scripts/sync_shared.py")
+
+
 def check_readme(root, skills):
     path = os.path.join(root, "README.md")
     if not os.path.isfile(path):
@@ -143,6 +176,7 @@ def main():
     for name in names:
         check_skill(root, name)
     check_denylist(root, set(names))
+    check_shared(root, set(names))
     check_readme(root, set(names))
 
     for w in warnings:

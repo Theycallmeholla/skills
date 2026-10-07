@@ -118,9 +118,9 @@ Two things the table can't show. **`write`, `revise`, and `refresh` each chain i
 - `audit`, `score`, `check` → `review`
 - `outline`, `research` → `brief`
 - `draft`, `post` → `write`
-- `seo-blog-writer` → `brief`, then `write` *(retired skill)*
-- `blog-topic-interview`, `opinion-interview` → `interview` *(retired skills)*
-- `ai-writing-detector` → `review` *(retired skill)*
+- `seo-blog-writer` → `brief`, then `write` *(standalone version of those steps; this skill wins when both are installed)*
+- `blog-topic-interview`, `opinion-interview` → `interview` *(blog-topic-interview is the standalone version)*
+- `ai-writing-detector` → `review` *(standalone tells scorer for any text; same as review's stateless mode)*
 
 ## State
 

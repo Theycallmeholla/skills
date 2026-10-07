@@ -1,6 +1,6 @@
 # Quality Rubric
 
-Score the draft across these weighted categories before delivering. The weighting is the point: a perfectly formatted article with no original insight fails; a useful, authoritative article with a 163-character meta description does not. Fix the weakest high-weight category first.
+Loaded by `review` when scoring a draft and by `refresh` when judging whether an aging post still holds up. Scores here are a safeguard at priority 8 — they measure how well the article does its job. They never decide what the article's job is. Score the draft across these weighted categories. The weighting is the point: a perfectly formatted article with no original insight fails; a useful, authoritative article with a 163-character meta description does not. Fix the weakest high-weight category first.
 
 | Category | Weight |
 |---|---:|
@@ -15,22 +15,26 @@ Score the draft across these weighted categories before delivering. The weightin
 
 ## Intent satisfaction (20%)
 
+- **Does the article argue the thesis it was given?** A draft that drifted into a different argument fails this category outright, however well it executes the other one. This is priority 1 and it is checked first.
 - Does the article deliver the outcome the searcher wanted — an answer, a decision, a plan — not just words about the topic?
 - Was the format-fit question honestly answered? If a blog post was the wrong page type, was that flagged?
 - Would a reader arriving from this query leave satisfied, or search again?
+- **One canonical entity, named consistently.** The page is unambiguously about the brief's `canonicalEntity`, and that thing is called the same name throughout rather than rotated through synonyms. A page trying to be about three things is about none of them, and synonym rotation reads as padding to a person and as ambiguity to anything parsing the page. Related entities from the research are mentioned; only one is the subject.
 
 ## Accuracy and sourcing (20%)
 
 - Every material claim verified, qualified, or removed — no unresolved claim-ledger rows.
 - Statistics and time-sensitive facts carry current, dated, preferably primary sources.
 - No fabricated experience, credentials, outcomes, quotes, or case studies.
+- **No source over-reach.** Every sourced claim sits in the band its evidence supports — explicit, reasonably implied, or openly uncertain. A source's silence is never written as a denial; a scoped instruction is never written as a general rule; a one-paragraph qualifier is never promoted to the article's headline. See the hierarchy in `references/evidence-rules.md`.
 - Competing SEO articles used for positioning only, never as factual backbone.
 - YMYL topics: authoritative sources only, education distinguished from advice, expert review recommended.
 
 ## Original value (15%)
 
 - The stated unique value is actually delivered in the article, not just promised.
-- At least one meaningful element the ranking pages don't provide.
+- At least one meaningful element the ranking pages don't provide. Any of these counts equally: first-hand experience · better examples · proprietary observations · useful synthesis · clearer explanations · better frameworks · screenshots · original diagrams · case patterns · operator experience · original data · practical recommendations · implementation details · business-specific perspective.
+- **Disagreement is not required and never manufactured.** A contrarian claim not supported by the packet or the bank is scored as a `fabrication`, not as original value.
 - Where original value depends on client input, the gap is honestly flagged under "Client evidence needed" instead of papered over.
 
 ## Completeness and usefulness (15%)
@@ -45,7 +49,8 @@ Score the draft across these weighted categories before delivering. The weightin
 - One H1; heading hierarchy is logical; headings reflect the searcher's questions and decisions, and skimming them tells the story.
 - No heading exists primarily to hold a keyword.
 - Paragraph lengths deliberately uneven; sections asymmetric where value is asymmetric; lists and tables only where they aid scanning — the article doesn't default to listicle form.
-- Opening leads with the reader's problem or payoff — no throat-clearing.
+- Opening leads with the reader's problem or payoff and delivers the answer — the recommendation, range, or verdict, with its governing condition — before the first H2. No throat-clearing, and no burying the answer under the setup.
+- **Sections stand on their own.** Each H2's central claim is recoverable without the section before it — the reader who lands mid-page from a search result, or skims to the heading matching their question, gets a complete answer there. Cross-references that add something are fine; a section whose point is *unavailable* without its predecessor is not. This is a reader-first rule, not chunking: no question-shaped headings are required, no word band applies, and a page split into small pieces to satisfy a formula fails this criterion rather than passing it.
 - Sentence lengths vary; claims made confidently; hedges converted to conditions; passes the full checklist in references/voice-and-tells.md (stance, texture, rhythm, constructions, lexicon).
 
 ## Brand and audience fit (10%)
@@ -53,12 +58,14 @@ Score the draft across these weighted categories before delivering. The weightin
 - Voice matches the brand and the audience's sophistication level.
 - Verified business expertise is used where the user's context supports it; nothing is invented.
 - The article sounds like the brand's expert wrote it, not like every other AI SEO article.
-- Passes the 500-companies test: swapping the company name and city would break the article. If it wouldn't, this category fails regardless of polish.
-- At least one genuine stance or judgment; basics the intended reader already knows are not re-explained.
+- **Author-value check:** the article contains meaningful value specific to this author or business — real experience, a real example, a real number, a real process, or a perspective only they have. Swapping the company name should cost the article something. If it wouldn't, this category fails regardless of polish, and the fix is more of the author, never a manufactured disagreement. The mirror holds too: strip the company name and the article must still be worth reading — if it isn't, it is a pitch shaped like an article, and more of the author makes that worse, not better.
+- At least one genuine judgment the author actually holds; basics the intended reader already knows are not re-explained. Agreement with the consensus is not a failure — a stance the packet doesn't support is.
 
 ## Conversion alignment (5%)
 
-- CTA aligned to the stated business goal, placed where it follows naturally from the content.
+- CTA is the brief's `businessPurpose.readerAction`, placed where it follows naturally from the content.
+- CTA depth matches the post's `intent`: informational → next article, tool, or checklist; commercial → service or pricing page; transactional or local → quote or contact. A CTA that asks for more commitment than the intent supports is a mismatch even when it matches the business goal.
+- A missing CTA, or one mismatched to intent, is a `conversion` finding at `medium`. At 5% this category can't fail a post on its own; the finding is what gets it fixed.
 - Internal links help the reader continue a relevant journey (no quota-filling).
 
 ## Technical on-page SEO (5%)

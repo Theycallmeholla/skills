@@ -1,0 +1,48 @@
+# Files owned by one skill and copied, byte for byte, into others.
+#
+# The owner's copy is the only one you edit. After editing it, run
+#   python3 scripts/sync_shared.py
+# to refresh every copy. validate_skills.py fails the build when a copy
+# no longer matches its owner, so stale rules can't ship quietly.
+version: 1
+
+groups:
+  # The single-step blog skills run on who-let-the-blogs-out's rules and
+  # state layout, so a project can move to the full system without migrating.
+  - owner: who-let-the-blogs-out
+    files:
+      - references/governing-rules.md
+      - references/state.md
+      - references/reporting.md
+      - assets/opinion-bank-template.md
+    copies_in:
+      - blog-topic-interview
+      - seo-blog-writer
+
+  - owner: who-let-the-blogs-out
+    files:
+      - references/interview.md
+    copies_in:
+      - blog-topic-interview
+
+  - owner: who-let-the-blogs-out
+    files:
+      - references/brief.md
+      - references/verify.md
+      - references/write.md
+      - references/review.md
+      - references/revise.md
+      - references/evidence-rules.md
+      - references/research-protocol.md
+      - references/headline-contract.md
+      - references/quality-rubric.md
+      - references/voice-and-tells.md
+    copies_in:
+      - seo-blog-writer
+
+  - owner: who-let-the-blogs-out
+    files:
+      - scripts/tells_metrics.py
+    copies_in:
+      - seo-blog-writer
+      - ai-writing-detector

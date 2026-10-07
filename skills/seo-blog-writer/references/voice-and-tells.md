@@ -1,16 +1,18 @@
 # Voice and AI-Tells
 
-Generation-side rules for writing that survives close reading. Detection lists describe symptoms; these rules prevent them. Apply during Stage 3 drafting; run the checklist at the bottom during Stage 4 verification.
+Generation-side rules for writing that survives close reading. Detection lists describe symptoms; these rules prevent them. Loaded by `write` while drafting, by `review` when scoring the `voice-tells` category, and by `revise` when fixing findings without introducing new ones. The checklist at the bottom is what `review` runs.
 
 The governing principle: **no single phrase marks writing as AI — a cluster of patterns does, and the strongest tells are absences, not words.** No stance, no texture, no evidence trail, no audience awareness. Specificity is the tell-killer; lexicon fixes are cosmetics on top. Every article must pass two tests:
 
-1. **The 500-companies test.** Could this article be published by 500 different companies after swapping the company name and city? If yes, rewrite — it has no voice and no value regardless of how clean it reads.
-2. **Information gain.** Does the reader learn something not available on page one of the SERP? (Enforced by the research protocol; restated here because it is also the strongest anti-tell.)
+1. **The author-value check.** Does the article contain meaningful value specific to this author or business — real experience, a real example, a real number, a real process, a perspective only they have? If swapping the company name would cost the article nothing, strengthen it with more of the author. **Never by manufacturing a disagreement.** The check runs both ways: strip the company name and the article must still be worth reading. If it isn't, it's a pitch shaped like an article, and more of the author makes it worse — it informs first, or it doesn't earn the right to sell.
+2. **Information gain.** Does the reader learn something not available on page one? First-hand experience, better examples, clearer explanations, real frameworks, screenshots, original data, and implementation detail all count. Disagreeing with somebody is not required and is not a substitute.
 
 ## Point of view (most important)
 
 - Take **at least one defensible stance** a competitor's article wouldn't publish: which option is overrated, which common advice fails in practice, which tradeoff most articles ignore. An expert risks being wrong; a content mill doesn't.
+- **Every stance must be one the author actually holds** — in `packet.md` or the opinion bank. A stance invented to satisfy this rule is a `fabrication`, and it is a worse outcome than a draft with no stance at all, because it reads better. Where the author has no quarrel with the consensus, the piece takes its stance on *how* to do the thing, not on *who is wrong about it*.
 - Don't equal-weight weak positions. If one approach is better for most readers, say so and say for whom the exception applies.
+- **Say when the client's own service isn't the answer.** The reader who doesn't need it, the case a cheaper option covers, the point where doing it yourself is fine. When the packet, the bank, or the vault supports it, this is the most trusted sentence in the article: the reader it turns away was never a buyer, and the one it keeps now believes the rest. It's a fenced condition inside the thesis (Rule 1), never a new argument, and never invented for the appearance of balance (Rule 4) — an honest "you don't need us if…" needs a real "if."
 - Replace hedges with conditions. Not "results typically vary" but "if your lot is under a quarter acre, skip this entirely." "Typically", "in most cases", "more often than not" are hedge-flags — each one should become a concrete condition or a confident claim.
 - Measured criticism is allowed and valuable. Relentless positivity — every option an "exciting opportunity" — is a tell in itself.
 
@@ -53,13 +55,17 @@ This list is a moving target — models migrate to new safe words as old ones ge
 - **No detector-chasing.** AI detectors are unreliable in both directions; Google penalizes scaled low-value content, not AI production. Optimizing to fool a classifier is optimizing for the wrong reader.
 - **No forced sass.** Over-corrected "edgy" voice is as recognizable as omniscient-neutral. The target is a knowledgeable practitioner talking to a peer.
 
-## Stage 4 tells checklist
+## The tells checklist
 
 Run against the finished draft; fix before delivering:
 
-- [ ] 500-companies test passed — swap the name and the article breaks
-- [ ] At least one real stance taken; no silly position given equal weight
+- [ ] Argues the thesis it was given — not a more interesting one found during research
+- [ ] Author-value check passed — swap the name and the article loses something real
+- [ ] Reader-value check passed — strip the name and the article is still worth reading
+- [ ] At least one real stance, and it is one the packet or bank actually records
+- [ ] No manufactured disagreement; no claim stronger than its source supports
 - [ ] At least one edge case / failure mode / tradeoff covered
+- [ ] Names the case where the client's service isn't the answer, where the evidence supports one
 - [ ] Every "typically"-class hedge converted to a condition or confident claim
 - [ ] No placeholder-name anecdotes; no "studies show" without a citation
 - [ ] Paragraph lengths visibly uneven; sections asymmetric where value is asymmetric
