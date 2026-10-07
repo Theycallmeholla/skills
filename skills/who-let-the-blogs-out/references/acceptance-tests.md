@@ -249,5 +249,5 @@ There is no automated harness — these are judgment tests over a conversation, 
 
 Run them by walking a real or simulated session against the rule files and checking each PASS/FAIL list. Two shortcuts that catch most regressions cheaply:
 
-1. **Grep for the retired doctrine.** `500-companies test outranks` should appear nowhere. Any surviving instance is a Test 11 regression waiting to happen.
+1. **Grep for the retired doctrine.** `500-companies test outranks` should appear nowhere outside this file (`grep -rn "500-companies test outranks" skills/ | grep -v acceptance-tests`). Any surviving instance is a Test 11 regression waiting to happen.
 2. **Read the output section of every command file.** If any of them prints an ID, a score, or a count in its default response, that is a Test 10 regression.

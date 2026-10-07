@@ -222,7 +222,7 @@ Client: <client-slug> · Post: <post-slug> · Interviewed: YYYY-MM-DD
 ## Suggested angle
 ```
 
-- **Thesis** — one sentence, the author's position, **in their words**, quoted where they gave one. This is the sticky thesis under Rule 1. If the user stated it directly, it is verbatim here and nothing downstream may replace it.
+- **Thesis** — one sentence where possible, two at most, the author's position, **in their words**, quoted where they gave one. This is the sticky thesis under Rule 1. If the user stated it directly, it is verbatim here and nothing downstream may replace it.
 - **Business purpose** — who this is for, which service it connects to, what the reader should do next. Feeds priority 4. If the author didn't say and it is obvious from `brand.md`, write it and mark it inferred; if it is genuinely ambiguous, that is one of your questions.
 - **Defensible stances** — claims they'd defend in a room. Include contrarian ones **only where the author actually holds them.** A stance list with nothing contrarian in it is a normal outcome.
 - **First-hand evidence** — stories, projects, mistakes, results, with the anonymization asked for. This section is the whitelist `write` draws from for anything phrased as experience.
@@ -240,7 +240,11 @@ When you are unsure whether a line came from the author or from something they p
 
 ### Numbers leave the prose and become facts
 
-Every specific with a number, price, timeline, threshold, or measurable result gets written to `clients/<c>/facts.json` as a vault entry, and the packet references the ID.
+Every reusable specific — a price, timeline, threshold, or measurable result the author would cite again — gets written to `clients/<c>/facts.json` as a vault entry, and the packet references the ID.
+
+A number that is part of a story about a past event ("a 4000 psi unit etched the concrete") stays in the story. It records what happened, it can't go stale, and it isn't a vault fact.
+
+When a quote the author gave contains a number, keep the quote verbatim and also file the number as a fact, citing its ID beside the quote. Verbatim wording and an expiring number are both kept; neither replaces the other.
 
 ```json
 {
@@ -257,7 +261,7 @@ Every specific with a number, price, timeline, threshold, or measurable result g
 }
 ```
 
-Rules: allocate IDs monotonically per client, never reuse. `source: first-hand` **only** when the number comes from the author's own work — a number they are repeating from something they read is a claim for `verify`, not a vault fact. Pick `kind` from the closed list in `state.md`. `verifiedOn` is today; set `reverifyBy` by decay rate. Use `status: qualified` when the author hedges, preserving the hedge in `statement`.
+Rules: allocate IDs monotonically per client, never reuse. `source: first-hand` **only** when the number comes from the author's own work — a number they are repeating from something they read is a claim for `verify`, not a vault fact. Pick `kind` from the closed list in `state.md`. `verifiedOn` is today; set `reverifyBy` from the decay guidance in `references/evidence-rules.md` (Verification standards): prices and platform behavior within 12 months, statistics and legal facts longer, process facts still dated. Use `status: qualified` when the author hedges, preserving the hedge in `statement`.
 
 ---
 
@@ -298,7 +302,7 @@ The `Provenance:` line is required on every `P-` and `S-` entry. Voice fingerpri
 ### Two standing rules
 
 - **Never delete a superseded position.** Mark it superseded with the date and add the new one beneath. A changed mind is the best article material an author has.
-- **Numbers don't live here.** Anything measurable is a fact ID reference.
+- **Numbers don't live here as claims.** Anything measurable is a fact ID reference. A verbatim quote that happens to contain a number stays verbatim, with the fact ID beside it.
 
 **Boundaries go in both places** — the packet protects this post, the bank protects every future one.
 
@@ -308,7 +312,7 @@ Add a line to the Topic log: date, topic, packet path. Then update `registry.jso
 
 ## 5. Hand off
 
-Set `post.json` `status` to `interviewed` and `updated` to today, and update `registry.json` in the same operation. If no post record exists — the interview ran without `plan` — create `post.json` at the reserved slug with `status: interviewed` and whatever identity is known.
+Set `post.json` `status` to `interviewed` and `updated` to today, and update `registry.json` in the same operation. If no post record exists — the interview ran without `plan` — create `post.json` with `status: interviewed` and whatever identity is known. With no reserved slug, settle one from the topic (short, lowercase, hyphenated, no stop words) and show it to the author before writing. Fields only `plan` or `brief` would know stay `null` until `brief` fills them: `primaryKeyword`, `intent`, and `currentVersion` in `post.json`, plus `title` on its registry row.
 
 ### When the author isn't available
 

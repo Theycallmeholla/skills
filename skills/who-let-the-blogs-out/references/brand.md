@@ -38,7 +38,7 @@ Read `.blog/registry.json`. Three cases:
     └── notes.md               a single `# Notes — <name>` heading
 ```
 
-Copy `opinion-bank-template.md` as-is except for its `## Specifics` section — drop it. Numbers live in `facts.json`, where they carry a `reverifyBy` date and can expire; a number parked in prose expires silently and gets published two years later as if it were current.
+Copy `opinion-bank-template.md` as-is. It deliberately has no section for numbers: they live in `facts.json`, where they carry a `reverifyBy` date and can expire; a number parked in prose expires silently and gets published two years later as if it were current.
 
 Leave `posts/` alone. `plan` creates it when there is a post to put in it.
 

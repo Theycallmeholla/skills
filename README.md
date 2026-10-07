@@ -625,8 +625,8 @@ never saves an opinion the author didn't state, pick, confirm, or demonstrate. N
 into the skill's own folder.
 
 **Bundle** — Copies of `who-let-the-blogs-out`'s `references/interview.md`,
-`references/governing-rules.md`, `references/state.md`, `references/reporting.md`, and
-`assets/opinion-bank-template.md`, checked against the originals in CI.
+`references/governing-rules.md`, `references/state.md`, `references/reporting.md`,
+`references/evidence-rules.md`, and `assets/opinion-bank-template.md`, checked against the originals in CI.
 
 **Not for** — Emails, proposals, social posts, or writing the article itself (`seo-blog-writer`).
 </details>

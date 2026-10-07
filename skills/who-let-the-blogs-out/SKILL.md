@@ -98,7 +98,7 @@ Two things the table can't show. **`write`, `revise`, and `refresh` each chain i
 
 **Commands are capabilities, not a queue you must drain.** Under Rule 10, run the step the situation needs. A user who has already chosen a topic does not get sent back through `plan`; a post with a full packet and an obvious angle does not need a ceremonial round of questions before `brief`.
 
-> **v2 status.** Everything in the spec has landed except one item: `refresh`'s search-performance decay signal, which is blocked on a Google Search Console connector and will stay unbuilt until one exists. Rationale and the corrections from the live runs: [`docs/wltbo-v2-spec.md`](../../docs/wltbo-v2-spec.md).
+> **v2 status.** Everything in the spec has landed except one item: `refresh`'s search-performance decay signal, which is blocked on a Google Search Console connector and will stay unbuilt until one exists. Rationale and the corrections from the live runs: [`docs/wltbo-v2-spec.md`](https://github.com/Theycallmeholla/skills/blob/main/docs/wltbo-v2-spec.md).
 
 ## Routing
 

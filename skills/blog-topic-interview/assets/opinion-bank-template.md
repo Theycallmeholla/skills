@@ -22,7 +22,7 @@ Rules for maintaining this file:
   `claims.json` or `research-vN.md` with its real origin — never here, and never quoted back as
   "in his words." An entry that cannot name its provenance is not written; it is recorded as a gap.
 - Store durable material only — standing positions and reusable stories, not one-off post details.
-- Numbers do not live here. Prices, timelines, thresholds, and measurable results go to `facts.json`, where they carry a verification date and an expiry. A number in prose can't be checked for staleness; a number in the vault can.
+- Numbers do not live here as claims. A verbatim quote that contains a number stays verbatim, with the fact ID beside it. Prices, timelines, thresholds, and measurable results go to `facts.json`, where they carry a verification date and an expiry. A number in prose can't be checked for staleness; a number in the vault can.
 - Keep the author's actual wording. This file is a voice archive, not a summary.
 - When a position changes, don't delete the old one — mark it superseded with the date. Changed minds are great article material.
 
@@ -54,7 +54,7 @@ Position in the author's own words. -->
 <!-- Real client stories, projects, mistakes, results. These are the ONLY experiences
 that may ever be presented as first-hand in published content. Format:
 ### [Short story title] (S-001, YYYY-MM)
-*Provenance: demonstrated — described the job unprompted, 2026-09 interview.*
+*Provenance: stated — described the job unprompted, 2026-09 interview.*
 
 What happened, with the specifics. Note any anonymization the author requested. -->
 

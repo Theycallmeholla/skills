@@ -145,10 +145,10 @@ Anything malformed you hit along the way — a claim ID the brief never mentions
 ```
 ## Aging posts — 4 of 11 published need attention
 
-blog refresh title-tag-length-guide   2 claims expired 2026-06-14 (Google title behavior) · published 2025-03-02
-blog refresh epoxy-garage-cost        F-012 (avg. price) expired 2026-05-01 · cited by 3 posts
-blog refresh local-seo-location-pages v4 on disk, v2 published 2026-02-14 — live text is two versions behind
-blog refresh gbp-optimization-guide   published 2024-09-11, no stale claims — age only, platform-behavior topic
+wltbo refresh title-tag-length-guide   2 claims expired 2026-06-14 (Google title behavior) · published 2025-03-02
+wltbo refresh epoxy-garage-cost        F-012 (avg. price) expired 2026-05-01 · cited by 3 posts
+wltbo refresh local-seo-location-pages v4 on disk, v2 published 2026-02-14 — live text is two versions behind
+wltbo refresh gbp-optimization-guide   published 2024-09-11, no stale claims — age only, platform-behavior topic
 
 ## Clean
 7 posts, nothing expiring before 2027-01.

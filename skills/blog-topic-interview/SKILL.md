@@ -21,7 +21,7 @@ It is the `interview` command of who-let-the-blogs-out, packaged on its own. The
 
 ## Run it
 
-1. Load `references/governing-rules.md`, `references/state.md`, and `references/reporting.md`.
+1. Load `references/governing-rules.md`, `references/state.md`, `references/reporting.md`, and `references/evidence-rules.md` (its Verification standards set fact expiry dates).
 2. Follow `references/interview.md` from top to bottom, with the one override below.
 
 Everything in `interview.md` applies as written: at most three questions at a time, never re-ask what the bank already answers, every opinion-bank entry carries provenance, numbers go to `facts.json`, and the packet lands at `.blog/posts/<slug>/packet.md`.
@@ -49,7 +49,7 @@ Create the tree once the slugs are confirmed:
 
 - **Client row:** `slug`, `name`, `domain` (or `null`), `brandProfile: "missing"`, `bankEntries: 0`, `updated` set to today.
 - **`brand.md`:** frontmatter with `client`, `name`, `domain`, `sitemap: null`, and `updated`. Leave out `source` and `taxonomy` until `brand` runs; they record how the profile was built, and nothing has been yet. Under each of the seven headings, write `**Not captured.** Ask in the next brand pass.` Never fill a brand section from guesses about the business.
-- **Leave `posts/` alone** until `interview.md` creates the post folder. In `post.json` and its registry row, fields only `plan` or `brief` would know (`primaryKeyword`, `intent`, `title`, `currentVersion`) stay `null`; `brief` fills them.
+- **Leave `posts/` alone** until `interview.md` creates the post folder. Fields only `plan` or `brief` would know stay `null` until `brief` fills them: `primaryKeyword`, `intent`, and `currentVersion` in `post.json`, plus `title` on its registry row.
 
 If `.blog/` exists but this client doesn't, create `clients/<slug>/` with the same four files and add the client row. Create the client folder whole, never file by file.
 
