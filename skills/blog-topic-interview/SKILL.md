@@ -28,27 +28,32 @@ Everything in `interview.md` applies as written: at most three questions at a ti
 
 ## The one override: no `.blog/` yet
 
-`interview.md` says that when `.blog/` is missing you should point at `brand`. This skill doesn't have `brand`, so create the same starting tree that `brand` creates, and nothing more.
+`interview.md` says that when `.blog/` is missing you should point at `brand`. This skill doesn't have `brand`, so create the same starting tree that `brand` creates, and nothing more. These files are added to `interview.md`'s declared writes for this run only.
 
-Settle the client slug first: lowercase and hyphenated, from the domain or business name (`cursivemedia.com` → `cursive-media`). It appears in every path and is never renamed, so show it to the user before writing anything.
+**Settle two slugs first**, lowercase and hyphenated, and show both in your first message, ahead of the first batch of questions. A slug confirmation doesn't count toward the three-question limit.
+
+- **Client slug** from the business name: `Cursive Media` → `cursive-media`. Use the domain only when there's no name. It appears in every path and is never renamed.
+- **Post slug** from the topic: short, no stop words, `how-often-pressure-wash-driveway`. Normally `plan` reserves this; here you do.
+
+Create the tree once the slugs are confirmed:
 
 ```
 .blog/
 ├── registry.json              {"version": 1, "clients": [<client row>], "posts": []}
 └── clients/<slug>/
     ├── brand.md               frontmatter + the seven headings from state.md
-    ├── opinion-bank.md        assets/opinion-bank-template.md, minus its ## Specifics section
+    ├── opinion-bank.md        assets/opinion-bank-template.md, copied whole
     ├── facts.json             {"version": 1, "facts": []}
     └── notes.md               a single `# Notes — <name>` heading
 ```
 
 - **Client row:** `slug`, `name`, `domain` (or `null`), `brandProfile: "missing"`, `bankEntries: 0`, `updated` set to today.
-- **`brand.md`:** frontmatter with `client`, `name`, `domain`, `sitemap: null`, `updated`, `source: null`. Under each of the seven headings, write `**Not captured.** Ask in the next brand pass.` Never fill a brand section from guesses about the business.
-- **Leave `posts/` alone** until `interview.md` creates the post folder.
+- **`brand.md`:** frontmatter with `client`, `name`, `domain`, `sitemap: null`, and `updated`. Leave out `source` and `taxonomy` until `brand` runs; they record how the profile was built, and nothing has been yet. Under each of the seven headings, write `**Not captured.** Ask in the next brand pass.` Never fill a brand section from guesses about the business.
+- **Leave `posts/` alone** until `interview.md` creates the post folder. In `post.json` and its registry row, fields only `plan` or `brief` would know (`primaryKeyword`, `intent`, `title`, `currentVersion`) stay `null`; `brief` fills them.
 
 If `.blog/` exists but this client doesn't, create `clients/<slug>/` with the same four files and add the client row. Create the client folder whole, never file by file.
 
-Then say once, in one line, that the brand profile is empty and that who-let-the-blogs-out's `brand` command fills it if they adopt the full system.
+In the closing report, add one line saying the brand profile is empty and that who-let-the-blogs-out's `brand` command fills it if they adopt the full system.
 
 **Never write into this skill's own folder.** `assets/opinion-bank-template.md` is only ever copied out. A bank saved inside a skill is lost when the skill is updated, and it carries one client's private positions into every other project.
 

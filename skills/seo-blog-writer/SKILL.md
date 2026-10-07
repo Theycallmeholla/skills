@@ -38,21 +38,21 @@ Load `references/governing-rules.md`, `references/state.md`, and `references/rep
 
 The shared files assume the rest of who-let-the-blogs-out exists. Three places change here.
 
-**No `.blog/` yet.** `brief.md` says to point at `brand`. Instead, create the same starting tree `brand` creates. Settle the client slug first (lowercase and hyphenated, from the domain: `cursivemedia.com` → `cursive-media`) and show it before writing.
+**No `.blog/` yet.** `brief.md` says to point at `brand`. Instead, create the same starting tree `brand` creates; these files are added to the brief's declared writes for this run only. Settle the client slug first from the business name, lowercase and hyphenated (`Cursive Media` → `cursive-media`; the domain only when there's no name), and show it before writing.
 
 ```
 .blog/
 ├── registry.json              {"version": 1, "clients": [<client row>], "posts": []}
 └── clients/<slug>/
     ├── brand.md               frontmatter + the seven headings from state.md
-    ├── opinion-bank.md        assets/opinion-bank-template.md, minus its ## Specifics section
+    ├── opinion-bank.md        assets/opinion-bank-template.md, copied whole
     ├── facts.json             {"version": 1, "facts": []}
     └── notes.md               a single `# Notes — <name>` heading
 ```
 
-The client row is `slug`, `name`, `domain` (or `null`), `brandProfile: "missing"`, `bankEntries: 0`, and `updated`. `brand.md` gets frontmatter with `client`, `name`, `domain`, `sitemap: null`, `updated`, and `source: null`, and `**Not captured.** Ask in the next brand pass.` under each heading. Never fill a brand section from guesses about the business. If `.blog/` exists but the client doesn't, create the client folder whole the same way.
+The client row is `slug`, `name`, `domain` (or `null`), `brandProfile: "missing"`, `bankEntries: 0`, and `updated`. `brand.md` gets frontmatter with `client`, `name`, `domain`, `sitemap: null`, and `updated`, leaving out `source` and `taxonomy` until `brand` runs, and `**Not captured.** Ask in the next brand pass.` under each heading. Never fill a brand section from guesses about the business. If `.blog/` exists but the client doesn't, create the client folder whole the same way.
 
-**No post record yet.** `plan` normally reserves the slug. Settle it from the primary keyword instead: short, lowercase, hyphenated, no stop words. Show it, then create `posts/<slug>/post.json` per `state.md` with `status: "idea"`, and add its row to `registry.json`.
+**No post record yet.** `plan` normally reserves the slug. Settle it from the primary keyword instead: short, lowercase, hyphenated, no stop words. Show it, then create `posts/<slug>/post.json` per `state.md` with `status: "idea"` and `null` for anything not yet known, and add its row to `registry.json`.
 
 **"Next" lines.** The shared files end reports with `wltbo <command>`. Here, name the next step in plain words instead, such as "say 'write it'" or "say 'fix these'".
 
