@@ -10,9 +10,11 @@ Writes the reviewed draft into the site's code as the post file. This command wr
 
 Read the review file for `currentVersion`. Open `boundary`/`fabrication` findings block — the site file is one deploy away from public, so the gate is publish's gate. Assets still `needed` and claims still `awaiting-client` warn; list them and ask one consolidated proceed question.
 
-## Phase 2 — Shape map (this repo)
+## Phase 2 — Shape map
 
-The site is front-end-only: posts are `Article` objects in `lib/posts/<slug>.ts`, assembled newest-first in `lib/blog.ts`. Map the title set:
+**Check the site's shape before writing anything.** This command knows exactly one: a front-end-only site with posts as `Article` objects in `lib/posts/<slug>.ts`, listed newest-first in `lib/blog.ts`. If the working repo has no `lib/blog.ts`, or its posts don't match that shape, say so in one line and stop. Export never guesses a site's format; a post written in the wrong shape breaks the build or ships broken.
+
+In that shape, the site is front-end-only: posts are `Article` objects in `lib/posts/<slug>.ts`, assembled newest-first in `lib/blog.ts`. Map the title set:
 
 - `title` = h1 · `desc` = dek · `seoTitle` = searchTitle **minus the brand suffix**, ≤ 60 chars (the type doc is the law) · `seoDesc` = metaDescription (120–158)
 - `image` = the hero asset's `/blog/...` path · `category`/`categoryLabel` by cluster · `readTime` = body words ÷ 225, "N min read" · `date` = "Mon D, YYYY" for the day it goes live — bump it at deploy if that slips · `author` = the only permitted byline

@@ -124,7 +124,7 @@ Legitimate sources of original value, all equal in standing:
 
 first-hand experience · better examples · proprietary observations · useful synthesis · clearer explanations · better frameworks · screenshots · original diagrams · case patterns · operator experience · original data · practical recommendations · implementation details · business-specific perspective
 
-**The author-value check**, which replaces the old "500-companies test outranks everything" doctrine:
+**The author-value check**, which replaces the retired doctrine that the 500-companies test outranked everything:
 
 > Before shipping, ask whether the article contains meaningful value specific to this author or business. If not, strengthen it with real experience, examples, evidence, analysis, or perspective.
 

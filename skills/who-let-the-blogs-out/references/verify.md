@@ -144,7 +144,7 @@ F-018  $6,000 rebuild floor  ·  2026-11-14  (3 months)
 
 Written: posts/local-seo-location-pages/claims.json · clients/cursive-media/facts.json
          registry.json (staleClaims: 1)
-Next: blog write local-seo-location-pages — C-007 is out; the outline section it
+Next: wltbo write local-seo-location-pages — C-007 is out; the outline section it
       supported needs a different piece of evidence.
 ```
 

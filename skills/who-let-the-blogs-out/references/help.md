@@ -17,7 +17,7 @@ This turns "write a blog post" into a line of steps that hand work to each other
 For a brand-new post, in order:
 
 ```
-interview   →   brief   →   write   →   review   →   revise   →   publish
+interview   →   brief   →   write   →   review   →   revise   →   export   →   publish
 ```
 
 - **interview** — asks what you actually think about the topic. Your opinions, your war stories, your real numbers, and what you refuse to say. Two or three questions at a time, and only ones it can't answer from what you've already told it.
@@ -25,6 +25,7 @@ interview   →   brief   →   write   →   review   →   revise   →   publ
 - **write** — drafts the article from the brief and that research. It can only claim experience you actually gave it. **Scores itself automatically when it's done** — you get the draft and the findings together.
 - **review** — scores the draft two ways and lists what's wrong. It never edits.
 - **revise** — fixes what review found, then re-scores automatically.
+- **export** — for sites whose posts live in code, writes the finished post into the site's files. It never deploys; a human does that.
 - **publish** — records that it went live, and sets expiry dates on every fact in it.
 
 You never have to remember to run `review`. Anything that produces a draft runs it — a draft never reaches you unscored.
@@ -61,7 +62,7 @@ Plus an index of every post published, which is what makes "you already wrote th
 
 ### What it does not do
 
-- It does not push to WordPress or any CMS. It produces the file; a human ships it.
+- It does not push to WordPress or any CMS, and it never deploys. It produces the file, or with `export` writes it into the site's code; a human ships it.
 - It does not invent experience. If you didn't say it, it won't claim it.
 - It does not change what your post argues. You say what the article is about; research can qualify a claim inside it, but it can't quietly turn your post into a different one.
 - It does not save an opinion as yours unless you actually said it, picked it, or agreed to it. Something you pasted in for it to read is a source, not your opinion.
@@ -88,6 +89,7 @@ If they describe a situation rather than naming a command, map it and say why:
 | "it doesn't sound like us" | `brand` first, then `review` |
 | "fix what you found" | `revise` |
 | "is this old post still accurate" | `refresh` |
+| "put it on the site" (site in code) | `export` |
 | "it went live" | `publish` |
 | "we need pictures" | `images` |
 | "is that number still true" | `verify` |

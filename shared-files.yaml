@@ -14,6 +14,7 @@ groups:
       - references/governing-rules.md
       - references/state.md
       - references/reporting.md
+      - references/evidence-rules.md
       - assets/opinion-bank-template.md
     copies_in:
       - blog-topic-interview
@@ -32,7 +33,6 @@ groups:
       - references/write.md
       - references/review.md
       - references/revise.md
-      - references/evidence-rules.md
       - references/research-protocol.md
       - references/headline-contract.md
       - references/quality-rubric.md

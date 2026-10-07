@@ -72,7 +72,9 @@ Read on every invocation, so it stays small. It holds identity plus exactly two 
 }
 ```
 
-`openFindings` and `staleClaims` are the only denormalized summary fields. They exist so the no-argument menu can recommend something specific without opening a single record. Resist adding a third.
+`bankEntries` on a client row is the number of entries (`###` headings) under Standing positions, Contrarian takes, and War stories in that client's `opinion-bank.md`, counting older entries written before IDs existed. Voice fingerprints and boundaries aren't counted. `interview` owns it; `brand` sets it to `0` on a fresh scaffold.
+
+`openFindings` and `staleClaims` are the only denormalized summary fields on a post. They exist so the no-argument menu can recommend something specific without opening a single record. Resist adding a third.
 
 `cluster` and `clusterRole` are **identity**, not summary. They aggregate nothing and cannot fall out of sync with a record the way a count can, which is why they don't fall under the rule above. Both are `null` for a standalone post. `clusterRole` is stated explicitly rather than inferred from `slug == cluster` — deriving topology from string equality fails the first time a hub's slug differs from its cluster's name, and it fails silently.
 
@@ -173,7 +175,7 @@ The author's accumulated thinking. Sections: Author profile · Standing position
 
 Two rules that matter more than the structure: **date every entry**, and **never delete a superseded position** — mark it superseded with the date. A changed mind is some of the best article material a writer has, and deleting it destroys that.
 
-Numbers do not live here. They live in `facts.json`, where they can expire.
+Numbers do not live here as claims. They live in `facts.json`, where they can expire. A verbatim quote that contains a number stays verbatim, with the fact ID beside it.
 
 ### Entries carry IDs and provenance
 
@@ -510,7 +512,7 @@ Under Rule 9 of `governing-rules.md`, "report" means *record it in the files and
 
 `voice-baseline.json` is **not** created at initialization. It exists only after `brand learn` has run against a corpus someone confirmed was human-written, and its absence is the normal state. An empty baseline file would be indistinguishable from a refused calibration, and those mean opposite things.
 
-Post directories are created by whichever command first needs them — `plan` or `interview` — using the schemas above with `version: 1` and an empty items array. `research-v1.md` is created by `brief`; a post can legitimately reach `interviewed` without one.
+Post directories are created by whichever command first needs them — `plan` or `interview`. Each command creates only the files in its own Writes line; a JSON file starts from its schema above with `version: 1` and, where it has one, an empty items array. `research-v1.md` is created by `brief`; a post can legitimately reach `interviewed` without one.
 
 When a file exists but doesn't match its schema, report the mismatch, name the file and field, and continue without writing to it. Rule 5 applies: repair is a deliberate act, requested explicitly, never a side effect.
 

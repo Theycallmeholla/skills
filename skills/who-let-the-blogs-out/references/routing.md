@@ -33,6 +33,10 @@ Lead with `who-let-the-blogs-out review <slug>`. A draft nobody scored is a draf
 
 This case should now be rare: `write`, `revise`, and `refresh` all chain into `review`, so a `drafted` post with no matching `review-vN.json` usually means the chain was interrupted. Say that when you recommend it — an unexplained gap in the pipeline is worth a sentence, not a silent re-run.
 
+**D2 — A post is `reviewed` with no open `boundary` or `fabrication` findings, and its site keeps posts in code.**
+
+Lead with `who-let-the-blogs-out export <slug>`. It writes the post into the site's files and never deploys or records; once the post is live, `publish` records it.
+
 **E — Published posts have `staleClaims > 0`.**
 
 Lead with `who-let-the-blogs-out refresh`, naming how many posts and roughly how old the oldest stale claim is. This is the case most likely to be genuinely news to the user, since nothing else surfaces it.
@@ -54,15 +58,15 @@ Two or three picks, then the table. Something like:
 ```
 2 posts need attention:
 
-  blog revise local-seo-location-pages    3 open findings, 1 high (original-value)
-  blog refresh                            4 published posts have claims that expired in June
+  wltbo revise local-seo-location-pages    3 open findings, 1 high (original-value)
+  wltbo refresh                            4 published posts have claims that expired in June
 
 Everything else:
 
 Setup    brand · brand learn · brand show · plan
 Capture  interview · interview <client> (foundational) · verify
 Draft    brief · write · images
-Ship     review · revise · publish · refresh
+Ship     review · revise · export · publish · refresh
 ```
 
 `review` isn't something the user runs after a draft — `write`, `revise`, and `refresh` each chain into it. Don't recommend it as a next step after one of those; recommend `revise` when findings are open.
@@ -77,7 +81,3 @@ If the registry disagrees with the records — a post listed as `published` with
 
 Do not repair it. Rule 5 of the state contract applies here as much as anywhere: someone asking "what should I do?" has not asked for six files to be rewritten.
 
-
-## export
-
-Reviewed draft, site-file time → `export <slug>`. Writes `lib/posts/<slug>.ts` + the `lib/blog.ts` entry; never deploys, never records — `publish` still does the recording once the post is live.
