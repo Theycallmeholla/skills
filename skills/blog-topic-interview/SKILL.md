@@ -1,15 +1,15 @@
 ---
 name: blog-topic-interview
 description: >-
-  Standalone version of the interview step from who-let-the-blogs-out. Before a blog
-  post is written under someone's name, asks what they actually think about the topic —
-  their stance, real examples, numbers, and what must never be said — then saves an
-  Opinion Packet and a per-client opinion bank in the project's .blog/ folder, using the
-  same files and rules as who-let-the-blogs-out so a project can move to the full system
-  without migrating anything. Use when the user says "interview me about this topic",
-  "get my take first", "ask me what I think before you write", or "update my opinion
-  bank", or names this skill. If who-let-the-blogs-out is installed, use its interview
-  command instead; this skill is for setups that have only this step. Blog and article
+  Standalone version of the interview step from who-let-the-blogs-out. Before a blog post is
+  written under someone's name, asks what they actually think about the topic — their stance,
+  real examples, numbers, and what must never be said — then saves an Opinion Packet and a
+  per-client opinion bank in the project's .blog/ folder, using the same files and rules as
+  who-let-the-blogs-out so a project can move to the full system without migrating anything.
+  Use when the user says "interview me about this topic", "get my take first", "ask me what I
+  think before you write", or "update my opinion bank", or names this skill. Runs on its own
+  whether or not who-let-the-blogs-out is installed; it hands off only when the user is
+  working in who-let-the-blogs-out (invoked it or one of its commands). Blog and article
   topics only — not emails, docs, or social posts.
 ---
 
@@ -61,7 +61,7 @@ In the closing report, add one line saying the brand profile is empty and that w
 
 The shared files mention other who-let-the-blogs-out commands. Where one says to hand off to a command this skill doesn't have, stop and name the next step. Don't improvise it.
 
-- `brief` and `write` → the `seo-blog-writer` skill runs both, or who-let-the-blogs-out if installed.
+- `brief` and `write` → the `seo-blog-writer` skill runs both, or who-let-the-blogs-out when the user is working in it.
 - `brand`, `plan`, `verify`, `images`, `review`, `revise`, `publish`, `refresh`, `export` → only in who-let-the-blogs-out.
 
 ## Hand off

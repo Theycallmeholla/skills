@@ -1,34 +1,80 @@
 # Export
 
-Writes the reviewed draft into the site's code as the post file. This command writes; it never deploys, and it never records — `publish` does the recording after the post is actually live.
+Writes the reviewed draft into the site's own files, in whatever format that site already uses for its posts. This command writes; it never deploys, and it never records — `publish` does the recording after the post is actually live.
 
-**Reads:** `posts/<slug>/post.json` · `draft-v(currentVersion).md` · `media.json` · `claims.json` · `brief.md` · `review-v(currentVersion).json` · the site's `lib/blog.ts` and one existing `lib/posts/*.ts` as the shape reference
-**Writes:** `lib/posts/<slug>.ts` · `lib/blog.ts` (import + newest-first array entry) — **site files only.** Never `.blog/` state, never `registry.json`, never the draft.
-**Stops at:** Never deploys or pushes. Never records a publish. Never edits the draft or review state. Same hard gate as publish: open `boundary` or `fabrication` findings stop this command cold.
+**Reads:** `posts/<slug>/post.json` · `draft-v(currentVersion).md` · `media.json` · `claims.json` · `brief.md` · `review-v(currentVersion).json` · `clients/<c>/brand.md` (its `export` frontmatter block, when recorded) · two existing posts in the site's repo, plus whatever registers them, as the shape reference
+**Writes:** the new post's file(s) where the site keeps posts, and the site's post index or registration file if it has one — **site files only** — plus, the first time a site's shape is learned and confirmed, the `export` block in `brand.md`'s frontmatter (that key and nothing else). Never other `.blog/` state, never `registry.json`, never the draft.
+**Stops at:** Never deploys or pushes. Never records a publish. Never edits the draft or review state. Never guesses a site's format. Same hard gate as publish: open `boundary` or `fabrication` findings stop this command cold.
 
 ## Phase 1 — Gate
 
 Read the review file for `currentVersion`. Open `boundary`/`fabrication` findings block — the site file is one deploy away from public, so the gate is publish's gate. Assets still `needed` and claims still `awaiting-client` warn; list them and ask one consolidated proceed question.
 
-## Phase 2 — Shape map
+## Phase 2 — Learn the site's shape
 
-**Check the site's shape before writing anything.** This command knows exactly one: a front-end-only site with posts as `Article` objects in `lib/posts/<slug>.ts`, listed newest-first in `lib/blog.ts`. If the working repo has no `lib/blog.ts`, or its posts don't match that shape, say so in one line and stop. Export never guesses a site's format; a post written in the wrong shape breaks the build or ships broken.
+Every site stores posts its own way. Export copies the site's existing pattern exactly; it never invents one.
 
-In that shape, the site is front-end-only: posts are `Article` objects in `lib/posts/<slug>.ts`, assembled newest-first in `lib/blog.ts`. Map the title set:
+**1. Recorded shape first.** If `brand.md` has an `export` block, use it. Open the post named in its `reference` and confirm it still matches the recorded format. If the site has changed since, say so in one line and re-learn from step 2.
 
-- `title` = h1 · `desc` = dek · `seoTitle` = searchTitle **minus the brand suffix**, ≤ 60 chars (the type doc is the law) · `seoDesc` = metaDescription (120–158)
-- `image` = the hero asset's `/blog/...` path · `category`/`categoryLabel` by cluster · `readTime` = body words ÷ 225, "N min read" · `date` = "Mon D, YYYY" for the day it goes live — bump it at deploy if that slips · `author` = the only permitted byline
+**2. Otherwise, find how this site stores posts.** Start from what is already known: the registry's published posts for this client have slugs and URLs. Search the working repo for one of those slugs or titles. The file it lives in is the pattern. Common shapes — examples, not a whitelist:
 
-## Phase 3 — Block conversion
+- markdown or MDX files with frontmatter in a content folder (Astro, Next.js MDX, Hugo, Jekyll, Eleventy)
+- TypeScript or JavaScript objects in a posts folder, imported by an index file
+- JSON or YAML data files read by a template
+- no post files at all, because posts live in a CMS (WordPress, Webflow, Ghost, a headless CMS)
 
-Markdown → `ArticleBlock[]`: paragraphs → `p`, `##`/`###` → `h2`/`h3`, `[IMAGE: M-xxx]` markers → `image` blocks with `media.json`'s src/alt/caption (decorative = empty alt), blockquotes → `quote`, lists → `list`, the closing conversion move → one `cta` block (its defaults are the on-page calendar).
+**3. Read two existing posts end to end** — the newest and one other — plus whatever makes a post appear on the site: an index that imports posts, a collection config, a route file, a sitemap generator, an ordering rule. Write down:
 
-**This body format has no inline links.** Internal links become plain-prose mentions — record every downgrade in the report so publish's add-links-to-this-post checklist still happens on the other pages. External sources move to the file's top comment, copied from `claims.json` with URLs. Reproduce the house comment block: cluster + query family, gap check, information gain, claim ledger, NOT-claimed list. That comment is where this site keeps its receipts.
+- where one post's file goes, and its file-name pattern
+- the format: which frontmatter or object fields exist, which are required, and how the body is represented
+- how a post becomes visible: an index entry, its position, any sort order
+- how images, internal links, dates, and the author are written
+- any type definition or schema the files must satisfy
+
+**4. Confirm once.** Show the shape in two or three plain lines — "Posts are MDX files in `src/content/blog/`, frontmatter has title, description, pubDate, heroImage; nothing else registers them" — and ask once. On a yes, write it to `brand.md`:
+
+```yaml
+export:
+  postsDir: src/content/blog          # where one post's file goes
+  filePattern: "<slug>.mdx"
+  format: mdx                         # markdown · mdx · ts-object · js-object · json · yaml · other
+  index: null                         # file that lists or imports posts, or null
+  reference: src/content/blog/a-real-existing-post.mdx
+  notes: "frontmatter: title, description, pubDate (YYYY-MM-DD), heroImage"
+  learnedOn: 2026-10-07
+```
+
+**Stop, and say so in one line, when:**
+
+- **The site keeps posts in a CMS.** There are no files to write. The draft's CMS paste block from `write` is the deliverable; point at it.
+- **The repo has no posts yet.** Ask where the first post should go and which existing page to copy the pattern from. Don't pick a format.
+- **Two existing posts disagree with each other** (the site is mid-migration). Ask which one is current.
+
+## Phase 3 — Convert
+
+Map the draft onto the site's fields: the brief's title set onto the site's title, description, and SEO fields; the hero asset onto its image field; the publish date in the site's own date format; the one permitted byline onto its author field. Respect the site's length rules where a type or schema states them.
+
+Convert the body into the site's body format. Wherever that format can't carry something the draft has — inline links, captions, a table — downgrade it to the nearest thing the format supports, and **record every downgrade in the report**. Internal links that become plain mentions still need adding on the other pages, so `publish`'s checklist depends on that list.
+
+`[IMAGE: M-xxx]` markers become whatever the site uses for images, with `media.json`'s src, alt, and caption. Decorative images get empty alt text.
+
+Where the format allows comments (TypeScript, JavaScript, MDX), keep a receipts comment at the top: the claim ledger's sources with URLs, and the NOT-claimed list. Where it doesn't, list the sources in the report instead.
 
 ## Phase 4 — Wire and check
 
-Import at the top of the import block, entry first in `articles` — the newest-first comment in `lib/blog.ts` is the law. Run `tsc --noEmit` if it's cheap; say plainly if the file shipped unchecked.
+Register the post the way the existing ones are registered — same file, same position rule (newest first, alphabetical, by date). If posts register themselves (a content collection, a folder the site globs), there is nothing to wire; say so.
+
+Run the cheapest check the site has: a type check, a lint, a content-schema validation, or a build of that one page. Say plainly if the file shipped unchecked.
+
+## Worked example — new-cursive-site
+
+A front-end-only Next.js site. Posts are `Article` objects in `lib/posts/<slug>.ts`, imported and listed newest-first in `lib/blog.ts`.
+
+- **Fields:** `title` = h1 · `desc` = dek · `seoTitle` = searchTitle **minus the brand suffix**, ≤ 60 chars (the type doc is the law) · `seoDesc` = metaDescription (120–158) · `image` = the hero asset's `/blog/...` path · `category`/`categoryLabel` by cluster · `readTime` = body words ÷ 225, "N min read" · `date` = "Mon D, YYYY" for the day it goes live, bumped at deploy if that slips · `author` = the only permitted byline.
+- **Body:** markdown becomes `ArticleBlock[]`: paragraphs → `p`, `##`/`###` → `h2`/`h3`, image markers → `image` blocks, blockquotes → `quote`, lists → `list`, the closing conversion move → one `cta` block (its defaults are the on-page calendar).
+- **No inline links** in this body format, so internal links become plain mentions, each recorded as a downgrade. External sources go in the file's top comment, copied from `claims.json`, alongside the house receipts block: cluster and query family, gap check, information gain, claim ledger, NOT-claimed list.
+- **Wiring:** import at the top of the import block, entry first in `articles`; the newest-first comment in `lib/blog.ts` is the law. `tsc --noEmit` is the cheap check.
 
 ## Output
 
-Files written, the link downgrades, anything the template can't render (a hero caption, say), then the two remaining steps: deploy, then `publish <slug>` with the live URL. Status stays untouched — a post isn't published until publish records a URL that resolves.
+Files written, the link downgrades, anything the site's format couldn't carry (a hero caption, say), whether the check ran, then the two remaining steps: deploy, then `publish <slug>` with the live URL. Status stays untouched — a post isn't published until publish records a URL that resolves.

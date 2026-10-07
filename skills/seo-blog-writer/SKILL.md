@@ -2,16 +2,15 @@
 name: seo-blog-writer
 description: >-
   Standalone version of the brief, verify, write, review, and revise steps from
-  who-let-the-blogs-out. Researches what ranks for a keyword, commits to the reader
-  questions the post must answer, verifies claims, drafts the article under the author's
-  real stance, and scores the draft for quality and AI tells, saving everything in the
-  project's .blog/ folder with the same files and rules as who-let-the-blogs-out. Picks
-  up the Opinion Packet that blog-topic-interview writes. Use when the user names this
-  skill, or asks for an SEO blog post, a keyword-targeted article, title or meta
-  description options, or an outline, in a setup without who-let-the-blogs-out. If
-  who-let-the-blogs-out is installed, use it instead; this skill is for setups that
-  have only these steps. Never invents experience, credentials, results, or opinions
-  the author didn't give.
+  who-let-the-blogs-out. Researches what ranks for a keyword, commits to the reader questions
+  the post must answer, verifies claims, drafts the article under the author's real stance,
+  and scores the draft for quality and AI tells, saving everything in the project's .blog/
+  folder with the same files and rules as who-let-the-blogs-out. Picks up the Opinion Packet
+  that blog-topic-interview writes. Use when the user names this skill, or asks for an SEO
+  blog post, a keyword-targeted article, title or meta description options, or an outline.
+  Runs on its own whether or not who-let-the-blogs-out is installed; it hands off only when
+  the user is working in who-let-the-blogs-out. Never invents experience, credentials,
+  results, or opinions the author didn't give.
 ---
 
 # SEO Blog Writer

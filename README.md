@@ -293,9 +293,10 @@ The standalone `blog-topic-interview → seo-blog-writer → ai-writing-detector
 pipeline split into single steps, for setups that install only one or two of them.
 `blog-topic-interview` and `seo-blog-writer` carry byte-identical copies of `who-let-the-blogs-out`'s
 rule files and write the same `.blog/` state, so a project can move to the full system without
-migrating anything. `ai-writing-detector` scores any text and saves nothing. When
-`who-let-the-blogs-out` is installed it handles all three jobs, and its aliases route those names to
-`interview`, `brief` + `write`, and `review`.
+migrating anything. `ai-writing-detector` scores any text and saves nothing. Each standalone runs
+on its own even when `who-let-the-blogs-out` is installed; it hands off only when you're working
+in `who-let-the-blogs-out`, whose aliases route those names to `interview`, `brief` + `write`, and
+`review`.
 
 The copies are listed in `shared-files.yaml`. Edit the original in `who-let-the-blogs-out`, then run
 `python3 scripts/sync_shared.py`; `validate_skills.py` fails the build when a copy has drifted.
@@ -609,8 +610,8 @@ the author before a post is written under their name and files what they said wh
 can find it.
 
 **Say something like** — "interview me about this topic", "get my take first", "ask me what I
-think", "update my opinion bank". When `who-let-the-blogs-out` is installed, that skill's `interview`
-handles these instead.
+think", "update my opinion bank". Runs on its own; inside a `who-let-the-blogs-out` session that
+skill's `interview` handles these.
 
 **Input** — The topic, your live answers, and the project's `.blog/` state if it exists. With no
 `.blog/` yet, it creates the same starting tree `who-let-the-blogs-out`'s `brand` would, with an empty
@@ -1107,8 +1108,8 @@ invocation.
 the post must answer, verifies claims, drafts under the author's own thesis, and scores the draft.
 
 **Say something like** — "write a blog post about X", "post targeting this keyword", "give me title
-options", "outline this post". When `who-let-the-blogs-out` is installed, that skill handles these
-instead.
+options", "outline this post". Runs on its own; inside a `who-let-the-blogs-out` session that skill
+handles these.
 
 **Input** — A topic or primary keyword, and ideally the Opinion Packet `blog-topic-interview` wrote to
 `.blog/posts/<slug>/packet.md`. Without one it says the post will have no first-hand layer and
