@@ -292,11 +292,19 @@ def pull_ga4(days):
         r = http("POST", url, {"Authorization": f"Bearer {tok}"}, {
             "dateRanges": [{"startDate": str(s), "endDate": str(e)}],
             "dimensions": [{"name": d} for d in dims], "metrics": [{"name": m} for m in mets], "limit": limit})
-        return [{"dims": [v["value"] for v in row.get("dimensionValues", [])],
-                 "mets": [v["value"] for v in row.get("metricValues", [])]} for row in r.get("rows", [])]
+        # Same row shape record.py writes for the MCP method (keyed by header name,
+        # numbers parsed), so dashboard.py and what-next read one format.
+        out = []
+        for row in r.get("rows", []):
+            d = dict(zip(dims, (v["value"] for v in row.get("dimensionValues", []))))
+            for m, v in zip(mets, (v["value"] for v in row.get("metricValues", []))):
+                f = float(v)
+                d[m] = int(f) if f.is_integer() else round(f, 4)
+            out.append(d)
+        return out
 
     ch = ["sessions", "totalUsers", "engagementRate", "averageSessionDuration"]
-    return {"window": {"cur": [str(cs), str(ce)], "prev": [str(ps), str(pe)]},
+    return {"method": "service_account", "window": {"cur": [str(cs), str(ce)], "prev": [str(ps), str(pe)]},
             "channels_cur": rep(["sessionDefaultChannelGroup"], ch, cs, ce),
             "channels_prev": rep(["sessionDefaultChannelGroup"], ch, ps, pe),
             "landing": rep(["sessionDefaultChannelGroup", "landingPage"], ["sessions", "engagedSessions", "averageSessionDuration"], cs, ce),
@@ -522,6 +530,16 @@ def kpis(out):
                                         if r["class"] == "real" and r["status"] != "cancelled"})
     if "pipeline" in gh:
         k["pipeline_won"] = len(gh["pipeline"]["won"])
+    for c in (enabled("commands") or {}).get("list", []):
+        rows = ((out.get("commands") or {}).get(c["name"]) or {}).get("rows")
+        if c.get("leads") and rows is not None:  # the profile's system of record for leads
+            k["crm_leads"] = sum(1 for r in rows if r.get("class", "real") == "real" and r.get("in_window"))
+    ga = out.get("ga4") or {}
+    org = next((r for r in ga.get("channels_cur") or [] if r.get("sessionDefaultChannelGroup") == "Organic Search"), None)
+    if org:  # same KPI keys record.py sets for the MCP method
+        k["organic_sessions"] = org.get("sessions")
+        if isinstance(org.get("engagementRate"), (int, float)):
+            k["organic_engaged_pct"] = round(org["engagementRate"] * 100)
     cl = out.get("clarity") or {}
     if "pages" in cl:
         k["clarity_sessions_3d"] = sum((p.get("sessions") or 0) for p in cl["pages"].values())
@@ -582,7 +600,12 @@ def summary(out, prev):
 
     ga = out.get("ga4") or {}
     if "channels_cur" in ga:
-        L.append(f"GA4 (service account) {ga['window']['cur']} vs {ga['window']['prev']}: channels cur {ga['channels_cur']} | prev {ga['channels_prev']}")
+        prev = {r.get("sessionDefaultChannelGroup"): r for r in ga.get("channels_prev") or []}
+        L.append(f"GA4 (service account) {ga['window']['cur']} vs {ga['window']['prev']}, sessions (engaged rate) by channel:")
+        for r in ga["channels_cur"]:
+            p = prev.get(r.get("sessionDefaultChannelGroup")) or {}
+            L.append(f"    {r.get('sessionDefaultChannelGroup')}: {p.get('sessions', 0)} -> {r.get('sessions')} "
+                     f"({round((p.get('engagementRate') or 0) * 100)}% -> {round((r.get('engagementRate') or 0) * 100)}%)")
 
     cl = out.get("clarity") or {}
     if "pages" in cl:

@@ -29,7 +29,7 @@ Every endpoint here was verified against vendor docs or a live call. The date is
   | events-cur / events-prev | `eventName` | `eventCount, totalUsers` | cur / prev | 100 |
   | cities | `sessionDefaultChannelGroup, city` | `sessions, engagementRate` | cur | 40 |
 
-- **Service-account method:** POST `https://analyticsdata.googleapis.com/v1beta/properties/{id}:runReport`, scope `analytics.readonly`. A 403 "User does not have sufficient permissions" means the SA isn't a user on the property. The success path is written to the Data API contract but **hasn't yet been confirmed against a live property**. On the first profile that uses it, compare one number with the GA4 UI and record the result here.
+- **Service-account method:** POST `https://analyticsdata.googleapis.com/v1beta/properties/{id}:runReport`, scope `analytics.readonly`. A 403 "User does not have sufficient permissions" means the SA isn't a user on the property. The success path is written to the Data API contract but **hasn't yet been confirmed against a live property**. On the first profile that uses it, compare one number with the GA4 UI and record the result here. **2026-10-01 (ASAP, property 353223980):** script `sessions` for 2026-09-30 = 1,599, identical to the `ga4-gtm` MCP `ga4_run_report` for the same day (checked against the MCP, not the UI).
 - Realtime: if the MCP has a realtime report tool, active users over the last 30 minutes is the only real-time number available.
 
 ## Microsoft Clarity metrics (script: `clarity`), verified 2026-09-30

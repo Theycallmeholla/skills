@@ -26,6 +26,7 @@ E = html.escape
 # KPI lines that get a sparkline across snapshots, with which direction is good.
 KPI_META = {
     "real_booking_people": ("Real bookings, 28d", "up"),
+    "crm_leads": ("Leads (CRM), 28d", "up"),
     "search_clicks": ("Search clicks", "up"),
     "search_clicks_market": ("Search clicks, market", "up"),
     "search_impressions": ("Search impressions", "up"),
@@ -225,6 +226,7 @@ def main():
     market = (prof.get("market") or {}).get("gsc_country", "market")
     k = s.get("kpis") or {}
     pk = (last_snap or {}).get("kpis") or {}
+    gd = s.get("days", 28)
     not_measured = []
 
     g, ga, cl, gh, ix, gbp = (s.get(x) or {} for x in ("gsc", "ga4", "clarity", "ghl", "indexing", "gbp"))
@@ -236,7 +238,7 @@ def main():
     # windows strip
     win = []
     if "window" in g:
-        win.append(f"Search Console {g['window']['cur'][0]} → {g['window']['cur'][1]} vs prior 28d")
+        win.append(f"Search Console {g['window']['cur'][0]} → {g['window']['cur'][1]} vs prior {gd}d")
     if ga.get("window"):
         win.append(f"GA4 {ga['window']['cur'][0]} → {ga['window']['cur'][1]}")
     if gh.get("bookings"):
@@ -249,6 +251,27 @@ def main():
     since = [f"{KPI_META.get(key, (key,))[0]} {num(pk[key])} → {num(v)}" for key, v in k.items()
              if key in pk and pk[key] != v and isinstance(v, (int, float))]
 
+    # leads from a profile command flagged "leads": true (a CRM other than GoHighLevel)
+    lead_cmd = None
+    for c in ((prof.get("sources") or {}).get("commands") or {}).get("list", []):
+        sec = (s.get("commands") or {}).get(c["name"]) or {}
+        if not c.get("leads"):
+            continue
+        if "rows" not in sec:
+            not_measured.append(f"{c.get('leads_label') or c['name']}: {sec.get('error', 'no data in this snapshot')}")
+            continue
+        end_ms = dt.datetime.fromisoformat(s["pulled_at"]).timestamp() * 1000
+        cut, cut2 = end_ms - gd * 86400000, end_ms - 2 * gd * 86400000
+        real = [r for r in sec["rows"] if r.get("class", "real") == "real"]
+        lead_cmd = {"label": c.get("leads_label") or "Leads", "src": c.get("description") or c["name"],
+                    "cur": [r for r in real if (r.get("at_ms") or 0) >= cut],
+                    "prev": [r for r in real if cut2 <= (r.get("at_ms") or 0) < cut],
+                    "x": sum(1 for r in sec["rows"] if r.get("class", "real") != "real" and (r.get("at_ms") or 0) >= cut)}
+        break
+
+    if lead_cmd:  # the profile's CRM is a command, so a missing GoHighLevel isn't a gap
+        not_measured = [x for x in not_measured if not x.startswith("GoHighLevel:")]
+
     # tiles
     tiles = []
     if gh.get("bookings"):
@@ -259,6 +282,13 @@ def main():
                 f'<div>{delta(k.get("real_booking_people"), prev_real)}'
                 f'{f"<div class=h-sub>+{cur_unc} unconfirmed, waiting on the owner</div>" if cur_unc else ""}</div></div>'
                 f'<div class="src">GoHighLevel calendar, people classified by the profile. Prior = the 28 days before.</div></section>')
+    elif lead_cmd:
+        excl = f'<div class="h-sub">{lead_cmd["x"]} excluded as test/internal</div>' if lead_cmd["x"] else ""
+        hero = (f'<section class="hero"><div class="h-lab">{E(lead_cmd["label"])}, last {gd} days</div>'
+                f'<div class="h-row"><div class="h-val">{num(len(lead_cmd["cur"]))}</div>'
+                f'<div>{delta(len(lead_cmd["cur"]), len(lead_cmd["prev"]))}'
+                f'{excl}</div></div>'
+                f'<div class="src">{E(lead_cmd["src"])}. Prior = the {gd} days before.</div></section>')
     else:
         hero = '<section class="hero"><div class="h-lab">Leads</div><div class="h-val">–</div><div class="src">Not measured: no CRM in this profile.</div></section>'
     if "totals" in g:
@@ -268,7 +298,7 @@ def main():
             mc, mp = g["totals_market"]["cur"], g["totals_market"]["prev"]
             sub = f"{E(market.upper())} only: <b>{num(mc['clicks'])}</b> {delta(mc['clicks'], mp['clicks'])}"
         tiles.append(tile("Search clicks", num(c["clicks"]), sub, delta(c["clicks"], p["clicks"]),
-                          sparkline(series_for(snaps, "search_clicks")), "Search Console, 28d vs prior 28d"))
+                          sparkline(series_for(snaps, "search_clicks")), f"Search Console, {gd}d vs prior {gd}d"))
         tiles.append(tile("Avg position", num(c["position"]), f"CTR {c['ctr']}% (prior {p['ctr']}%)",
                           delta(c["position"], p["position"], "down"), sparkline(series_for(snaps, "search_position")),
                           "Search Console. Lower is better; it moves when new queries appear."))
@@ -307,7 +337,7 @@ def main():
         ev_c = {r["eventName"]: r["eventCount"] for r in ga["events_cur"]}
         ev_p = {r["eventName"]: r["eventCount"] for r in ga.get("events_prev") or []}
         rows = [(e, ev_c.get(e, 0), ev_p.get(e, 0) if ga.get("events_prev") else None) for e in fe]
-        funnel_html = (f'<section class="card"><h2>Booking funnel</h2>{hbars(rows, "events")}'
+        funnel_html = (f'<section class="card"><h2>Funnel events</h2>{hbars(rows, "events")}'
                        f'<p class="src">GA4 event counts, {E(ga["window"]["cur"][0])} → {E(ga["window"]["cur"][1])}. '
                        f'Funnel signals, not a lead count: GA4 counts tests and misses some bookings. No rates are computed across sources.</p></section>')
 
@@ -336,13 +366,13 @@ def main():
             f"<td class='n'>{num((r['cur'] or {}).get('position'))}</td></tr>" for r in g["pages"][:10])
         pages_html = (f'<section class="card wide"><h2>Top pages in search</h2><div class="tw"><table><thead><tr><th>Page</th><th class="n">Clicks</th>'
                       f'<th class="n">Prior</th><th class="n">Impr.</th><th class="n">Pos.</th></tr></thead><tbody>{rows}</tbody></table></div>'
-                      f'<p class="src">Search Console, 28d vs prior 28d.</p></section>')
+                      f'<p class="src">Search Console, {gd}d vs prior {gd}d.</p></section>')
     q_html = ""
     if g.get("opportunities"):
         rows = "".join(
             f"<tr><td>{E(r['query'])}<div class='path'>{E(r['page'])}</div></td><td class='n'>{num(r['impressions'])}</td>"
             f"<td class='n'>{num(r['clicks'])}</td><td class='n'>{num(r['position'])}</td><td class='n'>{num(r.get('market_impressions'))}</td></tr>"
-            for r in g["opportunities"][:10])
+            for r in [o for o in g["opportunities"] if not any(f.startswith("noise:") for f in o.get("flags") or [])][:10])
         q_html = (f'<section class="card wide"><h2>Queries ranking just off page one</h2><div class="tw"><table><thead><tr><th>Query → page</th>'
                   f'<th class="n">Impr.</th><th class="n">Clicks</th><th class="n">Pos.</th><th class="n">{E(market.upper())} impr.</th></tr></thead>'
                   f'<tbody>{rows}</tbody></table></div><p class="src">Search Console, positions 4–20 with real impressions. '
@@ -386,6 +416,12 @@ def main():
                      f'<ul class="pills">{stages}</ul><p class="kv"><span>Won</span> <b>{E(won_txt)}</b></p>'
                      f'<p class="src">GoHighLevel, current state.</p></section>')
     leads_html = f'<section class="card"><h2>Leads</h2>{bookings_block(gh)}</section>' if gh.get("bookings") else ""
+    if not leads_html and lead_cmd and any("bucket" in r for r in lead_cmd["cur"]):
+        bc = Counter(r.get("bucket") or "(none)" for r in lead_cmd["cur"])
+        bp = Counter(r.get("bucket") or "(none)" for r in lead_cmd["prev"])
+        leads_html = (f'<section class="card"><h2>{E(lead_cmd["label"])} by source</h2>'
+                      f'{hbars([(b, n, bp.get(b, 0)) for b, n in bc.most_common(8)], "")}'
+                      f'<p class="src">{E(lead_cmd["src"])}, last {gd} days vs the {gd} before.</p></section>')
 
     for item in gbp.get("not_measured") or []:
         not_measured.append(f"Business Profile: {item}")
