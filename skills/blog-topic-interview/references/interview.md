@@ -97,7 +97,7 @@ Run once per client, at onboarding. Without it the bank grows one article at a t
 
 ## 1. Load the state, then work out what is actually open
 
-Read `opinion-bank.md`, `brand.md`, `facts.json`, and the post record before asking anything.
+Read `opinion-bank.md`, `brand.md`, `facts.json`, the post record, and `posts/<slug>/intake.md` if it exists, before asking anything. **When intake ran, this interview covers only the gaps its replies left.** Often that's zero questions, and that's the right outcome under Rules 10 and 11.
 
 If `.blog/` doesn't exist, say so and point at `brand`. If the client exists but has no bank, start from `assets/opinion-bank-template.md`.
 

@@ -17,7 +17,7 @@ If `.blog/` doesn't exist at all, say so and point at `brand`.
 
 Then load and follow, without restating them here:
 
-- `references/governing-rules.md` — the priority order and the ten rules. Rule 1 governs this command more than any other: **the brief's `thesis` is what this article argues.** Copy it into your working map and check the finished draft against it.
+- `references/governing-rules.md` — the priority order and the eleven rules. Rule 1 governs this command more than any other: **the brief's `thesis` is what this article argues.** Copy it into your working map and check the finished draft against it.
 - `references/voice-and-tells.md` — the voice rulebook. Read it before the first sentence, not after the draft exists. Its rules are generative; retrofitting them onto finished prose produces prose that reads retrofitted.
 - `references/evidence-rules.md` — the three tiers of assertion and what may never be invented. This is the anti-fabrication mechanism, and tier drift is the failure it catches.
 - `references/headline-contract.md` — heading craft, the skim test, and the six title fields you are honoring rather than deciding.
@@ -33,8 +33,10 @@ Read its `connectors` block too. Research gathered while a connector was `degrad
 Before drafting, build a working map (in your head or in scratch, not on disk): every numbered reader question in the brief → the outline section that answers it → the specific evidence that makes the answer true → its tier. Evidence comes from the packet (tier 1), a `facts.json` entry by ID (`F-007`, tier 1 or 2 depending on its `source`), a `claims.json` entry by ID (`C-003`, tier 2), or your own reasoning (tier 3). A reader question with nothing in the evidence column is a gap, and you now know it before you've written a paragraph around it rather than after.
 
 ### Cadence
+**Under `autopilot`:** don't ask. Take the default `references/autopilot.md` gives for this command, or hard-stop where it says to.
 
-`write` does not interview. If the map shows a gap, you have one question you may ask before drafting — *"the brief commits to answering X and the packet has nothing on it; do you want to answer it now, or should I write it from cited research and flag it?"* — asked once, up front, never mid-draft. Then proceed either way. Never ask permission to invent something, and never ask the author to confirm a fact you could have read in the vault.
+
+`write` does not interview. If `intake.md` exists and its list should have caught the gap, log it in the post's `notes.md` as an intake miss. If the map shows a gap, you have one question you may ask before drafting — *"the brief commits to answering X and the packet has nothing on it; do you want to answer it now, or should I write it from cited research and flag it?"* — asked once, up front, never mid-draft. Then proceed either way. Never ask permission to invent something, and never ask the author to confirm a fact you could have read in the vault.
 
 ## Phase 2 — Draft
 

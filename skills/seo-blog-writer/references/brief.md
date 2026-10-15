@@ -48,6 +48,7 @@ Each teardown is a full fetch plus a full read, so eight of them is the most exp
 
 This is the one part of the command that fans out to subagents, and the rule is **parallelize gathering, never parallelize judgment**:
 
+- **No subagents available** (e.g. a chat session): fetch the pages inline, one at a time, to the same per-page contract below. Read each page fresh, without carrying over what earlier pages said, and record `teardown` counts honestly.
 - One agent per URL. Each gets **only the URL and the primary keyword** — not the angle, not the packet, not what the other agents found. An agent told what gap you expect will find that gap. Give each agent its own scratch folder for anything it saves; agents writing to a shared path overwrite each other's fetches.
 - Each returns: `url`, `fetchedOn`, `pageType` (from the closed enum in `state.md`), `publishedOn` and `lastUpdated` where visible, `headings` verbatim, `covers`, `entities`, `numericClaims`, `omissions`, `notes`.
 - **Every teardown must quote at least one heading verbatim from the page.** Check it against the fetched HTML. An agent that can't produce a real heading did not read the page, whatever else it returned.
@@ -268,6 +269,8 @@ Two things always surface, because they change what the user does next:
 Then the single next step: `verify` when claims need chasing, otherwise `write`. Malformed state is noted in the files and left alone; it reaches the user only if it blocks the work.
 
 ### Cadence
+**Under `autopilot`:** don't ask. Take the default `references/autopilot.md` gives for this command, or hard-stop where it says to.
+
 
 Questions only at four points, and only when the answer isn't already in state: a required connector is down, format fit is wrong, cannibalization says merge or refresh, or information gain came up empty. **Two questions maximum per round**, one round per decision, always with your recommendation attached so a "yes" is a valid answer.
 

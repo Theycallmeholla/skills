@@ -86,6 +86,8 @@ When the asset does exist and you can see it, or its maker described it factuall
 `media.json` has no field for a filename, a source URL, or a license. Don't add one — the schema in `state.md` is what other commands read, and a key only this command writes is invisible to all of them. Put filenames, stock licenses, and photographer credits in your report and in the post's `notes.md`, which is the drawer for exactly this and isn't yours to write.
 
 ### Cadence
+**Under `autopilot`:** don't ask. Take the default `references/autopilot.md` gives for this command, or hard-stop where it says to.
+
 
 You will need to ask who has what. Ask it once, as a single list of specific asks with a name against each, at the end — not one question per asset as you go. **Three questions is the ceiling for a round, and one is usually right.**
 
