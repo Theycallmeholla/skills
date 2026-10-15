@@ -17,7 +17,7 @@ Loaded when blog is invoked with no command. The job is to answer "what should I
 
 **A — No `.blog/` yet.**
 
-Lead with `who-let-the-blogs-out brand`. One line on why: nothing else can run until a client exists, because every other command reads the brand profile or writes into a client directory. Still show the full table so the shape of the system is visible.
+Lead with `who-let-the-blogs-out intake <client> <topic>` when the user already named a topic. It sets the client up through `brand`'s Phase 1, researches what it can, and sends one questionnaire. Lead with `who-let-the-blogs-out brand` when there's no topic yet. One line on why: nothing else can run until a client exists. Still show the full table so the shape of the system is visible.
 
 **B — A client exists but `brandProfile` is `missing` or `partial`.**
 
@@ -43,7 +43,7 @@ Lead with `who-let-the-blogs-out refresh`, naming how many posts and roughly how
 
 **F — A post is `idea` or `interviewed` with no brief.**
 
-Lead with `who-let-the-blogs-out interview <slug>` if the packet is missing, `who-let-the-blogs-out brief <slug>` if it exists. Say which, and why that's the next gate.
+Lead with `who-let-the-blogs-out intake <slug>` if neither a packet nor an `intake.md` exists, `who-let-the-blogs-out interview <slug>` if intake's replies left a gap, `who-let-the-blogs-out brief <slug>` if it exists. Say which, and why that's the next gate.
 
 **G — Nothing pressing.**
 
@@ -63,7 +63,8 @@ Two or three picks, then the table. Something like:
 
 Everything else:
 
-Setup    brand · brand learn · brand show · plan
+Setup    brand · brand learn · brand show · intake · plan
+Run      autopilot <client> <topic>  (one questionnaire, then hands-off to an export-ready draft)
 Capture  interview · interview <client> (foundational) · verify
 Draft    brief · write · images
 Ship     review · revise · export · publish · refresh

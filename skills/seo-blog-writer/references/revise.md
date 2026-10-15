@@ -74,10 +74,14 @@ Preserve what wasn't flagged. This is a revision, not a rewrite — accurate, sp
 You may make small craft fixes in passages you're already rewriting. Record them in the changelog under unflagged edits so the diff stays auditable. What you may not do is allocate a new `BL-` ID — findings are `review`'s to number, and a finding record written by the command that fixes it is a self-issued grade.
 
 ### Cadence
+**Under `autopilot`:** don't ask. Take the default `references/autopilot.md` gives for this command, or hard-stop where it says to.
+
+
+**Answers that come back mid-revise are filed first, not by this command.** Facts go through `intake` Phase 5. New claims go through `verify`'s ledger rules. Then revise against what was filed. `revise` never writes the packet, bank, vault or ledger itself.
 
 Ask at most one batched round of two or three questions, up front, before you edit anything: which findings the author wants to accept rather than fix, and whether a blocked `fabrication` finding should be escalated to `interview` now or carried open into the next round. Then proceed on whatever comes back, including nothing.
 
-Never ask permission finding by finding — nine yes/no prompts is how a revision loop gets abandoned after its second use. Never ask the author to supply a fact you could have read in the vault. Never ask whether to invent something.
+If a finding needs client material that `intake` should have asked for — a named person's role, one real example — ask it once with a best guess attached and log it as an intake miss in the post's `notes.md`. Never ask permission finding by finding — nine yes/no prompts is how a revision loop gets abandoned after its second use. Never ask the author to supply a fact you could have read in the vault. Never ask whether to invent something.
 
 ## Phase 4 — Mark each finding resolved or accepted
 

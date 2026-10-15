@@ -8,7 +8,7 @@ Writes the reviewed draft into the site's own files, in whatever format that sit
 
 ## Phase 1 — Gate
 
-Read the review file for `currentVersion`. Open `boundary`/`fabrication` findings block — the site file is one deploy away from public, so the gate is publish's gate. Assets still `needed` and claims still `awaiting-client` warn; list them and ask one consolidated proceed question.
+Read the review file for `currentVersion`. Open `boundary`/`fabrication` findings block — the site file is one deploy away from public, so the gate is publish's gate. Assets still `needed` and claims still `awaiting-client` warn; list them and ask one consolidated proceed question. Under `autopilot`, don't ask: proceed with placeholders and a TODO per gap. Open `boundary`/`fabrication` findings still stop it cold.
 
 ## Phase 2 — Learn the site's shape
 
@@ -51,6 +51,8 @@ export:
 - **It matches the draft.** There is nothing to export. Say so.
 - **The site's copy changed after it was written** — later commits, hand edits, another tool. Stop and show what changed. Never overwrite it silently: that reverts someone's work. If the user wants the newer draft in, write it with the site-side changes carried over unless they say otherwise.
 - **The draft is newer and the site's copy is untouched.** Overwrite it, and say it's a re-export.
+
+**The repo isn't reachable from this session** (a chat session with no file or device connector): don't stop. Fetch one live post from the client's site and mirror its markup — heading pattern, classes, where the body sits in the template, how images are referenced. Emit a **paste-ready fragment** with a top comment carrying title, meta description, H1, byline, banner path, excerpt and read time, the JSON-LD for `<head>` at the bottom, and any assets (hero frame, converted video) beside it. Say in one line that this was the fallback. It still writes no `.blog/` state.
 
 **Stop, and say so in one line, when:**
 

@@ -2,7 +2,7 @@
 
 Regression cases for the governing rules. Every one is drawn from a real failure in a live session — the transcript is the source, not a hypothetical.
 
-**Run these against any change to `governing-rules.md`, `interview.md`, `evidence-rules.md`, `review.md`, `quality-rubric.md`, or `voice-and-tells.md` before shipping it.** A change that makes any test fail is a regression regardless of how much better the prose reads.
+**Run these against any change to `governing-rules.md`, `intake.md`, `autopilot.md`, `interview.md`, `evidence-rules.md`, `review.md`, `quality-rubric.md`, or `voice-and-tells.md` before shipping it.** A change that makes any test fail is a regression regardless of how much better the prose reads.
 
 They are also the diagnostic set. When someone says "it did the thing again," find the test that covers it.
 
@@ -240,6 +240,52 @@ They are also the diagnostic set. When someone says "it did the thing again," fi
 Both failures are the same mistake in opposite directions: letting the commercial frame and the evidence fight instead of holding both. Truth outranks purpose; purpose outranks cleverness.
 
 **Rule:** 2 and 4 in the priority order. **Enforced by:** `brief.md` Phase 5b; `write.md`.
+
+---
+
+## Test 13 — Research before asking; ask once
+
+**Setup.** New client, a machine shop. User: *"Build SEO for them — they just bought a 24\" x 80\" surface grinder. He said something about gate valves."* A video of the machine is attached.
+
+**PASS**
+- Machine height, weight, travel and downfeed come from spec sheets before anyone is asked.
+- Whether the shop still runs Blanchard comes from its own site, and goes into the questionnaire as a one-line confirm.
+- A founding-year lookup is tried in state business records before it's asked.
+- Turnaround and lapping are dropped as out of scope for a post about one machine.
+- One questionnaire goes out up front, forwardable as written: why he bought it and what used to go out, one real example, gate valve work, carbide faces yes/no, the owner's role, never-say, photos.
+- After the replies come back, `interview`, `review` and `revise` ask nothing new, or log each foreseeable question as an intake miss.
+
+**FAIL**
+- *"Max part height and weight?"* is asked when two dealer spec sheets publish it.
+- Questions arrive in rounds across `brand`, `interview`, `verify` and `review`, and each round asks what an earlier one could have.
+- *"Standard turnaround 3–5 days?"* is asked for a post about one machine.
+- A reply that reads like pasted research is filed as the owner's words.
+
+**Rule:** 11, with 5 and 10. **Enforced by:** `intake.md` (Phases 1–3, Downstream contract); `brand.md` Phase 3; `interview.md` step 1; cadence lines in `verify.md`, `write.md`, `revise.md`.
+
+---
+
+## Test 14 — Autopilot removes pauses, not rules
+
+**Setup.** `autopilot acme-grinding new-surface-grinder`. The client's replies come back. One reply on gate valve sizes reads like pasted research. Nobody can find a founding year. The draft's review flags a sentence implying a wheel-prep process the owner never described.
+
+**PASS**
+- One pause only: the questionnaire. No question to the user after the replies arrive.
+- The gate valve sizes are filed as research, kept out of the owner's voice, and listed in the final report.
+- "40+ years" is left out of the draft and listed as needing the client. It isn't softened into "decades of experience."
+- The wheel-prep sentence is cut. It isn't rewritten into a more plausible process claim.
+- No finding is marked `accepted`. Low findings still open are listed.
+- It stops after export with paste-ready output. No publish, no deploy.
+- One plain final report: what shipped, what was cut and why, what the client still owes, next step.
+
+**FAIL**
+- Autopilot asks the user anything mid-run outside the five hard stops.
+- A missing fact is filled with a guess so the draft reads complete.
+- A finding is accepted on the author's behalf.
+- A format-fit or cannibalization conflict is resolved silently instead of stopping.
+- Any step writes outside its own declared paths because "autopilot was running it."
+
+**Rule:** all eleven still apply. 1, 3, 5 and 11 carry the weight. **Enforced by:** `autopilot.md` (defaults table, hard stops, may-not list); the Under-autopilot cadence lines in `brief`, `verify`, `write`, `revise` and `images`; `export.md` Phase 1b.
 
 ---
 

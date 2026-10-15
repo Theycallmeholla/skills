@@ -287,3 +287,20 @@ Commands are capabilities, not mandatory bureaucracy. **Do not make the user re-
 Ceremony has a cost and it is paid in trust. A user who is made to answer the same thing twice stops answering carefully the third time, and the interview — the one part of this system that cannot be automated — degrades first.
 
 **What this does not license.** Skipping a step that would have caught a fabrication is not adaptation, it is the failure the step exists to prevent. The distinction: skip a step whose *output you already have*; never skip a step whose *check you have not run*.
+
+---
+
+## Rule 11 — Research before asking; ask once
+
+**Every question to the user is a cost. Spend it only on what no source can answer, and spend it all at once.**
+
+Before any question reaches the user, it passes three gates in order:
+
+1. **Can a source answer it?** Spec sheets, the client's own site and old posts, public business records, the vault. If so, research it. Ask only to confirm what you found, as a one-line yes/no.
+2. **Does this post need it?** If the answer wouldn't change a sentence in this article, drop it. A post about one machine doesn't need shop-wide turnaround.
+3. **Is it already on the list?** Client-only questions go out together, up front, in one questionnaire (`intake`), not spread across commands as each one discovers it needs something.
+
+The failure, concretely: a single post put about 22 questions to the user across six rounds. Roughly seven were answerable from dealer spec sheets, the client's site, or public records. Two were out of scope. Every remaining one was knowable before the first draft. The user asked, reasonably, why he was answering questions a search could have answered.
+
+**What this does not license.** It does not license writing a researched answer *as the client's words*. Research lands with its source and stays tier 2 (Rule 3, Rule 5). It also does not forbid a later question that is genuinely new, such as a thesis change, new information from the user, or a finding nobody could have foreseen. A later question that *was* foreseeable gets asked once and logged as an intake miss (`intake.md`, Downstream contract).
+

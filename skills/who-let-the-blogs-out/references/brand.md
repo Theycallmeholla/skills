@@ -6,7 +6,7 @@ Builds or updates a client's brand profile and initializes `.blog/`, returning a
 **Writes:** `.blog/clients/<client>/brand.md` · `.blog/registry.json` — plus, on first run for a client, the initialization scaffold: `.blog/clients/<client>/opinion-bank.md`, `facts.json`, `notes.md`
 **Stops at:** Never writes post content. Never captures opinions, stances, or war stories — that's `interview`, and an opinion recorded here lands in a file no packet ever reads. Never audits the site — that's `website-audit`.
 
-This is the only command permitted to create `.blog/`. Every other command that finds it missing says so and points here, because a half-formed state tree is harder to reason about than none.
+This is the only command permitted to create `.blog/`. `intake` may trigger it on a new client by running this Phase 1 exactly as written. That is this command creating the tree, not a second way to do it. Every other command that finds it missing says so and points here, because a half-formed state tree is harder to reason about than none.
 
 ## Three modes
 
@@ -78,6 +78,8 @@ Set `source` in the frontmatter accordingly: `import` if the profile came from a
 **Recording a proof point here does not authorize anyone to assert it.** `evidence-rules.md` governs what `write` may claim, and it draws first-hand license from the Opinion Packet and the fact vault — not from this file. When a proof point is a number, note it here and flag it for `verify` to promote into `facts.json` with a date. This command doesn't write facts; it points at the ones worth verifying.
 
 ## Phase 3 — Interview the gaps
+
+**If `intake` already ran for this client, ask nothing its questionnaire covered.** File the replies here and ask only about what's still empty after that. Rule 11: research a gap before asking about it. A founding year sits in state business records, and capabilities sit on the client's own site.
 
 Ask only about what is still empty. Where the packet gave you an answer, show it and ask "still true?" — confirmation is a five-second question, and it is how the packet earns its keep.
 

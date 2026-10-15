@@ -4,7 +4,7 @@ description: >
   Blog and web-content system for agency work — plan topics, interview the author for
   their real take, brief the angle, draft the article, plan images, verify claims, score
   drafts for quality and AI tells, revise, export into the site's code, publish, and
-  refresh aging posts. Shorthand "wltbo" also triggers it. Commands share a per-client
+  refresh aging posts — step by step or on autopilot. Shorthand "wltbo" also triggers it. Commands share a per-client
   memory of brand voice, the author's positions and stories, verified facts with expiry
   dates, and every published post. Use for blog posts, articles, long-form content,
   refreshes, keyword targeting, search intent, titles and H1s, meta descriptions,
@@ -15,11 +15,12 @@ description: >
   content calendars (content-strategy).
 allowed-tools:
   - Bash(python3 scripts/tells_metrics.py *)
+  - Bash(python3 scripts/check_wiring.py)
 ---
 
 # Who Let The Blogs Out
 
-`brand · plan · interview · verify · brief · write · images · review · revise · export · publish · refresh · help`
+`brand · intake · plan · interview · verify · brief · write · images · review · revise · export · publish · refresh · autopilot · help`
 
 Shorthand: `wltbo` stands in for the full name — `wltbo write` is `who-let-the-blogs-out write`.
 
@@ -42,7 +43,7 @@ Every command inherits this. When two rules conflict, higher priority wins.
 
 **Nothing below line 4 may change what the article says.** Levels 5–8 make the article better at being what it already is; they do not make it a different article. Workflow machinery is a safeguard, never the product.
 
-## The ten rules
+## The eleven rules
 
 The full text is `references/governing-rules.md`. **Load it before any command that writes**, alongside `references/state.md`. These are the headlines:
 
@@ -56,6 +57,7 @@ The full text is `references/governing-rules.md`. **Load it before any command t
 8. **Confusion shortens the answer.** Never respond to "I don't understand" with more words.
 9. **The machinery stays internal.** Report what happened and what needs a decision — not IDs, scores, counts, or transitions. Keep writing the state; stop reading it aloud.
 10. **The workflow adapts to available state.** A step whose output already exists does not get re-run. Commands are capabilities, not bureaucracy.
+11. **Research before asking; ask once.** Never ask what a source can answer or what this post doesn't need. Client-only questions go out together, up front, in one questionnaire (`intake`).
 
 ## What the system still holds onto
 
@@ -80,6 +82,7 @@ If `.blog/` does not exist, say so and point at `brand`. Do not create a partial
 | Command | Category | What it does | Reads | Writes | Reference |
 |---|---|---|---|---|---|
 | `brand` | Setup | Build or update the brand profile and initialize `.blog/`. `learn` calibrates voice thresholds; `show` prints and lints client state | `clients/<c>/brand.md`, `registry.json` | `clients/<c>/*` (whole dir on first run), `voice-baseline.json`, `registry.json` | `references/brand.md` |
+| `intake` | Setup | Research every answerable question, drop what this post doesn't need, and send the client one forwardable questionnaire. Runs before `interview` | `brand.md`, `opinion-bank.md`, `facts.json`, `registry.json`, live site + public sources | `posts/<slug>/intake.md`, `post.json`, `registry.json`; `.blog/` scaffold via `brand` Phase 1 on a new client | `references/intake.md` |
 | `plan` | Setup | Give the best topics and angles, with the reason each one is worth writing | `registry.json`, `clients/<c>/brand.md` | `posts/<slug>/post.json`, `registry.json` | `references/plan.md` |
 | `interview` | Capture | Ask only the high-value questions you genuinely need. A client slug with no post runs the one-time foundational session | `opinion-bank.md`, `brand.md`, `facts.json` | `posts/<slug>/packet.md`, `opinion-bank.md`, `facts.json` | `references/interview.md` |
 | `verify` | Capture | Verify claims; promote durable facts to the vault; set expiries | `claims.json`, `facts.json`, `draft-vN.md` | `claims.json`, `facts.json`, `registry.json` | `references/verify.md` |
@@ -90,6 +93,7 @@ If `.blog/` does not exist, say so and point at `brand`. Do not create a partial
 | `revise` | Ship | Apply open findings; produce the next draft version | `review-vN.json`, `draft-vN.md`, `packet.md` | `draft-v(N+1).md`, `review-vN.json` | `references/revise.md` |
 | `export` | Ship | Write the post into the site's own files, in the format its existing posts use; never deploys | `post.json`, `draft-vN.md`, `media.json`, `claims.json`, `review-vN.json`, `brand.md` | site files only, plus `brand.md`'s `export` block the first time | `references/export.md` |
 | `publish` | Ship | Record the live URL; set re-verify dates; index the post | `post.json`, `claims.json`, `media.json`, `draft-vN.md` | `post.json`, `claims.json`, `registry.json` | `references/publish.md` |
+| `autopilot` | Run | After one questionnaire, runs everything from filing the replies to an export-ready draft with no user input. Takes the cautious default wherever a step would ask; halts only at five hard stops; never publishes | each chained command's Reads | each chained command's Writes — nothing of its own | `references/autopilot.md` |
 | `refresh` | Ship | Find aging posts; re-research; change plan plus a new version | `registry.json`, `claims.json`, `draft-vN.md` | `draft-v(N+1).md`, `claims.json`, `post.json` | `references/refresh.md` |
 
 Read the Reads and Writes columns as the wiring diagram: one command's Writes is the next one's Reads.
@@ -106,7 +110,7 @@ Two things the table can't show. **`write`, `revise`, and `refresh` each chain i
 
 **2. An explicit or clearly implied command** → load `references/<command>.md` and follow it. Also load `references/governing-rules.md` and `references/state.md` before any command that writes. If two commands plausibly fit, pick the more useful one and say which you picked — ask only if the two would produce materially different work.
 
-**3. Anything else in the domain** → treat it as general blog work, and read the state before deciding what it needs. The default is `brief` when a packet exists for the topic, `interview` when it doesn't, and **whatever the next genuinely useful step is** when the user has already made a choice ("let's start on the first one" is a selection, not a request to re-plan). Fragment requests — title options only, a meta description, an outline, "does this read AI-written" — are answered from the relevant command's rules without running the whole playbook and without writing state.
+**3. Anything else in the domain** → treat it as general blog work, and read the state before deciding what it needs. The default is `brief` when a packet exists for the topic, `intake` when neither a packet nor an `intake.md` exists, `interview` only for the gaps intake's replies left, and **whatever the next genuinely useful step is** when the user has already made a choice ("let's start on the first one" is a selection, not a request to re-plan). Fragment requests — title options only, a meta description, an outline, "does this read AI-written" — are answered from the relevant command's rules without running the whole playbook and without writing state.
 
 **4. `help`, or any question about what the commands do** → load `references/help.md` and follow it. Explain; never run anything.
 
@@ -119,6 +123,8 @@ Two things the table can't show. **`write`, `revise`, and `refresh` each chain i
 - `outline`, `research` → `brief`
 - `draft`, `post` → `write`
 - `seo-blog-writer` → `brief`, then `write`, when typed inside a who-let-the-blogs-out session *(otherwise the standalone seo-blog-writer skill runs itself)*
+- `questions`, `questionnaire`, `onboard` → `intake`
+- `auto`, `run all`, `do it all`, `hands-off`, `intake … --auto` → `autopilot`
 - `blog-topic-interview`, `opinion-interview` → `interview`, when typed inside a who-let-the-blogs-out session *(otherwise the standalone blog-topic-interview skill runs itself)*
 - `ai-writing-detector` → `review` *(standalone tells scorer for any text; same as review's stateless mode)*
 
@@ -131,5 +137,8 @@ Writes are append-only. A new draft is `draft-v(N+1).md`, never an edit to `draf
 The full contract — schemas, closed enums, ID rules, write rules, opinion-bank provenance — is `references/state.md`. Load it before any command that writes.
 
 ## Acceptance tests
+
+Before shipping any change to this skill, run `python3 scripts/check_wiring.py`. It fails if a command isn't wired into the table, routing, help and references, or if the rule count drifts.
+
 
 `references/acceptance-tests.md` holds the regression cases this system is checked against — thesis stickiness, evidence discipline, opinion-bank provenance, interview quality, editorial autonomy, proportionality, plain-language recovery, workflow adaptation, and internal-machinery containment. Run them against any change to the rules above before shipping it.

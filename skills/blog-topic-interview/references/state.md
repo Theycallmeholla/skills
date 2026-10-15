@@ -18,6 +18,7 @@ Load this before running any command that writes. It is the vocabulary the whole
     └── posts/
         └── <post-slug>/
             ├── post.json             identity, status, version pointer, publish record
+            ├── intake.md             researched answers, dropped questions, the client questionnaire
             ├── packet.md             the Opinion Packet
             ├── research-v1.md        SERP snapshot + teardown, append-only
             ├── brief.md              angle, coverage targets, outline, title set
@@ -32,7 +33,7 @@ Never write state into this skill's directory. Installed skills are a read-only 
 
 State is per-project. Two working directories share nothing. For agency work this is the intended shape: run blog from one root and let `clients/` do the partitioning, rather than scattering a bank per client folder.
 
-`.blog/` may not exist. `brand` initializes it. Every other command that finds it missing reports that and points at `brand` — it does not create a partial tree.
+`.blog/` may not exist. `brand` initializes it — `intake` may trigger that by running `brand` Phase 1 as written. Every other command that finds it missing reports that and points at `brand` — it does not create a partial tree.
 
 ## registry.json — the index
 

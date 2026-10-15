@@ -17,16 +17,19 @@ This turns "write a blog post" into a line of steps that hand work to each other
 For a brand-new post, in order:
 
 ```
-interview   →   brief   →   write   →   review   →   revise   →   export   →   publish
+intake   →   brief   →   write   →   review   →   revise   →   export   →   publish
 ```
 
-- **interview** — asks what you actually think about the topic. Your opinions, your war stories, your real numbers, and what you refuse to say. Two or three questions at a time, and only ones it can't answer from what you've already told it.
+- **intake** — looks up everything it can first: spec sheets, the client's site, public records. Then it sends you one list of questions only the client can answer, written so you can forward it as-is. No drip of questions later.
+- **interview** — only when intake's answers left a gap. Asks what you actually think about the topic. Your opinions, your war stories, your real numbers, and what you refuse to say. Two or three questions at a time, and only ones it can't answer from what you've already told it.
 - **brief** — reads the pages already ranking for the topic, picks the angle, and commits to the list of questions the article must answer. This is the cheap thing to reject before an expensive draft exists.
 - **write** — drafts the article from the brief and that research. It can only claim experience you actually gave it. **Scores itself automatically when it's done** — you get the draft and the findings together.
 - **review** — scores the draft two ways and lists what's wrong. It never edits.
 - **revise** — fixes what review found, then re-scores automatically.
 - **export** — for sites whose posts live in the site's own files, writes the finished post in the same format the site's existing posts use. It never deploys; a human does that.
 - **publish** — records that it went live, and sets expiry dates on every fact in it.
+
+**Want it hands-off?** `autopilot <client> <topic>` sends the one questionnaire, waits for the answers, then runs everything else on its own up to an export-ready draft. Where a step would normally ask you something, it takes the safe default: it cuts what it can't back up, and never guesses. It stops only for the few calls that are really yours, like "the research says your premise is wrong" or "you already have a post on this." It never publishes.
 
 You never have to remember to run `review`. Anything that produces a draft runs it — a draft never reaches you unscored.
 
@@ -83,8 +86,9 @@ If they describe a situation rather than naming a command, map it and say why:
 
 | They say | Point them at |
 |---|---|
-| "I need a post about X" | `interview` if no packet exists, else `brief` |
+| "I need a post about X" | `intake` if no packet exists, else `brief` |
 | "what should we even write about" | `plan` |
+| "just do it all" / "run it hands-off" | `autopilot` |
 | "does this read AI-written" | `review` |
 | "it doesn't sound like us" | `brand` first, then `review` |
 | "fix what you found" | `revise` |

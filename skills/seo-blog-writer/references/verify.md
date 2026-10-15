@@ -151,10 +151,12 @@ Next: wltbo write local-seo-location-pages — C-007 is out; the outline section
 Order the ledger table by status severity — `removed` and `awaiting-client` first, since those are the rows that change what gets written — not by ID. End with the single next step: `who-let-the-blogs-out write <slug>` in pre-draft mode, `who-let-the-blogs-out refresh <slug>` when standing re-verification found expired claims in published copy.
 
 ### Cadence
+**Under `autopilot`:** don't ask. Take the default `references/autopilot.md` gives for this command, or hard-stop where it says to.
+
 
 Ask the user only about claims no source can settle — the client's own turnaround, their internal threshold, whether a result is theirs to publish. Batch two or three at a time with your best guess attached, so a "yes" is a complete answer: *"Audit turnaround — 5 business days, or is that the rush number?"*
 
-Never ask what a source can answer; going to the client for something on a public docs page is how a user learns the command doesn't do its own work. Never ask permission to mark a claim `removed` — mark it, report it, and let them override. And don't ask about every unresolved claim in one wall; three questions with recommendations get answered, and fourteen get skipped, after which nobody runs this command again.
+If `intake.md` exists and the question should have been on its list, log it in the post's `notes.md` as an intake miss before asking. Never ask what a source can answer; going to the client for something on a public docs page is how a user learns the command doesn't do its own work. Never ask permission to mark a claim `removed` — mark it, report it, and let them override. And don't ask about every unresolved claim in one wall; three questions with recommendations get answered, and fourteen get skipped, after which nobody runs this command again.
 
 ## Confirm and stop
 
