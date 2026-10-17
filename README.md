@@ -97,6 +97,7 @@ flowchart LR
         EA[elihadhd]
         SRS[skills-repo-sync]
         SRP[skills-repo-push]
+        CX[cross-exam]
     end
 
     WB -->|ticket type| HS
@@ -237,6 +238,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **handoff** — compacts a session into a dense resume-from-zero document, with a redaction sweep and facts separated from assumptions
 - **elihadhd** — restructures responses for an ADHD brain: TL;DR first, verb-first steps, one recommended path, and it stays in that mode
 - **cowork-with-codex** — turns your notes plus pasted Codex output into the exact message to send back, with the user's correction always outranking the agent's plan
+- **cross-exam** — weighs a pasted second opinion (another LLM, a dev, research) point by point as evidence, not orders, and keeps the original task moving instead of stalling in debate
 - **skills-repo-sync** — finds local skills missing from this repo, adds them in the expected format, updates this index, commits, and asks before pushing
 - **skills-repo-push** — the reverse: repo → `~/.claude/skills`, dry-run by default, with backups, local-only skills untouched, and state files preserved
 
@@ -1371,6 +1373,33 @@ each tagged with where it was verified.
 
 **Not for** — Doing the engineering itself, or writing a message that tells Codex to bypass its
 sandbox or approval policy; that stays the operator's launch-time decision.
+</details>
+
+<details>
+<summary><b>cross-exam</b> — weigh a second opinion without caving or stalling</summary>
+
+**What it does** — When you paste in someone else's take on work in progress, treats it as
+evidence to assess rather than instructions you've endorsed. Agrees where it's right, pushes back
+where it's wrong, and steers every reply back toward finishing what you started.
+
+**Say something like** — "/cross-exam", "here's what ChatGPT said", "my dev thinks", "second
+opinion", "research says", or just paste a critique or alternative version.
+
+**Input** — Any outside opinion: another LLM's review, a developer's notes, a client's feedback,
+an article, or a full alternative version of the work.
+
+**Output** — A goal line, a one-line TL;DR, a point-by-point table (✅ Agree / ❌ Disagree /
+🟡 Partly / ❓ Needs input) with a one-line reason each, only the points worth discussing, and a
+concrete Next step. Scales down to a few sentences for small notes.
+
+**Mechanics** — Eight ground rules guard against both failure modes: caving (silently adopting the
+pasted view) and drifting (feedback becoming its own topic). No home-team or outside-team bias,
+a context-gap check for advice that's right in general but wrong here, verification of checkable
+facts, clear-cut points settled rather than debated, settled points never reopened, and a loop
+breaker that restates the goal and hands you the call.
+
+**Not for** — Giving a second opinion on someone else's work from scratch, or cases where you say
+"do it their way", which is an instruction and gets done directly.
 </details>
 
 <details>
