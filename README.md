@@ -98,6 +98,7 @@ flowchart LR
         SRS[skills-repo-sync]
         SRP[skills-repo-push]
         CX[cross-exam]
+        AS[agent-smiths]
     end
 
     WB -->|ticket type| HS
@@ -124,6 +125,8 @@ flowchart LR
     WLT -.supersedes.-> AID
 
     NS -.->|skill stubs| SSA
+    WB -->|snapshot plan| AS
+    HO -->|handoff doc| AS
     SRS <-->|two-way sync| SRP
 
     classDef disc fill:#f3e8ff,stroke:#7c3aed,color:#111
@@ -137,7 +140,7 @@ flowchart LR
     class WA,UX1,UO,CV,FE,CS,SS ux
     class TE,EL,WG doc
     class WLT,BTI,SEO,AID,CSB cont
-    class NS,SSA,GPP,HO,EA,SRS,SRP meta
+    class NS,SSA,GPP,HO,EA,SRS,SRP,CX,AS meta
 ```
 
 Solid arrows are real handoffs — one skill produces an artifact another consumes. Dashed arrows are
@@ -239,6 +242,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **elihadhd** — restructures responses for an ADHD brain: TL;DR first, verb-first steps, one recommended path, and it stays in that mode
 - **cowork-with-codex** — turns your notes plus pasted Codex output into the exact message to send back, with the user's correction always outranking the agent's plan
 - **cross-exam** — weighs a pasted second opinion (another LLM, a dev, research) point by point as evidence, not orders, and keeps the original task moving instead of stalling in debate
+- **agent-smiths** — splits a plan into parallel agent lanes by which files each task writes, hands each lane a ready-to-launch brief, then checks after the run that no agent wandered into another's files; "run it in one go" is a valid answer
 - **skills-repo-sync** — finds local skills missing from this repo, adds them in the expected format, updates this index, commits, and asks before pushing
 - **skills-repo-push** — the reverse: repo → `~/.claude/skills`, dry-run by default, with backups, local-only skills untouched, and state files preserved
 
@@ -259,6 +263,16 @@ whiteboard (draw)  →  whiteboard (work / run — loops until you're the blocke
                         └─ research ticket   → resolution comment    ── keeps going
                    →  connotation-cop (ADRs + CONTEXT.md glossary)
                    →  whiteboard (snapshot)  →  spec / handoff
+```
+
+**Run a plan across several agents at once**
+
+```
+plan (pasted, file, whiteboard snapshot, or handoff doc)
+   →  agent-smiths split  →  lane file (.agent-smiths/<plan>.json) + one brief per lane
+                             (or "run it in one go" when splitting would cost more than it saves)
+   →  you launch the lanes, each in its own git worktree
+   →  agent-smiths land   →  collisions, violations, safe-to-merge list, which lanes can start next
 ```
 
 **Inherit or evaluate a codebase**
@@ -1400,6 +1414,38 @@ breaker that restates the goal and hands you the call.
 
 **Not for** — Giving a second opinion on someone else's work from scratch, or cases where you say
 "do it their way", which is an instruction and gets done directly.
+</details>
+
+<details>
+<summary><b>agent-smiths</b> — split a plan across parallel agents without them colliding</summary>
+
+**What it does** — Decides whether a plan can be run by several agents at once, and how. Parallelism
+is treated as a property of *write-sets* (the files and resources each task changes), not of tasks:
+two lanes may run together only if they can't touch the same file. After the agents run, checks
+that each one actually stayed in its lane.
+
+**Say something like** — "/agent-smiths split", "can these run in parallel", "will the agents step
+on each other", "fan this plan out", "the agents are done, did they stay in their lanes", "two
+agents touched the same file".
+
+**Input** — A plan from anywhere (a pasted task list, a plan file, a whiteboard snapshot, a handoff
+doc) and, ideally, the repo it applies to.
+
+**Output** — `split` writes `.agent-smiths/<plan>.json` (verdict, lanes, declared write-sets, shared
+file owners, suggested plan changes) and prints one self-contained brief per lane, with git worktree
+setup in Claude Code. `land` adds a per-lane check: collisions, violations, predictable misses,
+strays, what's safe to merge, and which lanes can start now.
+
+**Mechanics** — Predicts write-sets from the real tree with a hidden-writes checklist (lockfiles,
+migrations, route registries, barrels, codegen, i18n, config). Breaks hotspots by giving a shared
+file to one owner or pulling edits into a final seam lane. Folds small or dependent tasks together,
+or pins an interface into both briefs so they can run at once. Unknown write-sets run alone.
+"Sequential" is a first-class verdict. `land` diffs each lane's branch from where it started, so
+reverted mistakes clear and merged or deleted dependency branches don't break attribution.
+
+**Not for** — Writing the plan (whiteboard, hot-seat), compacting a session (handoff), launching the
+agents, or merging their work. It decides how work splits and whether the split held; it never does
+the work itself.
 </details>
 
 <details>
