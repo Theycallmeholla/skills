@@ -18,7 +18,7 @@ import yaml
 MAX_ZIP_BYTES = 25 * 1024 * 1024
 VALID_TARGETS = {"chatgpt", "claude"}
 VALID_STATUSES = {"native", "adapted", "unsupported"}
-EXCLUDED_NAMES = {".DS_Store"}
+EXCLUDED_NAMES = {".DS_Store", "README.md"}  # README.md is the GitHub page, not skill content
 EXCLUDED_DIRS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", "tests", "evals", "platforms"}
 CHATGPT_HARD_LEAKS = {
     "show_widget": "requires a host-provided custom widget tool",

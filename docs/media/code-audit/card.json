@@ -1,0 +1,9 @@
+{
+  "title": "Code Audit",
+  "no": 1, "of": 41,
+  "category": "code",
+  "type": "Audit · whole repository",
+  "ability": "Sweeps an entire repo in nine phases, pins every finding to a file and line, ranks them Critical to Info, and hands you a 30/60/90-day fix plan.",
+  "flavor": "Findings with no remediation aren't findings, they're complaints.",
+  "stats": [["In", "Repo"], ["Phases", "9"], ["Severities", "5"], ["Out", "Report"]]
+}

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-label="Example code audit report for a fictional project: severity chart, findings table, and a 7/30/90-day plan">
+  <rect x="14" y="14" width="1172" height="672" rx="14" fill="#1D1A16"/>
+  <rect x="4" y="4" width="1172" height="672" rx="14" fill="#F6F1E7" stroke="#1D1A16" stroke-width="3"/>
+
+  <!-- header -->
+  <rect x="4" y="4" width="1172" height="76" rx="14" fill="#0F7C8C"/>
+  <rect x="4" y="60" width="1172" height="20" fill="#0F7C8C"/>
+  <line x1="4" y1="80" x2="1176" y2="80" stroke="#1D1A16" stroke-width="3"/>
+  <text x="36" y="54" font-family="Display900" font-size="38" fill="#F6F1E7" letter-spacing="1">CODE AUDIT REPORT · TIDEPOOL-API</text>
+  <text x="1144" y="40" text-anchor="end" font-family="Display700" font-size="16" fill="#DCEFF1" letter-spacing="2">FICTIONAL EXAMPLE</text>
+  <text x="1144" y="62" text-anchor="end" font-family="Body400" font-size="15" fill="#DCEFF1">Node + Express · 18k LOC · commit a41c9e2</text>
+
+  <!-- health stamp -->
+  <g transform="rotate(-6 1030 150)">
+    <rect x="928" y="112" width="210" height="64" fill="none" stroke="#D6453D" stroke-width="4"/>
+    <text x="1033" y="138" text-anchor="middle" font-family="Display700" font-size="15" fill="#D6453D" letter-spacing="3">OVERALL HEALTH</text>
+    <text x="1033" y="166" text-anchor="middle" font-family="Display900" font-size="28" fill="#D6453D" letter-spacing="1">CONCERNING</text>
+  </g>
+
+  <!-- severity chart -->
+  <text x="36" y="124" font-family="Display700" font-size="18" fill="#0F7C8C" letter-spacing="3">FINDINGS BY SEVERITY</text>
+  <g font-family="Body700" font-size="17" fill="#1D1A16">
+    <text x="36" y="166">Critical</text><rect x="130" y="150" width="70" height="22" fill="#D6453D" stroke="#1D1A16" stroke-width="2"/><text x="212" y="167" font-family="Display900" font-size="22">1</text>
+    <text x="36" y="202">High</text><rect x="130" y="186" width="140" height="22" fill="#E8873A" stroke="#1D1A16" stroke-width="2"/><text x="282" y="203" font-family="Display900" font-size="22">2</text>
+    <text x="36" y="238">Medium</text><rect x="130" y="222" width="140" height="22" fill="#E9C24B" stroke="#1D1A16" stroke-width="2"/><text x="282" y="239" font-family="Display900" font-size="22">2</text>
+    <text x="36" y="274">Low</text><rect x="130" y="258" width="70" height="22" fill="#7FB0B8" stroke="#1D1A16" stroke-width="2"/><text x="212" y="275" font-family="Display900" font-size="22">1</text>
+    <text x="36" y="310">Info</text><rect x="130" y="294" width="70" height="22" fill="#FFFDF8" stroke="#1D1A16" stroke-width="2"/><text x="212" y="311" font-family="Display900" font-size="22">1</text>
+  </g>
+
+  <!-- findings table -->
+  <text x="370" y="124" font-family="Display700" font-size="18" fill="#0F7C8C" letter-spacing="3">FINDINGS SUMMARY</text>
+  <g font-family="Display700" font-size="15" fill="#5B544A" letter-spacing="2">
+    <text x="370" y="200">ID</text><text x="428" y="200">SEVERITY</text><text x="532" y="200">TITLE</text><text x="1144" y="200" text-anchor="end">LOCATION</text>
+  </g>
+  <line x1="370" y1="210" x2="1144" y2="210" stroke="#1D1A16" stroke-width="2"/>
+  <g font-family="Body400" font-size="16" fill="#1D1A16">
+    <text x="370" y="238" font-family="Body700">F-01</text><rect x="428" y="224" width="12" height="18" fill="#D6453D"/><text x="448" y="238">Critical</text><text x="532" y="238">Hardcoded production database credentials</text><text x="1144" y="238" text-anchor="end">config/db.js:14</text>
+    <text x="370" y="270" font-family="Body700">F-02</text><rect x="428" y="256" width="12" height="18" fill="#E8873A"/><text x="448" y="270">High</text><text x="532" y="270">SQL injection in admin search</text><text x="1144" y="270" text-anchor="end">routes/admin.js:88</text>
+    <text x="370" y="302" font-family="Body700">F-03</text><rect x="428" y="288" width="12" height="18" fill="#E8873A"/><text x="448" y="302">High</text><text x="532" y="302">N+1 query in the order list endpoint</text><text x="1144" y="302" text-anchor="end">routes/orders.js:41</text>
+    <text x="370" y="334" font-family="Body700">F-04</text><rect x="428" y="320" width="12" height="18" fill="#E9C24B"/><text x="448" y="334">Medium</text><text x="532" y="334">12 empty catch blocks swallow errors</text><text x="1144" y="334" text-anchor="end">various</text>
+    <text x="370" y="366" font-family="Body700">F-05</text><rect x="428" y="352" width="12" height="18" fill="#E9C24B"/><text x="448" y="366">Medium</text><text x="532" y="366">3 dependencies with high-severity CVEs</text><text x="1144" y="366" text-anchor="end">package-lock.json</text>
+    <text x="370" y="398" font-family="Body700">F-06</text><rect x="428" y="384" width="12" height="18" fill="#7FB0B8"/><text x="448" y="398">Low</text><text x="532" y="398">Inconsistent error handling across modules</text><text x="1144" y="398" text-anchor="end">codebase-wide</text>
+    <text x="370" y="430" font-family="Body700">F-07</text><rect x="428" y="416" width="12" height="18" fill="#FFFDF8" stroke="#1D1A16"/><text x="448" y="430">Info</text><text x="532" y="430">SQL inline in HTTP handlers, no data layer</text><text x="1144" y="430" text-anchor="end">routes/*.js</text>
+  </g>
+  <g stroke="#1D1A16" stroke-opacity=".15"><line x1="370" y1="248" x2="1144" y2="248"/><line x1="370" y1="280" x2="1144" y2="280"/><line x1="370" y1="312" x2="1144" y2="312"/><line x1="370" y1="344" x2="1144" y2="344"/><line x1="370" y1="376" x2="1144" y2="376"/><line x1="370" y1="408" x2="1144" y2="408"/></g>
+
+  <!-- what's good -->
+  <text x="36" y="372" font-family="Display700" font-size="18" fill="#2F8F4E" letter-spacing="3">WHAT'S GOOD</text>
+  <g font-family="Body400" font-size="15" fill="#1D1A16">
+    <text x="36" y="400">✓ Parameterized queries on the</text><text x="54" y="420">public API</text>
+    <text x="36" y="446">✓ Billing has real tests</text>
+    <text x="36" y="472">✓ README gets you running</text>
+  </g>
+
+  <!-- plan -->
+  <line x1="36" y1="500" x2="1144" y2="500" stroke="#1D1A16" stroke-width="2"/>
+  <text x="36" y="534" font-family="Display700" font-size="18" fill="#0F7C8C" letter-spacing="3">THE PLAN, ALREADY PRIORITIZED</text>
+  <g stroke="#1D1A16" stroke-width="2.5">
+    <rect x="36" y="552" width="352" height="104" fill="#F9D9D6"/>
+    <rect x="404" y="552" width="352" height="104" fill="#FBEAD5"/>
+    <rect x="772" y="552" width="372" height="104" fill="#DCEFF1"/>
+  </g>
+  <g font-family="Display900" font-size="24" fill="#1D1A16">
+    <text x="54" y="584">WITHIN 7 DAYS</text><text x="422" y="584">WITHIN 30 DAYS</text><text x="790" y="584">WITHIN 90 DAYS</text>
+  </g>
+  <g font-family="Body400" font-size="16" fill="#1D1A16">
+    <text x="54" y="612">Rotate the leaked credential (F-01)</text>
+    <text x="54" y="636">Patch the admin SQL injection (F-02)</text>
+    <text x="422" y="612">Upgrade the CVE dependencies (F-05)</text>
+    <text x="422" y="636">Fix the orders N+1 (F-03)</text>
+    <text x="790" y="612">Empty catches + error style (F-04, F-06)</text>
+    <text x="790" y="636">Add a data layer (F-07)</text>
+  </g>
+</svg>

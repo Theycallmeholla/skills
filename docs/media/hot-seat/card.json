@@ -1,0 +1,9 @@
+{
+  "title": "Hot Seat",
+  "no": 6, "of": 41,
+  "category": "discovery",
+  "type": "Interview · one question at a time",
+  "ability": "Grills your plan one question per message, each with its own recommended answer, until you both hold the same picture. Ends with a decision log.",
+  "flavor": "Never spend the user's attention on something grep can answer.",
+  "stats": [["Per message", "1 question"], ["Each has", "My pick"], ["Out", "Decision log"], ["Feeds", "Whiteboard"]]
+}
