@@ -23,5 +23,8 @@
       "State",
       "1 per plan"
     ]
-  ]
+  ],
+  "illustration": {
+    "art": "illustration-v2.webp"
+  }
 }
