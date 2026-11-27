@@ -103,6 +103,17 @@ contents (more files / newer material); when in doubt, prefer the Mac copy and n
    update only if the user approves (or if the session was told in advance to take source
    as truth).
 6. **README**: add one bullet per new skill per the format rules above.
+6b. **Skill page and card** (CI fails without them). For each new skill, read its whole
+   `SKILL.md` and write three things, following `docs/media/README.md` and an existing page
+   such as `skills/slop-scan/README.md`:
+   - `skills/<name>/README.md`: card hero (front + back), TL;DR, "Say this", a mermaid flow,
+     the skill's real output format with fictional data, stat sheet, "Plays well with".
+   - `docs/media/<name>/card.json`: title, category, set, type, tagline, ability, a flavor
+     line copied verbatim from the SKILL.md, four stats. No palette; it comes from the art.
+   - An entry in `docs/media/prompts.json` (copy an existing entry's shape): a text-free
+     scene for the skill plus a colour pair no other entry uses.
+   After the push to `main`, the `Skill cards` workflow generates the picture, builds the
+   front and back, and commits them. Nobody makes images by hand.
 7. **Secrets & sensitive-data scan (MANDATORY before any commit)** — the repo is public:
    - Scan every file being added for real credential patterns (`sk-`, `sk-ant-`, `ghp_`,
      `github_pat_`, `xox[bap]-`, `AKIA`, `pk_live_`/`sk_live_`, `AIza`, JWTs, `BEGIN

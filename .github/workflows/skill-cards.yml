@@ -1,0 +1,107 @@
+name: Skill cards
+
+# On every push to main that touches skills or their card data:
+#   1. generate card art for any skill that has a prompt but no picture yet
+#      (docs/media/prompts.json -> docs/media/<skill>/illustration.webp), at most MAX_NEW per run
+#   2. rebuild every card front and back (numbers follow the README index)
+#   3. commit the results back to main
+# The bot commit says [skip ci], so it does not trigger this workflow again.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+      - 'docs/media/**'
+      - 'README.md'
+      - 'scripts/build_skill_cards.py'
+      - '.github/workflows/skill-cards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: skill-cards
+  cancel-in-progress: false
+
+jobs:
+  cards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install build dependencies
+        run: python -m pip install fonttools brotli pillow
+      - name: Generate art for skills that have none yet
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import base64, io, json, os, re, urllib.error, urllib.request
+          from pathlib import Path
+          from PIL import Image
+
+          MODEL = "gpt-image-2.5-flare"   # same settings as the approved pilot run
+          QUALITY = "xhigh"
+          MAX_NEW = 5                      # cost guard per run
+          media = Path("docs/media")
+          entries = json.loads((media / "prompts.json").read_text(encoding="utf-8"))["images"]
+          todo = [e for e in entries
+                  if Path("skills", e["skill"]).is_dir()
+                  and not (media / e["skill"] / "illustration.webp").exists()]
+          print(f"{len(todo)} skill(s) need art", flush=True)
+          if len(todo) > MAX_NEW:
+              raise SystemExit(f"{len(todo)} skills need art; over the {MAX_NEW}-per-run guard. "
+                               "Raise MAX_NEW deliberately if this is expected.")
+          key = os.environ.get("OPENAI_API_KEY")
+          if todo and not key:
+              raise SystemExit("Missing OPENAI_API_KEY repository secret")
+          for e in todo:
+              slug = e["skill"]
+              if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
+                  raise SystemExit(f"Invalid skill slug: {slug}")
+              print(f"Generating {slug}", flush=True)
+              payload = json.dumps({"model": MODEL, "prompt": e["prompt"], "size": e["size"],
+                                    "quality": QUALITY, "output_format": "png", "n": 1}).encode()
+              req = urllib.request.Request(
+                  "https://api.openai.com/v1/images/generations", data=payload, method="POST",
+                  headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"})
+              try:
+                  with urllib.request.urlopen(req, timeout=360) as resp:
+                      result = json.load(resp)
+              except urllib.error.HTTPError as err:
+                  try:
+                      code = json.load(err).get("error", {}).get("code")
+                  except Exception:
+                      code = None
+                  raise SystemExit(f"Image request failed for {slug}: HTTP {err.code}, code={code}") from None
+              raw = base64.b64decode(result["data"][0]["b64_json"], validate=True)
+              with Image.open(io.BytesIO(raw)) as im:
+                  im.load()
+                  if im.size != (1024, 1536):
+                      raise SystemExit(f"Unexpected image size for {slug}: {im.size}")
+                  out = media / slug / "illustration.webp"
+                  out.parent.mkdir(parents=True, exist_ok=True)
+                  im.convert("RGB").save(out, "WEBP", quality=70)
+              print(f"Saved {out} ({out.stat().st_size // 1024} KB)", flush=True)
+          PY
+      - name: Build card fronts and backs
+        run: python scripts/build_skill_cards.py
+      - name: Commit changed cards
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/media
+          if git diff --cached --quiet; then
+            echo "Cards already up to date."
+          else
+            git commit -m "Build skill cards [skip ci]"
+            git push origin HEAD:main
+          fi

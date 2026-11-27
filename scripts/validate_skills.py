@@ -165,6 +165,40 @@ def check_readme(root, skills):
         err("README.md", f"entry '{stale}' has no matching skill folder")
 
 
+CARD_KEYS = ("title", "category", "set", "type", "tagline", "ability", "flavor", "stats")
+
+
+def check_pages(root, skills):
+    """Every skill needs its GitHub page, card text and an artwork prompt (docs/media/README.md)."""
+    import json
+    prompts_path = os.path.join(root, "docs", "media", "prompts.json")
+    try:
+        with open(prompts_path, encoding="utf-8") as fh:
+            prompted = {e["skill"] for e in json.load(fh)["images"]}
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        return err("docs/media/prompts.json", f"unreadable: {exc}")
+    for name in sorted(skills):
+        if not os.path.isfile(os.path.join(root, "skills", name, "README.md")):
+            err(name, "missing skills/<name>/README.md (the skill's GitHub page)")
+        card = os.path.join(root, "docs", "media", name, "card.json")
+        if not os.path.isfile(card):
+            err(name, "missing docs/media/<name>/card.json")
+        else:
+            try:
+                with open(card, encoding="utf-8") as fh:
+                    data = json.load(fh)
+            except ValueError as exc:
+                err(name, f"card.json is not valid JSON: {exc}")
+            else:
+                missing = [k for k in CARD_KEYS if not data.get(k)]
+                if missing:
+                    err(name, f"card.json missing: {', '.join(missing)}")
+        if name not in prompted:
+            err(name, "no entry in docs/media/prompts.json (its card art prompt)")
+    for stale in sorted(prompted - skills):
+        err("docs/media/prompts.json", f"entry '{stale}' has no matching skill folder")
+
+
 def main():
     root = sys.argv[1] if len(sys.argv) > 1 else "."
     skills_dir = os.path.join(root, "skills")
@@ -178,6 +212,7 @@ def main():
     check_denylist(root, set(names))
     check_shared(root, set(names))
     check_readme(root, set(names))
+    check_pages(root, set(names))
 
     for w in warnings:
         print(f"::warning::{w}" if os.environ.get("GITHUB_ACTIONS") else f"WARN  {w}")
