@@ -485,8 +485,7 @@ def _thumb(name, width, href_prefix="", src_prefix=""):
 def write_gallery():
     """Staggered card wall in the root README, between the gallery markers, in index order.
 
-    Skills with a "parent" don't get their own slot: they sit under the parent card as
-    half-size cards, two to a row.
+    Skills with a "parent" are left off the wall; their cards show on the parent's page.
     """
     readme = ROOT / "README.md"
     text = readme.read_text()
@@ -505,9 +504,6 @@ def write_gallery():
                          f'height="{GALLERY_W * 3 // 4}" align="top" alt="">')
         for name in names:
             parts.append(_thumb(name, GALLERY_W))
-            children = kids.get(name, [])
-            for i in range(0, len(children), 2):
-                parts.append("".join(_thumb(k, GALLERY_W // 2) for k in children[i:i + 2]))
         # align=top + <br> with no whitespace stacks cards flush (measured on github.com);
         # GitHub's own table-cell padding sets the column gap.
         cells.append('<td valign="top" align="center">' + "<br>".join(parts) + "</td>")
