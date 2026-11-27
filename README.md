@@ -27,6 +27,69 @@ at a time.
 
 ---
 
+## The deck
+
+Every skill is a card. Click one to open its page.
+
+<!-- skill-gallery:start -->
+<table>
+<tr>
+<td valign="top" align="center">
+<a href="skills/code-audit/"><img src="docs/media/code-audit/thumb.svg" width="180" alt="Code Audit"></a><br>
+<a href="skills/swipe-deck/"><img src="docs/media/swipe-deck/thumb.svg" width="180" alt="Swipe Deck"></a><br>
+<a href="skills/whiteboard/"><img src="docs/media/whiteboard/thumb.svg" width="180" alt="Whiteboard"></a><br>
+<a href="skills/website-audit/"><img src="docs/media/website-audit/thumb.svg" width="180" alt="Website Audit"></a><br>
+<a href="skills/conversion-audit/"><img src="docs/media/conversion-audit/thumb.svg" width="180" alt="Conversion Audit"></a><br>
+<a href="skills/gap-scan/"><img src="docs/media/gap-scan/thumb.svg" width="180" alt="Gap Scan"></a><br>
+<a href="skills/eli5-features/"><img src="docs/media/eli5-features/thumb.svg" width="180" alt="ELI5 Features"></a><br>
+<a href="skills/ai-writing-detector/"><img src="docs/media/ai-writing-detector/thumb.svg" width="180" alt="AI Writing Detector"></a><br>
+<a href="skills/genie-proof-prompts/"><img src="docs/media/genie-proof-prompts/thumb.svg" width="180" alt="Genie-Proof Prompts"></a><br>
+<a href="skills/cross-exam/"><img src="docs/media/cross-exam/thumb.svg" width="180" alt="Cross-Exam"></a>
+</td>
+<td valign="top" align="center">
+<img src="docs/media/_spacer.svg" width="180" height="135" alt=""><br>
+<a href="skills/test-assessment/"><img src="docs/media/test-assessment/thumb.svg" width="180" alt="Test Assessment"></a><br>
+<a href="skills/hot-seat/"><img src="docs/media/hot-seat/thumb.svg" width="180" alt="Hot Seat"></a><br>
+<a href="skills/whiteboard-help/"><img src="docs/media/whiteboard-help/thumb.svg" width="180" alt="Whiteboard Help"></a><br>
+<a href="skills/ux-audit/"><img src="docs/media/ux-audit/thumb.svg" width="180" alt="UX Audit"></a><br>
+<a href="skills/fresh-eyes/"><img src="docs/media/fresh-eyes/thumb.svg" width="180" alt="Fresh Eyes"></a><br>
+<a href="skills/open-saysai/"><img src="docs/media/open-saysai/thumb.svg" width="180" alt="Open SaysAI"></a><br>
+<a href="skills/walkthrough-gif/"><img src="docs/media/walkthrough-gif/thumb.svg" width="180" alt="Walkthrough GIF"></a><br>
+<a href="skills/case-study-builder/"><img src="docs/media/case-study-builder/thumb.svg" width="180" alt="Case Study Builder"></a><br>
+<a href="skills/handoff/"><img src="docs/media/handoff/thumb.svg" width="180" alt="Handoff"></a><br>
+<a href="skills/agent-smiths/"><img src="docs/media/agent-smiths/thumb.svg" width="180" alt="Agent Smiths"></a>
+</td>
+<td valign="top" align="center">
+<a href="skills/test-suggest/"><img src="docs/media/test-suggest/thumb.svg" width="180" alt="Test Suggest"></a><br>
+<a href="skills/napkin/"><img src="docs/media/napkin/thumb.svg" width="180" alt="Napkin"></a><br>
+<a href="skills/blog-topic-interview/"><img src="docs/media/blog-topic-interview/thumb.svg" width="180" alt="Blog Topic Interview"></a><br>
+<a href="skills/ui-oddity-scan/"><img src="docs/media/ui-oddity-scan/thumb.svg" width="180" alt="UI Oddity Scan"></a><br>
+<a href="skills/cover-story/"><img src="docs/media/cover-story/thumb.svg" width="180" alt="Cover Story"></a><br>
+<a href="skills/what-next/"><img src="docs/media/what-next/thumb.svg" width="180" alt="What Next"></a><br>
+<a href="skills/who-let-the-blogs-out/"><img src="docs/media/who-let-the-blogs-out/thumb.svg" width="180" alt="Who Let The Blogs Out"></a><br>
+<a href="skills/nick-saban/"><img src="docs/media/nick-saban/thumb.svg" width="180" alt="Nick Saban"></a><br>
+<a href="skills/elihadhd/"><img src="docs/media/elihadhd/thumb.svg" width="180" alt="ELIHADHD"></a><br>
+<a href="skills/skills-repo-sync/"><img src="docs/media/skills-repo-sync/thumb.svg" width="180" alt="Skills Repo Sync"></a>
+</td>
+<td valign="top" align="center">
+<img src="docs/media/_spacer.svg" width="180" height="135" alt=""><br>
+<a href="skills/prove-it/"><img src="docs/media/prove-it/thumb.svg" width="180" alt="Prove It"></a><br>
+<a href="skills/connotation-cop/"><img src="docs/media/connotation-cop/thumb.svg" width="180" alt="Connotation Cop"></a><br>
+<a href="skills/what-would-bezos-do/"><img src="docs/media/what-would-bezos-do/thumb.svg" width="180" alt="What Would Bezos Do"></a><br>
+<a href="skills/slop-scan/"><img src="docs/media/slop-scan/thumb.svg" width="180" alt="Slop Scan"></a><br>
+<a href="skills/secret-shopper/"><img src="docs/media/secret-shopper/thumb.svg" width="180" alt="Secret Shopper"></a><br>
+<a href="skills/teach/"><img src="docs/media/teach/thumb.svg" width="180" alt="Teach"></a><br>
+<a href="skills/seo-blog-writer/"><img src="docs/media/seo-blog-writer/thumb.svg" width="180" alt="SEO Blog Writer"></a><br>
+<a href="skills/skill-system-architect/"><img src="docs/media/skill-system-architect/thumb.svg" width="180" alt="Skill System Architect"></a><br>
+<a href="skills/cowork-with-codex/"><img src="docs/media/cowork-with-codex/thumb.svg" width="180" alt="Cowork With Codex"></a><br>
+<a href="skills/skills-repo-push/"><img src="docs/media/skills-repo-push/thumb.svg" width="180" alt="Skills Repo Push"></a>
+</td>
+</tr>
+</table>
+<!-- skill-gallery:end -->
+
+---
+
 ## Table of contents
 
 1. [How the skills fit together](#how-the-skills-fit-together)
