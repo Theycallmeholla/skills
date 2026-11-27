@@ -7,9 +7,24 @@
   "ability": "Mines your files first, then asks only the missing facts as multiple choice, four questions a round at most. Ships web-ready copy with a media plan, plus an intake file that resumes where you left off.",
   "flavor": "A shipped case study with two clearly-marked placeholders beats a perfect one that never gets finished.",
   "stats": [
-    ["Per round", "≤4 questions"],
-    ["Phases", "5"],
-    ["Media tiers", "3"],
-    ["Out", "2 files"]
-  ]
+    [
+      "Per round",
+      "≤4 questions"
+    ],
+    [
+      "Phases",
+      "5"
+    ],
+    [
+      "Media tiers",
+      "3"
+    ],
+    [
+      "Out",
+      "2 files"
+    ]
+  ],
+  "illustration": {
+    "art": "illustration-v2.webp"
+  }
 }
