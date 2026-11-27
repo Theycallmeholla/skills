@@ -1,0 +1,15 @@
+{
+  "title": "Cross-Exam",
+  "category": "meta",
+  "set": "Second opinions",
+  "type": "Review · outside feedback",
+  "tagline": "Weighs a second opinion without caving or stalling",
+  "ability": "Treats pasted feedback from another AI, a developer or a client as evidence, not orders. Calls each point agree, disagree, partly or needs input, then points back at the goal with the next step.",
+  "flavor": "The feedback is input to the goal, not a new goal.",
+  "stats": [
+    ["Calls", "4"],
+    ["Ground rules", "8"],
+    ["Input is", "Evidence"],
+    ["Ends with", "Next step"]
+  ]
+}

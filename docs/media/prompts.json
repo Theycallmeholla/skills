@@ -1,0 +1,285 @@
+{
+  "instructions": "Generate one image per entry in `images` using an image-generation model (e.g. OpenAI's image API), not by writing code. Each result must be a raster image file, PNG or JPEG, 1024x1536 portrait. Do NOT produce SVG or any vector or code output. Save each result using the entry's `file` name. A separate build script turns these pictures into the finished cards; that step is not your job.",
+  "images": [
+    {
+      "skill": "code-audit",
+      "file": "code-audit.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: an inspector with a lantern and a giant magnifying glass examining the gears of an enormous clockwork machine, tying small red flags to a few faulty gears.\n\nColour palette: deep teal + safety yellow. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "test-assessment",
+      "file": "test-assessment.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a bridge inspector tapping the steel supports of a tall bridge with a hammer; most girders glow green and safe, two are visibly cracked.\n\nColour palette: slate grey + lime green. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "test-suggest",
+      "file": "test-suggest.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a climbing guide hammering safety pins into a cliff face at exactly the spots above the most dangerous drops, a rope trailing below.\n\nColour palette: plum + mint. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "prove-it",
+      "file": "prove-it.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a lighthouse keeper climbing a spiral stair inside a tall tower, lighting seven lamps one after another on the way to the top.\n\nColour palette: navy + signal red. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "swipe-deck",
+      "file": "swipe-deck.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a magician's hands flicking glowing cards off a deck in four directions, left, right, up and down, one card frozen mid-air.\n\nColour palette: midnight blue + hot pink. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "hot-seat",
+      "file": "hot-seat.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a single wooden chair under one hard spotlight on a dark stage, a person seated with arms crossed, facing one empty glowing speech bubble.\n\nColour palette: charcoal + spotlight gold. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "napkin",
+      "file": "napkin.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a cafe table with a machine sketched in pen on a paper napkin, and a tiny working paper model of that machine standing on top of the napkin.\n\nColour palette: kraft brown + cobalt blue. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "connotation-cop",
+      "file": "connotation-cop.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a stern old-fashioned traffic cop in white gloves inside a grand library, stamping index cards and filing them into a tidy wooden card catalog.\n\nColour palette: forest green + brass. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "whiteboard",
+      "file": "whiteboard.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a huge wall covered in sticky notes connected by taut string, a small figure on a rolling ladder pinning up one more note.\n\nColour palette: warm grey + royal blue. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "whiteboard-help",
+      "file": "whiteboard-help.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a pocket field guide lying open on a desk beside a large wall map, a compass and a pencil, the guide's pages showing only simple diagrams.\n\nColour palette: ice blue + coral. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "blog-topic-interview",
+      "file": "blog-topic-interview.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a cozy interview set: two armchairs facing each other, a vintage microphone on a small table between them, an open notebook, warm lamp light.\n\nColour palette: burgundy + champagne. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "what-would-bezos-do",
+      "file": "what-would-bezos-do.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a treasure hunter in a dusty attic lifting the lid of one ordinary crate that glows gold inside, surrounded by other ignored crates (no real person).\n\nColour palette: deep indigo + amber. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "website-audit",
+      "file": "website-audit.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: an inspector with a flashlight walking through a giant dollhouse-style cutaway building, each room a different page, tagging rooms as she goes.\n\nColour palette: steel blue + tangerine. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "ux-audit",
+      "file": "ux-audit.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a tiny traveler walking a winding path through a hedge maze, with potholes, dead ends and confusing forks along the way.\n\nColour palette: sand + ultramarine. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "ui-oddity-scan",
+      "file": "ui-oddity-scan.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a jeweler with a loupe leaning over a large mosaic, spotting the one tile that doesn't match the others.\n\nColour palette: black + acid yellow. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "slop-scan",
+      "file": "slop-scan.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a raccoon detective in a trench coat examining a wall of identical website cards with a magnifying glass.\n\nColour palette: plum + golden yellow. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "conversion-audit",
+      "file": "conversion-audit.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a long hallway ending at one glowing door, five shadowy figures walking toward it, two of them hesitating.\n\nColour palette: emerald + hot coral. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "fresh-eyes",
+      "file": "fresh-eyes.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a newcomer stepping off a train into an unfamiliar town square, looking around wide-eyed, holding a map.\n\nColour palette: sky blue + sunflower. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "cover-story",
+      "file": "cover-story.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a spy's desk with a sealed envelope closed with a red wax seal, next to an open briefing folder.\n\nColour palette: espresso brown + wax red. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "secret-shopper",
+      "file": "secret-shopper.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: an undercover shopper in sunglasses and a trench coat pushing a cart down a store aisle, phone in hand.\n\nColour palette: dusty rose + dark teal. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "gap-scan",
+      "file": "gap-scan.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a worker on a long wooden rope bridge kneeling at the one spot where a plank is missing, measuring the gap.\n\nColour palette: denim blue + flamingo pink. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "open-saysai",
+      "file": "open-saysai.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a stone door in a cliff swinging open to a beam of light, small friendly robot explorers lined up at the entrance.\n\nColour palette: obsidian + jade green. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "what-next",
+      "file": "what-next.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a hiker at a crossroads of three trails, one trail lit by a lantern hanging from a signpost with blank boards.\n\nColour palette: aubergine + seafoam. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "teach",
+      "file": "teach.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a professor guiding a student through a giant cutaway machine, pointing at the gears with a long pointer.\n\nColour palette: dark olive + saffron. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "eli5-features",
+      "file": "eli5-features.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a friendly robot reading a picture book to a group of kids sitting on the floor, the book showing only pictures.\n\nColour palette: baby blue + tomato red. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "walkthrough-gif",
+      "file": "walkthrough-gif.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a film camera on a dolly track filming a tiny figure walking through a miniature city of web pages.\n\nColour palette: graphite + magenta. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "who-let-the-blogs-out",
+      "file": "who-let-the-blogs-out.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a dog running toward the viewer with a rolled-up newspaper in its mouth, the newspaper showing only lines, no words.\n\nColour palette: black + blaze orange. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "seo-blog-writer",
+      "file": "seo-blog-writer.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: an old writing desk with a quill and a stack of crisp pages, a brass telescope pointed out the window at a wide landscape.\n\nColour palette: midnight green + copper. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "ai-writing-detector",
+      "file": "ai-writing-detector.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: an old lie-detector machine with swinging needles scribbling lines on a paper roll, next to a typed page.\n\nColour palette: petrol blue + scarlet. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "case-study-builder",
+      "file": "case-study-builder.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a museum curator placing a trophy into a glass display case under spotlights.\n\nColour palette: mahogany + powder blue. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "nick-saban",
+      "file": "nick-saban.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a football coach (not a real person) at a sideline chalkboard drawing play diagrams with arrows, a stadium behind him.\n\nColour palette: crimson + silver. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "skill-system-architect",
+      "file": "skill-system-architect.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: an architect unrolling blueprints across a drafting table, a small model building rising out of the plans.\n\nColour palette: prussian blue + lemon. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "genie-proof-prompts",
+      "file": "genie-proof-prompts.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a genie rising from a brass lamp, frowning, while a lawyer holds up a long scroll and points at it with a magnifying glass.\n\nColour palette: royal purple + turquoise. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "handoff",
+      "file": "handoff.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a relay runner passing a glowing baton to the next runner mid-stride on a track.\n\nColour palette: rust + cornflower blue. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "elihadhd",
+      "file": "elihadhd.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a hand lifting one single glowing card out of a messy pile of crumpled papers.\n\nColour palette: cobalt + chartreuse. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "cowork-with-codex",
+      "file": "cowork-with-codex.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: two workers carrying a long plank together through a workshop, one at the front calling directions.\n\nColour palette: terracotta + sea green. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "cross-exam",
+      "file": "cross-exam.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a courtroom with a lawyer holding a magnifying glass up to a document on the witness stand.\n\nColour palette: walnut + vermilion. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "agent-smiths",
+      "file": "agent-smiths.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: five blacksmiths at separate anvils in parallel lanes marked by chalk lines on the floor, each forging a different piece.\n\nColour palette: iron grey + ember red. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "skills-repo-sync",
+      "file": "skills-repo-sync.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a small delivery drone carrying boxes from a cozy home workshop up to a warehouse floating in the clouds.\n\nColour palette: midnight purple + aqua. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    },
+    {
+      "skill": "skills-repo-push",
+      "file": "skills-repo-push.png",
+      "size": "1024x1536",
+      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a small delivery drone bringing boxes down from a warehouse in the clouds to the shelves of a cozy home workshop.\n\nColour palette: sage + cherry red. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
+      "output_format": "png"
+    }
+  ]
+}

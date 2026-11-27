@@ -1,0 +1,27 @@
+{
+  "title": "UI Oddity Scan",
+  "category": "ux",
+  "set": "Page review",
+  "type": "Scan · one page",
+  "tagline": "Finds what's off on a page, pinned on screenshots.",
+  "ability": "Inventories one page first, then flags what's odd: a fact said three times, sections that repeat each other, stray text, placeholder copy, misalignment and off-topic images. Each is pinned on a crop.",
+  "flavor": "Never pad with invented nitpicks or out-of-scope advice to look thorough.",
+  "stats": [
+    [
+      "Scope",
+      "1 page"
+    ],
+    [
+      "Inventories",
+      "4"
+    ],
+    [
+      "Checks",
+      "6 kinds"
+    ],
+    [
+      "Out",
+      "HTML review"
+    ]
+  ]
+}

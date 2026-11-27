@@ -1,12 +1,12 @@
 # Skills
 
 [![Validate skills](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml/badge.svg)](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml)
-[![Skills](https://img.shields.io/badge/skills-35-6f42c1)](#skill-index)
+[![Skills](https://img.shields.io/badge/skills-40-6f42c1)](#skill-index)
 [![Spec](https://img.shields.io/badge/spec-Agent%20Skills-0b7285)](#authoring-a-skill)
 [![CI](https://img.shields.io/badge/CI-validator%20%2B%20secret%20scan%20%2B%20shellcheck%20%2B%20playwright-2b8a3e)](#continuous-integration)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-**35 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
+**40 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
 UX and conversion reviews, requirements interviews, documentation generation, content production,
 and the meta-work of building and maintaining skills themselves.
 
@@ -17,7 +17,7 @@ at a time.
 
 | | |
 |---|---|
-| **Skills** | 35 |
+| **Skills** | 40 |
 | **Bundled reference files** | 80 |
 | **Templates & assets** | 8 |
 | **Executable scripts** | 21 (12 shell, 8 Python, 1 Node) |
@@ -217,8 +217,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **secret-shopper** — a regular customer drives the live site in a real browser, does real tasks, and logs every "what does this do?" in plain words, phone-first
 - **gap-scan** — finds the features that obviously should exist but don't, as a ranked punch list with a status-carrying `gap_packet.json` that can be rechecked later
 - **open-saysai** — audits how AI search and answer engines crawl, retrieve, and cite a site: per-crawler robots and WAF checks, citation readiness, clean-channel prompt tests, and a portable `ai_visibility_packet.json`
-- **how-are-we-doing** — per-business performance read that leads with what changed and publishes a private visual dashboard: Search Console movers and near-miss queries, indexing of every sitemap URL, GA4, Clarity, GBP, CRM leads, and DR, from a profile built by auto-discovery and a short setup questionnaire; measures only
-- **what-next** — turns a how-are-we-doing read into a short ranked plan, closest to a booked customer first, each step with one measured number, who does it, and a dated check; respects pending experiments and starts nothing without the owner's pick
+- **what-next** — turns a how-are-we-doing read (a private companion skill, not in this repo) into a short ranked plan, closest to a booked customer first, each step with one measured number, who does it, and a dated check; respects pending experiments and starts nothing without the owner's pick
 
 ### Documentation
 
@@ -228,7 +227,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 
 ### Content
 
-- **who-let-the-blogs-out** — thirteen-command blog system with per-client memory: brand, plan, interview, verify, brief, write, images, review, revise, export, publish, refresh, help
+- **who-let-the-blogs-out** — fourteen-command blog system with per-client memory: brand, intake, plan, interview, verify, brief, write, images, review, revise, export, publish, refresh, autopilot, plus help
 - **seo-blog-writer** — who-let-the-blogs-out's brief, verify, write, review, and revise steps on their own: SERP teardown, committed reader questions, a verified claim ledger, and a scored draft
 - **ai-writing-detector** — weighted 0–100 AI-tells scorecard with quoted evidence and fixes ranked by score impact
 - **case-study-builder** — mines existing files, asks only the gap questions, and ships web-ready case study copy plus a media plan
@@ -1075,14 +1074,14 @@ commands, GIF tuning, troubleshooting).
 ### Content
 
 <details>
-<summary><b>who-let-the-blogs-out</b> — the thirteen-command blog system with per-client memory</summary>
+<summary><b>who-let-the-blogs-out</b> — the fourteen-command blog system with per-client memory</summary>
 
 **What it does** — Runs blog and web content end to end for agency work: plan topics, interview the
 author, verify claims, brief the angle, draft, plan images, score, revise, publish, and refresh
 aging posts — all sharing a per-client memory. Shorthand: `wltbo`.
 
-**Commands** — `brand · plan · interview · verify · brief · write · images · review · revise ·
-export · publish · refresh · help`. A bare invocation shows a menu built from your actual state and never
+**Commands** — `brand · intake · plan · interview · verify · brief · write · images · review ·
+revise · export · publish · refresh · autopilot · help`. A bare invocation shows a menu built from your actual state and never
 auto-runs anything.
 
 **Input** — A `.blog/` state directory (created by `brand`), a client slug, a command, and — for
@@ -1096,17 +1095,18 @@ append-only `draft-vN.md` and `review-vN.json`. `review` emits two never-blended
 **Mechanics** — Each command's Writes are the next command's Reads. Rubric weights: intent 20,
 accuracy 20, original value 15, completeness 15, structure 10, brand fit 10, conversion 5, technical
 SEO 5. A governing-rules file outranks every command playbook: an eight-level priority order (the
-user's thesis first, evidence second, workflow machinery last) and ten rules — the thesis is sticky,
+user's thesis first, evidence second, workflow machinery last) and eleven rules — the thesis is sticky,
 corrections win immediately, claims stay inside three evidence bands, original value never means
 manufactured disagreement, no author stance is written from AI inference, ordinary editorial calls
 get made without asking, effort matches consequence, confusion shortens the answer, the machinery
-stays internal, and steps whose output already exists are skipped. Still held: published under a
+stays internal, steps whose output already exists are skipped, and anything a source can answer is
+researched before asking, with client questions sent once. Still held: published under a
 name means true under that name; depth is coverage, not length; drift is reported, never silently
 repaired. `review` may never edit the draft.
 
 **Bundle** — One `references/*.md` per command, each declaring reads / writes / stops-at, plus
 `routing.md`, `state.md`, `evidence-rules.md`, `quality-rubric.md`, `voice-and-tells.md`,
-`headline-contract.md`, `research-protocol.md`, `governing-rules.md` (priority order and the ten
+`headline-contract.md`, `research-protocol.md`, `governing-rules.md` (priority order and the eleven
 rules), `reporting.md` (what the chat reply shows), `acceptance-tests.md` (regression cases drawn
 from real failures in live sessions); `scripts/tells_metrics.py`;
 `assets/opinion-bank-template.md`. Frontmatter narrows `allowed-tools` to a single scripted Bash

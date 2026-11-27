@@ -1,0 +1,15 @@
+{
+  "title": "ELI5 Features",
+  "category": "docs",
+  "set": "Help docs",
+  "type": "Doc · end-user help",
+  "tagline": "Help docs in your app's own words.",
+  "ability": "Reads the code behind a feature and writes a plain-language help doc for the people who use it: exact button labels, quick steps, common situations, and marked spots where a real screenshot would help.",
+  "flavor": "The doc is about the user's job, not the code's structure.",
+  "stats": [
+    ["Phases", "7"],
+    ["Labels", "Verbatim"],
+    ["Media", "1–4 callouts"],
+    ["Out", "Help doc .md"]
+  ]
+}

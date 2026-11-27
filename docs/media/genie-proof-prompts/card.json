@@ -1,0 +1,15 @@
+{
+  "title": "Genie-Proof Prompts",
+  "category": "meta",
+  "set": "Prompt craft",
+  "type": "Rewrite · one prompt",
+  "tagline": "Rewrites a prompt so it can't be twisted.",
+  "ability": "Reads your prompt as a hostile genie hunting ten kinds of loophole, then rewrites it airtight. Shows what the genie would have done and flags every guess it made so you can correct it.",
+  "flavor": "If a hostile literal reading exists, the prompt is not done.",
+  "stats": [
+    ["Loophole types", "10"],
+    ["Sections", "7"],
+    ["Out", "3 parts"],
+    ["Never drops", "DO NOT"]
+  ]
+}

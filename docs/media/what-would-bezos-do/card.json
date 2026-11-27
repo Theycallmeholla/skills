@@ -1,0 +1,27 @@
+{
+  "title": "What Would Bezos Do",
+  "category": "discovery",
+  "set": "Opportunities",
+  "type": "Analysis · whole codebase",
+  "tagline": "What you already built that could earn more.",
+  "ability": "Maps what a codebase already has, asks whether 100x more use of each asset would make the business stronger, and reports at most five code-backed opportunities, a kill list and one forced pick.",
+  "flavor": "The report's credibility comes from what it refuses to include.",
+  "stats": [
+    [
+      "In",
+      "Repo"
+    ],
+    [
+      "Max ideas",
+      "5"
+    ],
+    [
+      "Kill list",
+      "Mandatory"
+    ],
+    [
+      "Out",
+      "Report + JSON"
+    ]
+  ]
+}

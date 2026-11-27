@@ -1,0 +1,15 @@
+{
+  "title": "ELIHADHD",
+  "category": "meta",
+  "set": "Focus mode",
+  "type": "Mode · every reply",
+  "tagline": "Answer first. Short steps. One next move.",
+  "ability": "Reshapes every reply for an overwhelmed brain: the answer on line one, plain words, up to five verb-first steps, one recommended path. Stays on until you ask for the long version.",
+  "flavor": "Overwhelmed people need a smaller world, not a better-formatted big one.",
+  "stats": [
+    ["Stones", "6"],
+    ["Steps shown", "5 max"],
+    ["Paths", "1"],
+    ["Mode", "Sticky"]
+  ]
+}

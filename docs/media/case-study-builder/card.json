@@ -1,0 +1,15 @@
+{
+  "title": "Case Study Builder",
+  "category": "content",
+  "set": "Client proof",
+  "type": "Interview · one client",
+  "tagline": "Turns finished client work into a case study.",
+  "ability": "Mines your files first, then asks only the missing facts as multiple choice, four questions a round at most. Ships web-ready copy with a media plan, plus an intake file that resumes where you left off.",
+  "flavor": "A shipped case study with two clearly-marked placeholders beats a perfect one that never gets finished.",
+  "stats": [
+    ["Per round", "≤4 questions"],
+    ["Phases", "5"],
+    ["Media tiers", "3"],
+    ["Out", "2 files"]
+  ]
+}

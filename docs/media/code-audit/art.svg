@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 468">
+  <!-- code sheet -->
+  <g transform="rotate(-4 190 230)">
+    <rect x="58" y="70" width="250" height="320" rx="6" fill="#FFFDF8" stroke="#1D1A16" stroke-width="3"/>
+    <rect x="58" y="70" width="250" height="34" rx="6" fill="#0F7C8C" stroke="#1D1A16" stroke-width="3"/>
+    <circle cx="80" cy="87" r="5" fill="#FFFDF8"/><circle cx="98" cy="87" r="5" fill="#FFFDF8"/>
+    <g fill="#1D1A16" opacity=".8">
+      <rect x="80" y="128" width="120" height="9" rx="2"/>
+      <rect x="96" y="150" width="150" height="9" rx="2"/>
+      <rect x="96" y="172" width="96" height="9" rx="2"/>
+      <rect x="80" y="194" width="60" height="9" rx="2"/>
+      <rect x="80" y="260" width="140" height="9" rx="2"/>
+      <rect x="96" y="282" width="170" height="9" rx="2"/>
+      <rect x="96" y="304" width="110" height="9" rx="2"/>
+      <rect x="80" y="326" width="80" height="9" rx="2"/>
+      <rect x="80" y="348" width="130" height="9" rx="2"/>
+    </g>
+    <rect x="70" y="222" width="228" height="24" fill="#D6453D"/>
+    <rect x="96" y="229" width="160" height="9" rx="2" fill="#FFFDF8"/>
+  </g>
+  <!-- magnifier -->
+  <circle cx="232" cy="228" r="74" fill="#FFFDF8" fill-opacity=".35" stroke="#1D1A16" stroke-width="12"/>
+  <circle cx="232" cy="228" r="74" fill="none" stroke="#0F7C8C" stroke-width="5"/>
+  <line x1="286" y1="284" x2="350" y2="350" stroke="#1D1A16" stroke-width="26" stroke-linecap="round"/>
+  <line x1="290" y1="288" x2="346" y2="344" stroke="#0F7C8C" stroke-width="12" stroke-linecap="round"/>
+  <!-- severity ladder -->
+  <g font-family="Display900" font-size="20" fill="#FFFDF8">
+    <rect x="330" y="70" width="64" height="30" fill="#D6453D" stroke="#1D1A16" stroke-width="2.5"/><text x="342" y="92">CRIT</text>
+    <rect x="342" y="106" width="52" height="30" fill="#E8873A" stroke="#1D1A16" stroke-width="2.5"/><text x="351" y="128">HIGH</text>
+    <rect x="352" y="142" width="42" height="30" fill="#E9C24B" stroke="#1D1A16" stroke-width="2.5"/><text x="360" y="164" fill="#1D1A16">MED</text>
+    <rect x="360" y="178" width="34" height="30" fill="#7FB0B8" stroke="#1D1A16" stroke-width="2.5"/><text x="366" y="200" fill="#1D1A16">LO</text>
+    <rect x="368" y="214" width="26" height="30" fill="#FFFDF8" stroke="#1D1A16" stroke-width="2.5"/><text x="375" y="236" fill="#1D1A16">i</text>
+  </g>
+  <text x="30" y="440" font-family="Display700" font-size="22" fill="#1D1A16" letter-spacing="2">FILE:LINE OR IT DIDN'T HAPPEN</text>
+</svg>

@@ -1,0 +1,15 @@
+{
+  "title": "Fresh Eyes",
+  "category": "ux",
+  "set": "Newcomer test",
+  "type": "Test · first contact",
+  "tagline": "Tries your product like a total newcomer.",
+  "ability": "Uses only what you hand it, follows instructions literally, and logs every confusion the moment it happens. You get a first-contact report full of the obvious questions insiders can no longer see.",
+  "flavor": "Getting stuck is a result, not a failure.",
+  "stats": [
+    ["In", "What you give"],
+    ["Modes", "2"],
+    ["Ledger fields", "4"],
+    ["Out", "Report"]
+  ]
+}

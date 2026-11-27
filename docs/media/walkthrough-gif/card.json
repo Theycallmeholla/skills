@@ -1,0 +1,15 @@
+{
+  "title": "Walkthrough GIF",
+  "category": "docs",
+  "set": "Screen demos",
+  "type": "Generator · browser recording",
+  "tagline": "Describe a flow, get a re-runnable recording.",
+  "ability": "Turns plain-English steps into a small local project that drives a real browser through your flow, records it, and exports an MP4, a GIF and timed step notes. Re-run it after every UI change.",
+  "flavor": "Never make GIF the primary artifact.",
+  "stats": [
+    ["Primary", "MP4"],
+    ["GIF width", "Max 800px"],
+    ["Viewport", "1280×800"],
+    ["Runs on", "Node 18+"]
+  ]
+}

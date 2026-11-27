@@ -1,0 +1,27 @@
+{
+  "title": "UX Audit",
+  "category": "ux",
+  "set": "Usability",
+  "type": "Audit · one product flow",
+  "tagline": "Finds where people get stuck in a flow.",
+  "ability": "Maps a flow step by step from code, a live app or a spec, then checks it in 11 phases for confusion, friction and drop-off. Every finding has evidence and a fix, ranked by what it costs users.",
+  "flavor": "Findings without remediation are complaints. Findings without evidence are opinions.",
+  "stats": [
+    [
+      "Inputs",
+      "3 modes"
+    ],
+    [
+      "Phases",
+      "11"
+    ],
+    [
+      "Verdicts",
+      "4"
+    ],
+    [
+      "Severities",
+      "5"
+    ]
+  ]
+}

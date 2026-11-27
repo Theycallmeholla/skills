@@ -1,0 +1,15 @@
+{
+  "title": "Cover Story",
+  "category": "ux",
+  "set": "Newcomer test",
+  "type": "Brief · spoiler-free",
+  "tagline": "Says what it is. Never says how it works.",
+  "ability": "Reads everything about your product, then writes the short brief a first-time tester gets: what it is and why it exists, nothing on how. A sealed envelope keeps what it held back.",
+  "flavor": "The discipline isn't in what you consume; it's entirely in what you emit.",
+  "stats": [
+    ["Levels", "3"],
+    ["Default", "Level 2"],
+    ["Leak checks", "5"],
+    ["Files out", "2"]
+  ]
+}

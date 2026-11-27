@@ -1,0 +1,27 @@
+{
+  "title": "Website Audit",
+  "category": "ux",
+  "set": "Site audit",
+  "type": "Audit · whole site",
+  "tagline": "Crawl a whole site, score it, prove each finding.",
+  "ability": "Crawls a site, reads every screenshot including mobile, and scores it out of 100. Prospect mode hands you evidence for outreach; QA mode gives a ship or don't-ship verdict on a site you built.",
+  "flavor": "A false \"broken\" claim in outreach kills credibility; a false pass in QA ships a bug.",
+  "stats": [
+    [
+      "Modes",
+      "2"
+    ],
+    [
+      "Pages",
+      "~10 or ~30"
+    ],
+    [
+      "Score",
+      "0–100, A–F"
+    ],
+    [
+      "Out",
+      "Packet or gate"
+    ]
+  ]
+}

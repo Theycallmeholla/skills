@@ -1,0 +1,15 @@
+{
+  "title": "Nick Saban",
+  "category": "meta",
+  "set": "Harness ops",
+  "type": "System · Claude Code setup",
+  "tagline": "Builds, scores and enforces your Claude setup.",
+  "ability": "Scaffolds or scores a repo's Claude Code setup, then moves each rule to the lowest rung that holds: prose, rule, skill, hook, permission, CI or test. A finding closes only when a later check sees it gone.",
+  "flavor": "Prose is cheap to write and easy to ignore. A failing test cannot be ignored.",
+  "stats": [
+    ["Commands", "8"],
+    ["Ladder rungs", "7"],
+    ["Detectors", "22"],
+    ["Categories", "6"]
+  ]
+}

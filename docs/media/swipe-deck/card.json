@@ -1,0 +1,27 @@
+{
+  "title": "Swipe Deck",
+  "category": "discovery",
+  "type": "Interview · swipe to answer",
+  "ability": "Turns a vague idea into a 70 to 110 card deck. You swipe yes, no, absolutely or not sure until the signal meter fills, then it writes the brief.",
+  "flavor": "A ‘no’ is worth as much as a ‘yes.’",
+  "stats": [
+    [
+      "Cards",
+      "70–110"
+    ],
+    [
+      "Swipes",
+      "4 ways"
+    ],
+    [
+      "Stops at",
+      "Meter full"
+    ],
+    [
+      "Out",
+      "Brief"
+    ]
+  ],
+  "set": "Requirements",
+  "tagline": "Swipe until it knows what you actually want."
+}

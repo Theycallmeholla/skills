@@ -1,0 +1,35 @@
+{
+  "title": "Slop Scan",
+  "category": "ux",
+  "set": "Visual audit",
+  "type": "Audit · rendered site",
+  "tagline": "Spots the AI-generated look, then strips it out.",
+  "ability": "Renders the page, measures every visual AI fingerprint, and gives a verdict from strong to few. Then, only when you say go, removes the fingerprints without swapping in the next cliché.",
+  "flavor": "One tell alone is a trend. The AI look is several landing together.",
+  "stats": [
+    [
+      "In",
+      "URL or folder"
+    ],
+    [
+      "Big tells",
+      "9"
+    ],
+    [
+      "Verdicts",
+      "3"
+    ],
+    [
+      "Out",
+      "Fix order"
+    ]
+  ],
+  "palette": {
+    "panel": "#2B1A10",
+    "accent": "#F2A03D",
+    "tint": "#F4E3D3"
+  },
+  "illustration": {
+    "art": "illustration-pig.webp"
+  }
+}

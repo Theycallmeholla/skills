@@ -1,0 +1,15 @@
+{
+  "title": "Open SaysAI",
+  "category": "ux",
+  "set": "AI visibility",
+  "type": "Audit · AI search & answers",
+  "tagline": "Can AI answer engines reach, use and cite you?",
+  "ability": "Checks whether AI search crawlers can reach a site, whether its pages are worth citing, and what original information would earn citations. Never guarantees rankings; unproven states stay Unknown.",
+  "flavor": "Treat AI visibility as a retrieval and source-selection problem, not a magic ranking system.",
+  "stats": [
+    ["In", "URL or domain"],
+    ["Modes", "7"],
+    ["Priorities", "4"],
+    ["Out", "JSON packet"]
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "title": "Agent Smiths",
+  "category": "meta",
+  "set": "Parallel work",
+  "type": "Planner · split and land",
+  "tagline": "Splits a plan so parallel agents never collide",
+  "ability": "Splits a plan into agent lanes by which files each task writes and gives each lane a ready-to-launch brief. After the run, checks nobody left their lane. Sometimes the answer is: run it in one go.",
+  "flavor": "Parallelism is a property of write-sets, not tasks.",
+  "stats": [
+    [
+      "Commands",
+      "2"
+    ],
+    [
+      "Max lanes",
+      "5"
+    ],
+    [
+      "Verdicts",
+      "3"
+    ],
+    [
+      "State",
+      "1 per plan"
+    ]
+  ]
+}
