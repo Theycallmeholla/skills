@@ -1,27 +1,17 @@
-name: Generate skill card pilot
+name: Generate remaining skill artwork
 
 on:
   workflow_dispatch:
     inputs:
-      mode:
-        description: Plan only (free) or generate three pilot illustrations
-        type: choice
-        required: true
-        default: plan
-        options:
-          - plan
-          - pilot
-      quality:
-        description: Image quality (used only for paid pilot)
-        type: choice
-        required: true
-        default: xhigh
-        options:
-          - high
-          - xhigh
+      resume_run_id:
+        description: Optional previous collection run ID (resume without paying for completed images)
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: skill-card-pilot
@@ -30,7 +20,7 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 120
     steps:
       - name: Check out artwork prompts
         uses: actions/checkout@v4
@@ -43,11 +33,26 @@ jobs:
           python-version: '3.12'
       - name: Install PNG validation dependency
         run: python -m pip install Pillow
-      - name: Validate manifest or generate three standalone PNGs
+      - name: Reuse the three completed pilot illustrations
+        uses: actions/download-artifact@v4
+        with:
+          name: skill-art-pilot
+          path: seed-art
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 46034560940
+      - name: Reuse any completed images from an interrupted collection run
+        if: ${{ inputs.resume_run_id != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: skill-art-collection
+          path: resume-art
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.resume_run_id }}
+      - name: Validate manifest and generate only missing PNG illustrations
         env:
-          OPENAI_API_KEY: ${{ inputs.mode == 'pilot' && secrets.OPENAI_API_KEY || '' }}
-          RUN_MODE: ${{ inputs.mode }}
-          IMAGE_QUALITY: ${{ inputs.quality }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         shell: bash
         run: |
           python - <<'PY'
@@ -56,25 +61,21 @@ jobs:
           import json
           import os
           import re
+          import shutil
           import urllib.error
           import urllib.request
           from pathlib import Path
-          
+
           from PIL import Image
-          
+
           SOURCE = Path("source/docs/media/prompts.json")
           OUT = Path("skill-art")
-          OUT.mkdir(exist_ok=True)
           PILOT = ("code-audit", "slop-scan", "who-let-the-blogs-out")
           MODEL = "gpt-image-2.5-flare"
-          mode = os.environ["RUN_MODE"]
-          quality = os.environ["IMAGE_QUALITY"]
-          if mode not in {"plan", "pilot"} or quality not in {"high", "xhigh"}:
-              raise SystemExit("Invalid run inputs")
-          manifest = json.loads(SOURCE.read_text(encoding="utf-8"))
-          entries = manifest["images"]
+          QUALITY = "xhigh"
+          entries = json.loads(SOURCE.read_text(encoding="utf-8"))["images"]
           if not isinstance(entries, list) or len(entries) != 41:
-              raise SystemExit("Expected 41 artwork entries; review changes before generating.")
+              raise SystemExit("Expected 41 artwork entries; review manifest changes before generating.")
           by_skill = {}
           for entry in entries:
               slug = entry["skill"]
@@ -84,29 +85,80 @@ jobs:
                       or entry["output_format"] != "png" or not entry["prompt"].strip()):
                   raise SystemExit(f"Invalid artwork specification: {slug}")
               by_skill[slug] = entry
-          selected = [by_skill[slug] for slug in PILOT]
-          (OUT / "plan.json").write_text(json.dumps({
-              "mode": mode, "model": MODEL, "quality": quality,
-              "manifest_entries": len(entries), "images": selected,
-          }, indent=2), encoding="utf-8")
-          for entry in selected:
-              print(f'{entry["skill"]}: {entry["file"]}, {entry["size"]}, PNG')
-          if mode == "plan":
-              print("Dry run: 41 entries validated, three pilot prompts selected, zero API requests.")
-              raise SystemExit(0)
-          
+          if not all(slug in by_skill for slug in PILOT):
+              raise SystemExit("Pilot entries missing from manifest")
+
+          def verify_png(raw, slug):
+              with Image.open(io.BytesIO(raw)) as image:
+                  image.load()
+                  if image.format != "PNG" or image.size != (1024, 1536):
+                      raise ValueError(f"Invalid PNG format or dimensions: {slug}")
+
+          def write_json(path, data):
+              tmp = path.with_suffix(".tmp")
+              tmp.write_text(json.dumps(data, indent=2), encoding="utf-8")
+              tmp.replace(path)
+
+          # Validate original prompts and all reusable images BEFORE spending.
+          seed = Path("seed-art")
+          old_plan = json.loads((seed / "plan.json").read_text(encoding="utf-8"))
+          if (old_plan["model"] != MODEL or old_plan["quality"] != QUALITY
+                  or old_plan["images"] != [by_skill[slug] for slug in PILOT]):
+              raise SystemExit("Pilot prompts or generation settings changed; no new requests made.")
+          plan = {"model": MODEL, "quality": QUALITY, "manifest_entries": len(entries),
+                  "images": entries, "pilot_run_id": 46034560940}
+          OUT.mkdir(exist_ok=True)
+          write_json(OUT / "plan.json", plan)
+          usage = {}
+
+          def reuse(folder, slugs, require_all=False):
+              records = json.loads((folder / "usage.json").read_text(encoding="utf-8"))
+              records_by_slug = {record["skill"]: record for record in records}
+              for slug in slugs:
+                  source = folder / by_skill[slug]["file"]
+                  if not source.exists():
+                      if require_all:
+                          raise SystemExit(f"Missing approved pilot image: {slug}")
+                      continue
+                  verify_png(source.read_bytes(), slug)
+                  dest = OUT / source.name
+                  if dest.exists():
+                      if dest.read_bytes() != source.read_bytes():
+                          raise SystemExit(f"Conflicting previously generated PNGs: {slug}")
+                      continue
+                  shutil.copyfile(source, dest)
+                  if slug in records_by_slug:
+                      usage[slug] = records_by_slug[slug]
+                  else:
+                      usage[slug] = {"skill": slug, "model": MODEL,
+                                     "quality": QUALITY, "usage": None}
+                  print(f"Reusing {source.name} (no API charge)", flush=True)
+
+          reuse(seed, PILOT, require_all=True)
+          resume = Path("resume-art")
+          if resume.exists():
+              resume_plan = json.loads((resume / "plan.json").read_text(encoding="utf-8"))
+              if any(resume_plan.get(k) != plan[k] for k in ("model", "quality", "images")):
+                  raise SystemExit("Resume artifact does not match the current collection.")
+              reuse(resume, by_skill)
+
+          write_json(OUT / "usage.json", list(usage.values()))
+          selected = [entry for entry in entries if not (OUT / entry["file"]).exists()]
+          if len(selected) > 38:
+              raise SystemExit("Refusing to generate more than 38 missing illustrations.")
+          print(f"{len(entries) - len(selected)} existing images; {len(selected)} new requests maximum.", flush=True)
           key = os.environ.get("OPENAI_API_KEY")
-          if not key:
+          if selected and not key:
               raise SystemExit("Missing OPENAI_API_KEY repository secret")
-          
-          usage = []
+
           for entry in selected:
-              print(f'Generating {entry["skill"]}', flush=True)
+              slug = entry["skill"]
+              print(f"Generating {slug}", flush=True)
               payload = json.dumps({
                   "model": MODEL,
                   "prompt": entry["prompt"],
                   "size": entry["size"],
-                  "quality": quality,
+                  "quality": QUALITY,
                   "output_format": "png",
                   "n": 1,
               }).encode("utf-8")
@@ -123,24 +175,31 @@ jobs:
                       code = json.load(err).get("error", {}).get("code")
                   except Exception:
                       code = None
-                  raise SystemExit(f'Image request failed: HTTP {err.code}, code={code}') from None
+                  raise SystemExit(f"Image request failed for {slug}: HTTP {err.code}, code={code}. Resume from this run ID.") from None
+              usage[slug] = {"skill": slug, "model": MODEL,
+                             "quality": QUALITY, "usage": result.get("usage")}
+              write_json(OUT / "usage.json", list(usage.values()))
               raw = base64.b64decode(result["data"][0]["b64_json"], validate=True)
-              with Image.open(io.BytesIO(raw)) as image:
-                  image.load()
-                  if image.format != "PNG" or image.size != (1024, 1536):
-                      raise SystemExit(f'Invalid image format or size: {entry["skill"]}')
-              (OUT / entry["file"]).write_bytes(raw)
-              usage.append({"skill": entry["skill"], "model": MODEL,
-                            "quality": quality, "usage": result.get("usage")})
-              (OUT / "usage.json").write_text(json.dumps(usage, indent=2), encoding="utf-8")
-              print(f'Saved {entry["file"]}', flush=True)
-          print("Three standalone PNG illustrations saved. Visual review still required.")
+              verify_png(raw, slug)
+              dest = OUT / entry["file"]
+              tmp = dest.with_suffix(".tmp")
+              tmp.write_bytes(raw)
+              tmp.replace(dest)
+              print(f"Saved {entry['file']}", flush=True)
+
+          actual = {p.name for p in OUT.glob("*.png")}
+          expected = {entry["file"] for entry in entries}
+          if actual != expected:
+              raise SystemExit(f"Missing PNGs: {sorted(expected - actual)}")
+          print("All 41 standalone PNG illustrations available. No cards or SVGs generated.", flush=True)
           PY
-      - name: Upload artwork and generation records
+      - name: Upload collection or partial progress
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: skill-art-pilot
-          path: skill-art/
+          name: skill-art-collection
+          path: |
+            skill-art/*.png
+            skill-art/*.json
           if-no-files-found: warn
           retention-days: 14
