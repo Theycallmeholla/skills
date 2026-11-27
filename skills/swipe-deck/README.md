@@ -36,7 +36,7 @@ flowchart LR
     B --> C["Write 70–110 cards<br/>with a guess for each"]
     C --> D(("You swipe"))
     D -->|deck reshapes| D
-    D -->|meter full or<br/>'That's enough'| E["Brief"]
+    D -->|meter full, or you stop| E["Brief"]
     E --> F{"Go ahead?"}
 
     classDef step fill:#E9E3FB,stroke:#1D1A16,color:#1D1A16
@@ -101,4 +101,4 @@ It then stops and asks before building anything.
 
 ---
 
-<sub><a href="../../README.md#skill-index">← All 41 skills</a> · <a href="SKILL.md">Read the SKILL.md</a></sub>
+<sub><a href="../../README.md#skill-index">← All skills</a> · <a href="SKILL.md">Read the SKILL.md</a></sub>

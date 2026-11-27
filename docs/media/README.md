@@ -22,10 +22,11 @@ python3 scripts/build_skill_cards.py  # all skills, or name some: ... code-audit
 
 ## card.json
 
+The card number and set size come from the skill's position in the main README index.
+
 | Field | What it is |
 |---|---|
 | `title` | Skill name as it should read on the card |
-| `no`, `of` | Card number: the skill's position in the README index, and the total |
 | `category` | `discovery`, `code`, `ux`, `docs`, `content` or `meta`; sets the frame colour |
 | `type` | The type line, e.g. `Audit · whole repository` |
 | `ability` | The TL;DR, max four lines on the card |

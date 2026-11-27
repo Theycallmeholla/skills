@@ -95,6 +95,9 @@ contents (more files / newer material); when in doubt, prefer the Mac copy and n
      (`cat >> /tmp/skillsync.b64 <<'EOF' ...`), then
      `base64 -d -i /tmp/skillsync.b64 | tar xz -C /Users/cursivemedia/skills/skills/` and
      verify file counts match the source.
+   - A repo skill folder may hold a `README.md` (its GitHub page, images under
+     `docs/media/<name>/`). It exists only in the repo; never delete or overwrite it when
+     copying a skill in.
 5. **Existing-but-changed skills**: if a repo skill's `SKILL.md` differs from the source
    copy (diff them), do NOT silently overwrite — list the changed skills in the report and
    update only if the user approves (or if the session was told in advance to take source

@@ -142,8 +142,19 @@ def t(x, y, s, family, size, fill=INK, anchor="start", spacing=0, extra=""):
             f' text-anchor="{anchor}"{ls}{extra}>{escape(s)}</text>')
 
 
+def index_order():
+    """Skill names in the order of the main README's skill index."""
+    text = (ROOT / "README.md").read_text()
+    section = text.split("## Skill index", 1)[1].split("\n## ", 1)[0]
+    return re.findall(r"^- \*\*([a-z0-9-]+)\*\*", section, re.M)
+
+
 def build_card(skill_dir):
     data = json.loads((skill_dir / "card.json").read_text())
+    order = index_order()
+    if skill_dir.name not in order:
+        raise SystemExit(f"{skill_dir.name}: not in the README skill index")
+    data["no"], data["of"] = order.index(skill_dir.name) + 1, len(order)
     cat_label, frame, tint = CATEGORIES[data["category"]]
     art_path = skill_dir / "art.svg"
     art = strip_svg_wrapper(art_path.read_text()) if art_path.exists() else ""

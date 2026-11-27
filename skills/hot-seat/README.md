@@ -34,7 +34,7 @@ flowchart LR
     P["Your plan"] --> Q["One question<br/>+ Claude's pick"]
     Q --> A(("You answer"))
     A -->|still open decisions| Q
-    A -->|"two 'whatever you think's"| R["Recommend-and-confirm<br/>all remaining picks, one yes"]
+    A -->|you stop deciding| R["Recommend-and-confirm<br/>all remaining picks, one yes"]
     A -->|could state the whole plan| T{"Is this the<br/>shared picture?"}
     R --> T
     T -->|yes| L["Decision log"]
@@ -78,4 +78,4 @@ One line per decision, with the reason. Any line that's hard to reverse and a re
 
 ---
 
-<sub><a href="../../README.md#skill-index">← All 41 skills</a> · <a href="SKILL.md">Read the SKILL.md</a></sub>
+<sub><a href="../../README.md#skill-index">← All skills</a> · <a href="SKILL.md">Read the SKILL.md</a></sub>

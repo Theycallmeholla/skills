@@ -101,8 +101,8 @@ dirs_differ() {
     [[ ! -d "$dir1" ]] && return 0
     [[ ! -d "$dir2" ]] && return 0
 
-    # Compare contents excluding hidden files
-    if ! diff -rq --exclude=".*" "$dir1" "$dir2" >/dev/null 2>&1; then
+    # Compare contents excluding hidden files and README.md, the repo-only GitHub page
+    if ! diff -rq --exclude=".*" --exclude="README.md" "$dir1" "$dir2" >/dev/null 2>&1; then
         return 0
     fi
 
@@ -212,7 +212,7 @@ TARBALL="/tmp/skills-push-${TIMESTAMP}.tar.gz"
 echo -e "${BOLD}Creating tarball for Claude app upload...${RESET}"
 (
     cd "$REPO_DIR/skills"
-    tar czf "$TARBALL" \
+    tar czf "$TARBALL" --exclude="README.md" \
         ${NEW_SKILLS[@]+"${NEW_SKILLS[@]}"} \
         ${CHANGED_SKILLS[@]+"${CHANGED_SKILLS[@]}"} 2>/dev/null
 )
@@ -228,6 +228,7 @@ if [[ "$APPLY" == true ]]; then
     for skill in "${NEW_SKILLS[@]}"; do
         echo -e "  ${GREEN}+ Adding $skill${RESET}"
         cp -R "$REPO_DIR/skills/$skill" "$LOCAL_DIR/"
+        rm -f "$LOCAL_DIR/$skill/README.md"  # repo-only GitHub page
     done
 
     # Update CHANGED skills
@@ -248,6 +249,7 @@ if [[ "$APPLY" == true ]]; then
 
         rm -rf "${LOCAL_DIR:?}/${skill:?}"
         cp -R "$REPO_DIR/skills/$skill" "$LOCAL_DIR/"
+        rm -f "$LOCAL_DIR/$skill/README.md"  # repo-only GitHub page
 
         while IFS= read -r rel; do
             [[ -n "$rel" ]] || continue

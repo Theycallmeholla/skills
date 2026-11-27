@@ -14,8 +14,8 @@
   <g transform="rotate(-2 140 130)">
     <rect x="36" y="84" width="230" height="74" fill="#FFF4C2" stroke="#1D1A16" stroke-width="2"/>
     <text x="50" y="108" font-family="Display700" font-size="14" fill="#1D1A16" letter-spacing="2">LOOKED UP, NOT ASKED</text>
-    <text x="50" y="130" font-family="Body400" font-size="14" fill="#1D1A16">Framework, payment provider:</text>
-    <text x="50" y="148" font-family="Body400" font-size="14" fill="#1D1A16">read from package.json</text>
+    <text x="50" y="130" font-family="Body400" font-size="14" fill="#1D1A16">Framework, and that Redis is</text>
+    <text x="50" y="148" font-family="Body400" font-size="14" fill="#1D1A16">already running: read the repo</text>
   </g>
 
   <!-- Q1 -->
