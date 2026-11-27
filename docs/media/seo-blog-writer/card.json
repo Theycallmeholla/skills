@@ -7,9 +7,22 @@
   "ability": "Studies what ranks, commits to every question the searcher has, verifies each claim, and drafts under the author's own stance. The draft arrives scored for quality and AI tells. Nothing first-hand is invented.",
   "flavor": "The brief is the cheap thing to reject before an expensive draft exists.",
   "stats": [
-    ["Steps", "5"],
-    ["Scores", "2, unblended"],
-    ["Stops at", "The brief"],
-    ["Depth", "Questions"]
-  ]
+    [
+      "Steps",
+      "5"
+    ],
+    [
+      "Scores",
+      "2, unblended"
+    ],
+    [
+      "Stops at",
+      "The brief"
+    ],
+    [
+      "Depth",
+      "Questions"
+    ]
+  ],
+  "parent": "who-let-the-blogs-out"
 }

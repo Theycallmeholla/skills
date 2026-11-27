@@ -3,6 +3,12 @@
   <img src="../../docs/media/whiteboard/back.svg" alt="Whiteboard card back: breaks a big idea into one-decision tickets on GitHub Issues, works the ones that need nobody back-to-back, and stops only when you are the blocker. Snapshots it into a spec or handoff when nothing is left to decide" width="48%">
 </p>
 
+<!-- skill-family:start -->
+**The family:** these skills are parts of this one, each also installable on its own.
+
+<p><a href="../../skills/whiteboard-help/"><img src="../../docs/media/whiteboard-help/thumb.svg" width="140" align="top" alt="Whiteboard Help"></a></p>
+<!-- skill-family:end -->
+
 > **TL;DR:** For an idea too big for one session, Claude puts every open decision on a GitHub Issues board as its own ticket, works the ones that don't need you, and stops with a short note when one does. Once nothing is left to decide, say "snapshot the board" and it writes it all up as a spec, decision record or handoff.
 
 ## Say this

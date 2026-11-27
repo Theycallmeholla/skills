@@ -455,14 +455,47 @@ GALLERY_END = "<!-- skill-gallery:end -->"
 GALLERY_COLS, GALLERY_W = 4, 180
 
 
+def _card(name):
+    path = MEDIA / name / "card.json"
+    return json.loads(path.read_text()) if path.exists() else {}
+
+
+def families():
+    """Index order plus {parent: [children]} from each card.json's optional "parent"."""
+    order = index_order()
+    kids = {}
+    for name in order:
+        parent = _card(name).get("parent")
+        if parent:
+            if parent not in order:
+                raise SystemExit(f"{name}: parent '{parent}' is not a skill in the README index")
+            kids.setdefault(parent, []).append(name)
+    return order, kids
+
+
+def _thumb(name, width, href_prefix="", src_prefix=""):
+    src = f"{src_prefix}docs/media/{name}/thumb.svg"
+    if not (MEDIA / name / "thumb.svg").exists():
+        src = f"{src_prefix}docs/media/{name}/front.svg"
+    title = escape(_card(name).get("title", name))
+    return (f'<a href="{href_prefix}skills/{name}/"><img src="{src}" width="{width}" '
+            f'align="top" alt="{title}"></a>')
+
+
 def write_gallery():
-    """Staggered card wall in the root README, between the gallery markers, in index order."""
+    """Staggered card wall in the root README, between the gallery markers, in index order.
+
+    Skills with a "parent" don't get their own slot: they sit under the parent card as
+    half-size cards, two to a row.
+    """
     readme = ROOT / "README.md"
     text = readme.read_text()
     if GALLERY_START not in text or GALLERY_END not in text:
         return False
+    order, kids = families()
+    tops = [n for n in order if not _card(n).get("parent")]
     columns = [[] for _ in range(GALLERY_COLS)]
-    for i, name in enumerate(index_order()):
+    for i, name in enumerate(tops):
         columns[i % GALLERY_COLS].append(name)
     cells = []
     for c, names in enumerate(columns):
@@ -471,13 +504,10 @@ def write_gallery():
             parts.append(f'<img src="docs/media/_spacer.svg" width="{GALLERY_W}" '
                          f'height="{GALLERY_W * 3 // 4}" align="top" alt="">')
         for name in names:
-            card = MEDIA / name / "card.json"
-            title = json.loads(card.read_text())["title"] if card.exists() else name
-            src = f"docs/media/{name}/thumb.svg"
-            if not (MEDIA / name / "thumb.svg").exists():
-                src = f"docs/media/{name}/front.svg"
-            parts.append(f'<a href="skills/{name}/"><img src="{src}" width="{GALLERY_W}" '
-                         f'align="top" alt="{escape(title)}"></a>')
+            parts.append(_thumb(name, GALLERY_W))
+            children = kids.get(name, [])
+            for i in range(0, len(children), 2):
+                parts.append("".join(_thumb(k, GALLERY_W // 2) for k in children[i:i + 2]))
         # align=top + <br> with no whitespace stacks cards flush (measured on github.com);
         # GitHub's own table-cell padding sets the column gap.
         cells.append('<td valign="top" align="center">' + "<br>".join(parts) + "</td>")
@@ -488,6 +518,41 @@ def write_gallery():
     if new != text:
         readme.write_text(new)
     return True
+
+
+FAMILY_START = "<!-- skill-family:start -->"
+FAMILY_END = "<!-- skill-family:end -->"
+
+
+def write_families():
+    """Fill the family block in each skill README that has the markers."""
+    order, kids = families()
+    changed = []
+    for name in order:
+        readme = ROOT / "skills" / name / "README.md"
+        if not readme.exists():
+            continue
+        text = readme.read_text()
+        if FAMILY_START not in text or FAMILY_END not in text:
+            continue
+        parent = _card(name).get("parent")
+        if parent:
+            ptitle = _card(parent).get("title", parent)
+            body = (f"> **Part of [{ptitle}](../{parent}/).** It works alongside {ptitle} "
+                    "and can also be installed on its own.")
+        elif kids.get(name):
+            cards = "".join(_thumb(k, 140, "../../", "../../") for k in kids[name])
+            body = ("**The family:** these skills are parts of this one, each also installable "
+                    f"on its own.\n\n<p>{cards}</p>")
+        else:
+            body = ""
+        block = f"{FAMILY_START}\n{body}\n{FAMILY_END}" if body else f"{FAMILY_START}\n{FAMILY_END}"
+        start, end = text.index(FAMILY_START), text.index(FAMILY_END) + len(FAMILY_END)
+        new = text[:start] + block + text[end:]
+        if new != text:
+            readme.write_text(new)
+            changed.append(name)
+    return changed
 
 
 def main(argv):
@@ -501,6 +566,8 @@ def main(argv):
             print(f"{path.relative_to(ROOT)}  {path.stat().st_size // 1024} KB")
     if write_gallery():
         print("README.md gallery updated")
+    for name in write_families():
+        print(f"skills/{name}/README.md family block updated")
 
 
 if __name__ == "__main__":

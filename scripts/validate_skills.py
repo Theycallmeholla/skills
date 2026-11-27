@@ -193,6 +193,9 @@ def check_pages(root, skills):
                 missing = [k for k in CARD_KEYS if not data.get(k)]
                 if missing:
                     err(name, f"card.json missing: {', '.join(missing)}")
+                parent = data.get("parent")
+                if parent and parent not in skills:
+                    err(name, f"card.json parent '{parent}' is not a skill in this repo")
         if name not in prompted:
             err(name, "no entry in docs/media/prompts.json (its card art prompt)")
     for stale in sorted(prompted - skills):
