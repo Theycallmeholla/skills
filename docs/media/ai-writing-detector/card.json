@@ -7,9 +7,24 @@
   "ability": "A script counts the mechanical tells, then Claude reads for stance, specifics and author value. You get a 0-100 score, quoted evidence and fixes ranked by points recovered. Never an authorship verdict.",
   "flavor": "The fix is more of the author, never a manufactured disagreement.",
   "stats": [
-    ["In", "Text or URL"],
-    ["Score", "0-100"],
-    ["Categories", "5"],
-    ["Out", "Ranked fixes"]
-  ]
+    [
+      "In",
+      "Text or URL"
+    ],
+    [
+      "Score",
+      "0-100"
+    ],
+    [
+      "Categories",
+      "5"
+    ],
+    [
+      "Out",
+      "Ranked fixes"
+    ]
+  ],
+  "illustration": {
+    "art": "illustration-v2.webp"
+  }
 }
