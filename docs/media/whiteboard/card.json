@@ -7,9 +7,24 @@
   "ability": "Breaks a big idea into one-decision tickets on GitHub Issues, works the ones that need nobody back-to-back, and stops only when you are the blocker. Snapshots it into a spec or handoff when nothing is left to decide.",
   "flavor": "The whiteboard is for planning. It does not build.",
   "stats": [
-    ["Modes", "4"],
-    ["Ticket types", "4"],
-    ["Hard rules", "7"],
-    ["Lives on", "GitHub Issues"]
-  ]
+    [
+      "Modes",
+      "4"
+    ],
+    [
+      "Ticket types",
+      "4"
+    ],
+    [
+      "Hard rules",
+      "7"
+    ],
+    [
+      "Lives on",
+      "GitHub Issues"
+    ]
+  ],
+  "illustration": {
+    "art": "illustration-v2.webp"
+  }
 }

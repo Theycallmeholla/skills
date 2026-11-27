@@ -43,7 +43,7 @@ python3 scripts/build_skill_cards.py  # all skills, or name some: ... slop-scan 
 
 ## card.json
 
-The card number comes from the skill's position in the main README index.
+Card numbers count the main skills in README index order (01, 02, ...); a sub-skill takes its parent's number plus a letter (05a, 05b, ...).
 
 | Field | What it is |
 |---|---|
