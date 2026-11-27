@@ -12,16 +12,6 @@ skills:
       status: adapted
       body_mode: replace
       overlay: platforms/chatgpt.md
-  skills-repo-push:
-    chatgpt:
-      status: adapted
-      body_mode: replace
-      overlay: platforms/chatgpt.md
-  skills-repo-sync:
-    chatgpt:
-      status: adapted
-      body_mode: replace
-      overlay: platforms/chatgpt.md
   whiteboard:
     chatgpt:
       status: adapted

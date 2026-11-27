@@ -1,12 +1,12 @@
 # Skills
 
 [![Validate skills](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml/badge.svg)](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml)
-[![Skills](https://img.shields.io/badge/skills-40-6f42c1)](#skill-index)
+[![Skills](https://img.shields.io/badge/skills-37-6f42c1)](#skill-index)
 [![Spec](https://img.shields.io/badge/spec-Agent%20Skills-0b7285)](#authoring-a-skill)
 [![CI](https://img.shields.io/badge/CI-validator%20%2B%20secret%20scan%20%2B%20shellcheck%20%2B%20playwright-2b8a3e)](#continuous-integration)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-**40 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
+**37 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
 UX and conversion reviews, requirements interviews, documentation generation, content production,
 and the meta-work of building and maintaining skills themselves.
 
@@ -17,7 +17,7 @@ at a time.
 
 | | |
 |---|---|
-| **Skills** | 40 |
+| **Skills** | 37 |
 | **Bundled reference files** | 80 |
 | **Templates & assets** | 8 |
 | **Executable scripts** | 21 (12 shell, 8 Python, 1 Node) |
@@ -34,10 +34,10 @@ Every skill is a card. Click one to open its page.
 <!-- skill-gallery:start -->
 <table>
 <tr>
-<td valign="top" align="center"><a href="skills/code-audit/"><img src="docs/media/code-audit/thumb.svg" width="180" align="top" alt="Code Audit"></a><br><a href="skills/swipe-deck/"><img src="docs/media/swipe-deck/thumb.svg" width="180" align="top" alt="Swipe Deck"></a><br><a href="skills/whiteboard/"><img src="docs/media/whiteboard/thumb.svg" width="180" align="top" alt="Whiteboard"></a><br><a href="skills/website-audit/"><img src="docs/media/website-audit/thumb.svg" width="180" align="top" alt="Website Audit"></a><br><a href="skills/conversion-audit/"><img src="docs/media/conversion-audit/thumb.svg" width="180" align="top" alt="Conversion Audit"></a><br><a href="skills/gap-scan/"><img src="docs/media/gap-scan/thumb.svg" width="180" align="top" alt="Gap Scan"></a><br><a href="skills/eli5-features/"><img src="docs/media/eli5-features/thumb.svg" width="180" align="top" alt="ELI5 Features"></a><br><a href="skills/ai-writing-detector/"><img src="docs/media/ai-writing-detector/thumb.svg" width="180" align="top" alt="AI Writing Detector"></a><br><a href="skills/genie-proof-prompts/"><img src="docs/media/genie-proof-prompts/thumb.svg" width="180" align="top" alt="Genie-Proof Prompts"></a><br><a href="skills/cross-exam/"><img src="docs/media/cross-exam/thumb.svg" width="180" align="top" alt="Cross-Exam"></a></td>
-<td valign="top" align="center"><img src="docs/media/_spacer.svg" width="180" height="135" align="top" alt=""><br><a href="skills/test-assessment/"><img src="docs/media/test-assessment/thumb.svg" width="180" align="top" alt="Test Assessment"></a><br><a href="skills/hot-seat/"><img src="docs/media/hot-seat/thumb.svg" width="180" align="top" alt="Hot Seat"></a><br><a href="skills/whiteboard-help/"><img src="docs/media/whiteboard-help/thumb.svg" width="180" align="top" alt="Whiteboard Help"></a><br><a href="skills/ux-audit/"><img src="docs/media/ux-audit/thumb.svg" width="180" align="top" alt="UX Audit"></a><br><a href="skills/fresh-eyes/"><img src="docs/media/fresh-eyes/thumb.svg" width="180" align="top" alt="Fresh Eyes"></a><br><a href="skills/open-saysai/"><img src="docs/media/open-saysai/thumb.svg" width="180" align="top" alt="Open SaysAI"></a><br><a href="skills/walkthrough-gif/"><img src="docs/media/walkthrough-gif/thumb.svg" width="180" align="top" alt="Walkthrough GIF"></a><br><a href="skills/case-study-builder/"><img src="docs/media/case-study-builder/thumb.svg" width="180" align="top" alt="Case Study Builder"></a><br><a href="skills/handoff/"><img src="docs/media/handoff/thumb.svg" width="180" align="top" alt="Handoff"></a><br><a href="skills/agent-smiths/"><img src="docs/media/agent-smiths/thumb.svg" width="180" align="top" alt="Agent Smiths"></a></td>
-<td valign="top" align="center"><a href="skills/test-suggest/"><img src="docs/media/test-suggest/thumb.svg" width="180" align="top" alt="Test Suggest"></a><br><a href="skills/napkin/"><img src="docs/media/napkin/thumb.svg" width="180" align="top" alt="Napkin"></a><br><a href="skills/blog-topic-interview/"><img src="docs/media/blog-topic-interview/thumb.svg" width="180" align="top" alt="Blog Topic Interview"></a><br><a href="skills/ui-oddity-scan/"><img src="docs/media/ui-oddity-scan/thumb.svg" width="180" align="top" alt="UI Oddity Scan"></a><br><a href="skills/cover-story/"><img src="docs/media/cover-story/thumb.svg" width="180" align="top" alt="Cover Story"></a><br><a href="skills/what-next/"><img src="docs/media/what-next/thumb.svg" width="180" align="top" alt="What Next"></a><br><a href="skills/who-let-the-blogs-out/"><img src="docs/media/who-let-the-blogs-out/thumb.svg" width="180" align="top" alt="Who Let The Blogs Out"></a><br><a href="skills/nick-saban/"><img src="docs/media/nick-saban/thumb.svg" width="180" align="top" alt="Nick Saban"></a><br><a href="skills/elihadhd/"><img src="docs/media/elihadhd/thumb.svg" width="180" align="top" alt="ELIHADHD"></a><br><a href="skills/skills-repo-sync/"><img src="docs/media/skills-repo-sync/thumb.svg" width="180" align="top" alt="Skills Repo Sync"></a></td>
-<td valign="top" align="center"><img src="docs/media/_spacer.svg" width="180" height="135" align="top" alt=""><br><a href="skills/prove-it/"><img src="docs/media/prove-it/thumb.svg" width="180" align="top" alt="Prove It"></a><br><a href="skills/connotation-cop/"><img src="docs/media/connotation-cop/thumb.svg" width="180" align="top" alt="Connotation Cop"></a><br><a href="skills/what-would-bezos-do/"><img src="docs/media/what-would-bezos-do/thumb.svg" width="180" align="top" alt="What Would Bezos Do"></a><br><a href="skills/slop-scan/"><img src="docs/media/slop-scan/thumb.svg" width="180" align="top" alt="Slop Scan"></a><br><a href="skills/secret-shopper/"><img src="docs/media/secret-shopper/thumb.svg" width="180" align="top" alt="Secret Shopper"></a><br><a href="skills/teach/"><img src="docs/media/teach/thumb.svg" width="180" align="top" alt="Teach"></a><br><a href="skills/seo-blog-writer/"><img src="docs/media/seo-blog-writer/thumb.svg" width="180" align="top" alt="SEO Blog Writer"></a><br><a href="skills/skill-system-architect/"><img src="docs/media/skill-system-architect/thumb.svg" width="180" align="top" alt="Skill System Architect"></a><br><a href="skills/cowork-with-codex/"><img src="docs/media/cowork-with-codex/thumb.svg" width="180" align="top" alt="Cowork With Codex"></a><br><a href="skills/skills-repo-push/"><img src="docs/media/skills-repo-push/thumb.svg" width="180" align="top" alt="Skills Repo Push"></a></td>
+<td valign="top" align="center"><a href="skills/code-audit/"><img src="docs/media/code-audit/thumb.svg" width="180" align="top" alt="Code Audit"></a><br><a href="skills/swipe-deck/"><img src="docs/media/swipe-deck/thumb.svg" width="180" align="top" alt="Swipe Deck"></a><br><a href="skills/whiteboard/"><img src="docs/media/whiteboard/thumb.svg" width="180" align="top" alt="Whiteboard"></a><br><a href="skills/website-audit/"><img src="docs/media/website-audit/thumb.svg" width="180" align="top" alt="Website Audit"></a><br><a href="skills/conversion-audit/"><img src="docs/media/conversion-audit/thumb.svg" width="180" align="top" alt="Conversion Audit"></a><br><a href="skills/gap-scan/"><img src="docs/media/gap-scan/thumb.svg" width="180" align="top" alt="Gap Scan"></a><br><a href="skills/eli5-features/"><img src="docs/media/eli5-features/thumb.svg" width="180" align="top" alt="ELI5 Features"></a><br><a href="skills/ai-writing-detector/"><img src="docs/media/ai-writing-detector/thumb.svg" width="180" align="top" alt="AI Writing Detector"></a><br><a href="skills/handoff/"><img src="docs/media/handoff/thumb.svg" width="180" align="top" alt="Handoff"></a><br><a href="skills/agent-smiths/"><img src="docs/media/agent-smiths/thumb.svg" width="180" align="top" alt="Agent Smiths"></a></td>
+<td valign="top" align="center"><img src="docs/media/_spacer.svg" width="180" height="135" align="top" alt=""><br><a href="skills/test-assessment/"><img src="docs/media/test-assessment/thumb.svg" width="180" align="top" alt="Test Assessment"></a><br><a href="skills/hot-seat/"><img src="docs/media/hot-seat/thumb.svg" width="180" align="top" alt="Hot Seat"></a><br><a href="skills/whiteboard-help/"><img src="docs/media/whiteboard-help/thumb.svg" width="180" align="top" alt="Whiteboard Help"></a><br><a href="skills/ux-audit/"><img src="docs/media/ux-audit/thumb.svg" width="180" align="top" alt="UX Audit"></a><br><a href="skills/fresh-eyes/"><img src="docs/media/fresh-eyes/thumb.svg" width="180" align="top" alt="Fresh Eyes"></a><br><a href="skills/open-saysai/"><img src="docs/media/open-saysai/thumb.svg" width="180" align="top" alt="Open SaysAI"></a><br><a href="skills/walkthrough-gif/"><img src="docs/media/walkthrough-gif/thumb.svg" width="180" align="top" alt="Walkthrough GIF"></a><br><a href="skills/case-study-builder/"><img src="docs/media/case-study-builder/thumb.svg" width="180" align="top" alt="Case Study Builder"></a><br><a href="skills/elihadhd/"><img src="docs/media/elihadhd/thumb.svg" width="180" align="top" alt="ELIHADHD"></a></td>
+<td valign="top" align="center"><a href="skills/test-suggest/"><img src="docs/media/test-suggest/thumb.svg" width="180" align="top" alt="Test Suggest"></a><br><a href="skills/napkin/"><img src="docs/media/napkin/thumb.svg" width="180" align="top" alt="Napkin"></a><br><a href="skills/blog-topic-interview/"><img src="docs/media/blog-topic-interview/thumb.svg" width="180" align="top" alt="Blog Topic Interview"></a><br><a href="skills/ui-oddity-scan/"><img src="docs/media/ui-oddity-scan/thumb.svg" width="180" align="top" alt="UI Oddity Scan"></a><br><a href="skills/cover-story/"><img src="docs/media/cover-story/thumb.svg" width="180" align="top" alt="Cover Story"></a><br><a href="skills/what-next/"><img src="docs/media/what-next/thumb.svg" width="180" align="top" alt="What Next"></a><br><a href="skills/who-let-the-blogs-out/"><img src="docs/media/who-let-the-blogs-out/thumb.svg" width="180" align="top" alt="Who Let The Blogs Out"></a><br><a href="skills/nick-saban/"><img src="docs/media/nick-saban/thumb.svg" width="180" align="top" alt="Nick Saban"></a><br><a href="skills/cowork-with-codex/"><img src="docs/media/cowork-with-codex/thumb.svg" width="180" align="top" alt="Cowork With Codex"></a></td>
+<td valign="top" align="center"><img src="docs/media/_spacer.svg" width="180" height="135" align="top" alt=""><br><a href="skills/prove-it/"><img src="docs/media/prove-it/thumb.svg" width="180" align="top" alt="Prove It"></a><br><a href="skills/connotation-cop/"><img src="docs/media/connotation-cop/thumb.svg" width="180" align="top" alt="Connotation Cop"></a><br><a href="skills/what-would-bezos-do/"><img src="docs/media/what-would-bezos-do/thumb.svg" width="180" align="top" alt="What Would Bezos Do"></a><br><a href="skills/slop-scan/"><img src="docs/media/slop-scan/thumb.svg" width="180" align="top" alt="Slop Scan"></a><br><a href="skills/secret-shopper/"><img src="docs/media/secret-shopper/thumb.svg" width="180" align="top" alt="Secret Shopper"></a><br><a href="skills/teach/"><img src="docs/media/teach/thumb.svg" width="180" align="top" alt="Teach"></a><br><a href="skills/seo-blog-writer/"><img src="docs/media/seo-blog-writer/thumb.svg" width="180" align="top" alt="SEO Blog Writer"></a><br><a href="skills/genie-proof-prompts/"><img src="docs/media/genie-proof-prompts/thumb.svg" width="180" align="top" alt="Genie-Proof Prompts"></a><br><a href="skills/cross-exam/"><img src="docs/media/cross-exam/thumb.svg" width="180" align="top" alt="Cross-Exam"></a></td>
 </tr>
 </table>
 <!-- skill-gallery:end -->
@@ -108,12 +108,9 @@ flowchart LR
 
     subgraph META["🛠️ Prompting, workflow & repo ops"]
         NS[nick-saban]
-        SSA[skill-system-architect]
         GPP[genie-proof-prompts]
         HO[handoff]
         EA[elihadhd]
-        SRS[skills-repo-sync]
-        SRP[skills-repo-push]
         CX[cross-exam]
         AS[agent-smiths]
     end
@@ -141,10 +138,8 @@ flowchart LR
     WLT -.supersedes.-> SEO
     WLT -.supersedes.-> AID
 
-    NS -.->|skill stubs| SSA
     WB -->|snapshot plan| AS
     HO -->|handoff doc| AS
-    SRS <-->|two-way sync| SRP
 
     classDef disc fill:#f3e8ff,stroke:#7c3aed,color:#111
     classDef code fill:#e0f2fe,stroke:#0369a1,color:#111
@@ -157,7 +152,7 @@ flowchart LR
     class WA,UX1,UO,CV,FE,CS,SS ux
     class TE,EL,WG doc
     class WLT,BTI,SEO,AID,CSB cont
-    class NS,SSA,GPP,HO,EA,SRS,SRP,CX,AS meta
+    class NS,GPP,HO,EA,CX,AS meta
 ```
 
 Solid arrows are real handoffs — one skill produces an artifact another consumes. Dashed arrows are
@@ -174,25 +169,13 @@ git clone https://github.com/Theycallmeholla/skills.git
 cp -R skills/skills/code-audit ~/.claude/skills/
 ```
 
-**Claude Code — the whole repo, safely**
+**Claude Code — several skills**
 
-Use the `skills-repo-push` skill. It dry-runs first, classifies every skill `NEW` / `CHANGED` /
-`IDENTICAL`, backs up what it replaces, leaves local-only skills alone, and preserves accumulated
-local state files (opinion banks, `state.json`) instead of overwriting them.
-
-```
-push skills out              # dry run — shows the diff, writes nothing
-push skills out --apply      # writes, after backing up to /tmp
-```
+Clone the repo once and copy whichever skill folders you want into `~/.claude/skills/`.
 
 **Claude app (Cowork)**
 
-Upload a skill folder directly, or let `skills-repo-push` build the tarball for you at
-`/tmp/skills-push-<timestamp>.tar.gz` containing only what actually changed.
-
-**Going the other way** — `skills-repo-sync` finds custom skills on your machine that are missing
-from this repo, copies them in, updates this README's index, scans for secrets, and asks before
-every addition and before the push.
+Upload a skill folder directly.
 
 **Invoking a skill** — most fire from natural language, since the `description` frontmatter is the
 trigger surface. Anything with a command-style name can also be called directly: `/teach payments`,
@@ -252,15 +235,12 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 ### Prompting, workflow & repo ops
 
 - **nick-saban** — builds, scores, and hardens the Claude Code harness for a repo (CLAUDE.md, rules, hooks, permissions, CI) across eight commands
-- **skill-system-architect** — designs the state schema, command map, and router for a multi-command skill system before any file gets written
 - **genie-proof-prompts** — audits a prompt across ten loophole categories, rewrites it airtight, and shows what the genie would have done
 - **handoff** — compacts a session into a dense resume-from-zero document, with a redaction sweep and facts separated from assumptions
 - **elihadhd** — restructures responses for an ADHD brain: TL;DR first, verb-first steps, one recommended path, and it stays in that mode
 - **cowork-with-codex** — turns your notes plus pasted Codex output into the exact message to send back, with the user's correction always outranking the agent's plan
 - **cross-exam** — weighs a pasted second opinion (another LLM, a dev, research) point by point as evidence, not orders, and keeps the original task moving instead of stalling in debate
 - **agent-smiths** — splits a plan into parallel agent lanes by which files each task writes, hands each lane a ready-to-launch brief, then checks after the run that no agent wandered into another's files; "run it in one go" is a valid answer
-- **skills-repo-sync** — finds local skills missing from this repo, adds them in the expected format, updates this index, commits, and asks before pushing
-- **skills-repo-push** — the reverse: repo → `~/.claude/skills`, dry-run by default, with backups, local-only skills untouched, and state files preserved
 
 ---
 
@@ -333,12 +313,10 @@ in `who-let-the-blogs-out`, whose aliases route those names to `interview`, `bri
 The copies are listed in `shared-files.yaml`. Edit the original in `who-let-the-blogs-out`, then run
 `python3 scripts/sync_shared.py`; `validate_skills.py` fails the build when a copy has drifted.
 
-**Build a skill system, then keep it honest**
+**Keep a repo's Claude setup honest**
 
 ```
-skill-system-architect  →  architecture spec  →  skill-creator (writes the files)
 nick-saban:  gameplan → work → watch-film → check-playbook → adjust / drill / decline
-skills-repo-sync (local → GitHub)          skills-repo-push (GitHub → local)
 ```
 
 ---
@@ -1262,34 +1240,6 @@ command each declaring Reads / Writes / Stops-at; `scripts/merge_pass.py`, `buil
 </details>
 
 <details>
-<summary><b>skill-system-architect</b> — design the state and the router before writing any files</summary>
-
-**What it does** — Designs the architecture for a multi-command skill system — shared state schema,
-command map, router, and the boundary each command stops at — and delivers a written spec.
-
-**Say something like** — "turn this skill into a system", "combine these overlapping skills", "build
-a skill with subcommands", "design a skill suite", "my skills collide and never fire".
-
-**Input** — A greenfield domain, a set of skills to consolidate, or one skill to expand — plus your
-full installed-skill list for collision checking.
-
-**Output** — One markdown spec in eight fixed parts: system summary, directory layout, state schema
-(formats, enums, ID rules, write rules), a five-field command map, the complete router `SKILL.md`
-frontmatter and skeleton, command file stubs (headers only), build order, and open decisions.
-
-**Mechanics** — Six phases with a hard gate at Phase 2: design state before naming a single command,
-and if no shared artifact passes the persistence and asymmetry tests, refuse and say so — **a
-refusal is a successful outcome here.** Commands are derived from state transitions, each needing
-Verb / Category / Reads / Writes / Stops-at. The prefix test: if renaming every command broke
-nothing, it was never a system.
-
-**Bundle** — `references/inventory.md`, `state-schema.md`, `command-design.md`, `router-anatomy.md`.
-
-**Not for** — Writing any `SKILL.md`, reference file, script, or directory. Approval to build is
-approval to hand off to `skill-creator`.
-</details>
-
-<details>
 <summary><b>genie-proof-prompts</b> — attack the prompt as a hostile genie, then rewrite it</summary>
 
 **What it does** — Rewrites a prompt, spec, or instruction so a maliciously literal reader — an LLM,
@@ -1465,65 +1415,6 @@ agents, or merging their work. It decides how work splits and whether the split 
 the work itself.
 </details>
 
-<details>
-<summary><b>skills-repo-sync</b> — local skills → this repo, with approval at every gate</summary>
-
-**What it does** — Finds custom skills on your machine that are missing from this repo, copies them
-in with the expected layout, updates this README's index, commits, and pushes only after you say so.
-
-**Say something like** — "sync my skills repo", "check for new skills", "backup my skills", "are any
-skills missing from my repo?".
-
-**Input** — Read access to both skill caches, the repo clone, and its `.publish-denylist`, plus a
-live user to approve each addition.
-
-**Output** — New `skills/<name>/` folders (SKILL.md plus references, assets, and scripts copied
-verbatim), one new README bullet per skill under a `###` category, a local commit
-`Sync skills: add <names>`, an optional push, and a report of what changed, was skipped, or was
-flagged.
-
-**Mechanics** — Enumerate both sources → apply the exclusion lists (third-party symlinks, Anthropic
-stock skills, plugin `foo:bar` names, denylist globs) → diff against the repo → confirm each skill
-individually with the default answer NO → copy on-device, or chunk over the device bridge for
-cloud-only skills → run a mandatory secret and business-sensitive-data scan → commit, then stop and
-ask before `git push`. Verification requires parseable frontmatter, no dangling symlinks, and a
-README bullet count that matches the folder count.
-
-**Bundle** — `SKILL.md` only.
-
-**Not for** — Writing or editing skill content, syncing repo → local (`skills-repo-push`), or
-publishing anything without explicit approval.
-</details>
-
-<details>
-<summary><b>skills-repo-push</b> — this repo → <code>~/.claude/skills</code>, dry-run first</summary>
-
-**What it does** — Syncs skills from a clone of this repo down into your local skills directory,
-diffing each one, preserving local-only skills and accumulated state files, and packaging what
-changed into a tarball for manual Claude app upload.
-
-**Say something like** — "push skills out", "sync repo to local", "update my local skills from the
-repo", "my local skills are stale", "refresh skills from github".
-
-**Input** — A local clone (`REPO_DIR`) and your skills dir (`LOCAL_DIR`, default
-`~/.claude/skills`); optional skill names to narrow scope; `--apply` to actually write.
-
-**Output** — A dry-run report classifying every skill NEW / CHANGED / IDENTICAL with file and line
-counts and diffs; a tarball at `/tmp/skills-push-<timestamp>.tar.gz` of only the NEW and CHANGED
-skills; and on `--apply`, updated folders plus a backup at `/tmp/skills-push-backup-<timestamp>/`.
-
-**Mechanics** — Dry-run by default, and it never deletes. `PRESERVE_GLOBS` (default
-`references/opinion-bank.md`, `references/*-bank.md`, `state.json`) stashes local state before the
-copy and restores it on top of the fresh version — the guard that stops a sync from silently wiping
-something like `blog-topic-interview`'s opinion bank.
-
-**Bundle** — `scripts/push.sh` — the whole implementation: scan, diff, backup, preserve-glob
-stash and restore, tarball, apply.
-
-**Not for** — Pushing local skills up to GitHub (`skills-repo-sync`), deleting local-only skills, or
-uploading to the Claude app — that step stays manual by design.
-</details>
-
 ---
 
 ## Repository layout
@@ -1654,8 +1545,7 @@ two-layer split, and the scripts deliberately refuse to produce verdicts of thei
 `code-audit`, `website-audit`, and `ux-audit` all require the top findings to be re-verified before
 they're reported.
 
-**Refusal is a valid outcome.** `skill-system-architect` refuses to design a system with no shared
-state. `test-suggest` refuses a target it can't name. `fresh-eyes` counts getting stuck as a result.
+**Refusal is a valid outcome.** `test-suggest` refuses a target it can't name. `fresh-eyes` counts getting stuck as a result.
 A skill that can't say no isn't giving you information.
 
 **Never silently repair.** State drift gets reported, not fixed as a side effect. Nothing erodes

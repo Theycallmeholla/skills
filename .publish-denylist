@@ -9,3 +9,7 @@
 cursive-agent-*
 # Private: holds client analytics notes; kept out of the public repo (2026-11-27).
 how-are-we-doing
+# Private repo tooling; kept out of the public repo (2026-11-27).
+skills-repo-sync
+skills-repo-push
+skill-system-architect

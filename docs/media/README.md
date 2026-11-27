@@ -21,7 +21,7 @@ docs/media/<skill>/
 ```
 
 **Adding a skill:** write its `README.md`, `card.json` and a `prompts.json` entry (the
-`skills-repo-sync` skill does this; CI fails without them). When it lands on `main`, the
+the private sync skill does this; CI fails without them). When it lands on `main`, the
 `Skill cards` workflow generates the picture with the image API, builds the front and back,
 and commits them. It also rebuilds every card when the README index changes, so numbers stay
 right. Needs the `OPENAI_API_KEY` repository secret.

@@ -755,31 +755,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 32 · Skill System Architect
-
-```text
-Portrait illustration, 1024 x 1536.
-Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
-
-Scene: an architect unrolling blueprints across a drafting table, a small model building rising out of the plans.
-
-Colour palette: prussian blue + lemon. One bold dominant colour plus the accent.
-
-Style: rich, textured illustration, like a collectible card game card.
-
-Composition:
-- Full-bleed: the background fills the entire image, edge to edge.
-- Keep the main subject in the middle of the image.
-- Top 15%: plain background only. A header will cover it.
-- Bottom 30%: plain background only. A title band will cover it.
-
-Rules:
-- NO text, letters, numbers, labels or signs anywhere in the image.
-- NO border, frame or card shape. Just the illustration.
-- No real people, brands, logos or recognisable products.
-```
-
-## 33 · Genie Proof Prompts
+## 32 · Genie Proof Prompts
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -803,7 +779,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 34 · Handoff
+## 33 · Handoff
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -827,7 +803,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 35 · ELIHADHD
+## 34 · ELIHADHD
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -851,7 +827,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 36 · Cowork With Codex
+## 35 · Cowork With Codex
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -875,7 +851,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 37 · Cross Exam
+## 36 · Cross Exam
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -899,7 +875,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 38 · Agent Smiths
+## 37 · Agent Smiths
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -908,54 +884,6 @@ Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 Scene: five blacksmiths at separate anvils in parallel lanes marked by chalk lines on the floor, each forging a different piece.
 
 Colour palette: iron grey + ember red. One bold dominant colour plus the accent.
-
-Style: rich, textured illustration, like a collectible card game card.
-
-Composition:
-- Full-bleed: the background fills the entire image, edge to edge.
-- Keep the main subject in the middle of the image.
-- Top 15%: plain background only. A header will cover it.
-- Bottom 30%: plain background only. A title band will cover it.
-
-Rules:
-- NO text, letters, numbers, labels or signs anywhere in the image.
-- NO border, frame or card shape. Just the illustration.
-- No real people, brands, logos or recognisable products.
-```
-
-## 39 · Skills Repo Sync
-
-```text
-Portrait illustration, 1024 x 1536.
-Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
-
-Scene: a small delivery drone carrying boxes from a cozy home workshop up to a warehouse floating in the clouds.
-
-Colour palette: midnight purple + aqua. One bold dominant colour plus the accent.
-
-Style: rich, textured illustration, like a collectible card game card.
-
-Composition:
-- Full-bleed: the background fills the entire image, edge to edge.
-- Keep the main subject in the middle of the image.
-- Top 15%: plain background only. A header will cover it.
-- Bottom 30%: plain background only. A title band will cover it.
-
-Rules:
-- NO text, letters, numbers, labels or signs anywhere in the image.
-- NO border, frame or card shape. Just the illustration.
-- No real people, brands, logos or recognisable products.
-```
-
-## 40 · Skills Repo Push
-
-```text
-Portrait illustration, 1024 x 1536.
-Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
-
-Scene: a small delivery drone bringing boxes down from a warehouse in the clouds to the shelves of a cozy home workshop.
-
-Colour palette: sage + cherry red. One bold dominant colour plus the accent.
 
 Style: rich, textured illustration, like a collectible card game card.
 
