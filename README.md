@@ -1,12 +1,12 @@
 # Skills
 
 [![Validate skills](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml/badge.svg)](https://github.com/Theycallmeholla/skills/actions/workflows/validate.yml)
-[![Skills](https://img.shields.io/badge/skills-35-6f42c1)](#skill-index)
+[![Skills](https://img.shields.io/badge/skills-40-6f42c1)](#skill-index)
 [![Spec](https://img.shields.io/badge/spec-Agent%20Skills-0b7285)](#authoring-a-skill)
 [![CI](https://img.shields.io/badge/CI-validator%20%2B%20secret%20scan%20%2B%20shellcheck%20%2B%20playwright-2b8a3e)](#continuous-integration)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-**35 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
+**40 production skills for Claude** (Claude Code / Cowork) covering codebase audits, test strategy,
 UX and conversion reviews, requirements interviews, documentation generation, content production,
 and the meta-work of building and maintaining skills themselves.
 
@@ -17,7 +17,7 @@ at a time.
 
 | | |
 |---|---|
-| **Skills** | 35 |
+| **Skills** | 40 |
 | **Bundled reference files** | 80 |
 | **Templates & assets** | 8 |
 | **Executable scripts** | 21 (12 shell, 8 Python, 1 Node) |
@@ -217,8 +217,7 @@ One line per skill. Full detail in [Full skill reference](#full-skill-reference)
 - **secret-shopper** — a regular customer drives the live site in a real browser, does real tasks, and logs every "what does this do?" in plain words, phone-first
 - **gap-scan** — finds the features that obviously should exist but don't, as a ranked punch list with a status-carrying `gap_packet.json` that can be rechecked later
 - **open-saysai** — audits how AI search and answer engines crawl, retrieve, and cite a site: per-crawler robots and WAF checks, citation readiness, clean-channel prompt tests, and a portable `ai_visibility_packet.json`
-- **how-are-we-doing** — per-business performance read that leads with what changed and publishes a private visual dashboard: Search Console movers and near-miss queries, indexing of every sitemap URL, GA4, Clarity, GBP, CRM leads, and DR, from a profile built by auto-discovery and a short setup questionnaire; measures only
-- **what-next** — turns a how-are-we-doing read into a short ranked plan, closest to a booked customer first, each step with one measured number, who does it, and a dated check; respects pending experiments and starts nothing without the owner's pick
+- **what-next** — turns a how-are-we-doing read (a private companion skill, not in this repo) into a short ranked plan, closest to a booked customer first, each step with one measured number, who does it, and a dated check; respects pending experiments and starts nothing without the owner's pick
 
 ### Documentation
 

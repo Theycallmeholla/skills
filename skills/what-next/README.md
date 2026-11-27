@@ -3,7 +3,7 @@
   <img src="../../docs/media/what-next/back.svg" alt="What Next card back: turns a how-are-we-doing read into three ranked actions at most, each backed by one measured number with a dated check, and starts only what the owner picks" width="48%">
 </p>
 
-> **TL;DR:** After a [how-are-we-doing](../how-are-we-doing/) read, ask "so what?" You get at most three things to do this week, ranked by how close each is to a real booked customer, each with the one number behind it and a date to check it worked. Nothing starts until you pick.
+> **TL;DR:** After a how-are-we-doing read (a private companion skill that measures the site), ask "so what?" You get at most three things to do this week, ranked by how close each is to a real booked customer, each with the one number behind it and a date to check it worked. Nothing starts until you pick.
 
 ## Say this
 
@@ -98,14 +98,14 @@ Within a tier, smaller effort with stronger evidence goes first. Impressions nev
 
 ## Plays well with
 
-- **[how-are-we-doing](../how-are-we-doing/)**: measures and saves the snapshot this skill plans from
+- **how-are-we-doing** (private, not in this repo): measures and saves the snapshot this skill plans from
 - **[who-let-the-blogs-out](../who-let-the-blogs-out/)**: the kind of skill it hands a post refresh or title rewrite to
 - **[conversion-audit](../conversion-audit/)**: the kind of skill it hands a page that leaks visitors to
 - **[ui-oddity-scan](../ui-oddity-scan/)**: the kind of skill it hands a page with odd or broken UI to
 
 ## Not for
 
-Measuring. It never re-pulls the numbers; that's [how-are-we-doing](../how-are-we-doing/). It also never proposes content just to fill a calendar.
+Measuring. It never re-pulls the numbers; that's how-are-we-doing, a private companion skill. It also never proposes content just to fill a calendar.
 
 ---
 

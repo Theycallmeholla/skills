@@ -7,3 +7,5 @@
 # future additions without naming them. Comments and blank lines ignored.
 
 cursive-agent-*
+# Private: holds client analytics notes; kept out of the public repo (2026-11-27).
+how-are-we-doing

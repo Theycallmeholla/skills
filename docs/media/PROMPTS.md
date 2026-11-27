@@ -539,31 +539,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 23 · How Are We Doing
-
-```text
-Portrait illustration, 1024 x 1536.
-Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
-
-Scene: a ship captain at the helm checking a panel of brass gauges and dials, open sea and a distant coastline ahead.
-
-Colour palette: pine green + peach. One bold dominant colour plus the accent.
-
-Style: rich, textured illustration, like a collectible card game card.
-
-Composition:
-- Full-bleed: the background fills the entire image, edge to edge.
-- Keep the main subject in the middle of the image.
-- Top 15%: plain background only. A header will cover it.
-- Bottom 30%: plain background only. A title band will cover it.
-
-Rules:
-- NO text, letters, numbers, labels or signs anywhere in the image.
-- NO border, frame or card shape. Just the illustration.
-- No real people, brands, logos or recognisable products.
-```
-
-## 24 · What Next
+## 23 · What Next
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -587,7 +563,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 25 · Teach
+## 24 · Teach
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -611,7 +587,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 26 · ELI5 Features
+## 25 · ELI5 Features
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -635,7 +611,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 27 · Walkthrough GIF
+## 26 · Walkthrough GIF
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -659,7 +635,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 28 · Who Let The Blogs Out
+## 27 · Who Let The Blogs Out
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -683,7 +659,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 29 · SEO Blog Writer
+## 28 · SEO Blog Writer
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -707,7 +683,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 30 · AI Writing Detector
+## 29 · AI Writing Detector
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -731,7 +707,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 31 · Case Study Builder
+## 30 · Case Study Builder
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -755,7 +731,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 32 · Nick Saban
+## 31 · Nick Saban
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -779,7 +755,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 33 · Skill System Architect
+## 32 · Skill System Architect
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -803,7 +779,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 34 · Genie Proof Prompts
+## 33 · Genie Proof Prompts
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -827,7 +803,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 35 · Handoff
+## 34 · Handoff
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -851,7 +827,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 36 · ELIHADHD
+## 35 · ELIHADHD
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -875,7 +851,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 37 · Cowork With Codex
+## 36 · Cowork With Codex
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -899,7 +875,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 38 · Cross Exam
+## 37 · Cross Exam
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -923,7 +899,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 39 · Agent Smiths
+## 38 · Agent Smiths
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -947,7 +923,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 40 · Skills Repo Sync
+## 39 · Skills Repo Sync
 
 ```text
 Portrait illustration, 1024 x 1536.
@@ -971,7 +947,7 @@ Rules:
 - No real people, brands, logos or recognisable products.
 ```
 
-## 41 · Skills Repo Push
+## 40 · Skills Repo Push
 
 ```text
 Portrait illustration, 1024 x 1536.

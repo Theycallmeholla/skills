@@ -156,13 +156,6 @@
       "output_format": "png"
     },
     {
-      "skill": "how-are-we-doing",
-      "file": "how-are-we-doing.png",
-      "size": "1024x1536",
-      "prompt": "Portrait illustration, 1024 x 1536.\nOutput: a raster image, PNG or JPEG. NOT SVG, not vector, not code.\n\nScene: a ship captain at the helm checking a panel of brass gauges and dials, open sea and a distant coastline ahead.\n\nColour palette: pine green + peach. One bold dominant colour plus the accent.\n\nStyle: rich, textured illustration, like a collectible card game card.\n\nComposition:\n- Full-bleed: the background fills the entire image, edge to edge.\n- Keep the main subject in the middle of the image.\n- Top 15%: plain background only. A header will cover it.\n- Bottom 30%: plain background only. A title band will cover it.\n\nRules:\n- NO text, letters, numbers, labels or signs anywhere in the image.\n- NO border, frame or card shape. Just the illustration.\n- No real people, brands, logos or recognisable products.",
-      "output_format": "png"
-    },
-    {
       "skill": "what-next",
       "file": "what-next.png",
       "size": "1024x1536",
