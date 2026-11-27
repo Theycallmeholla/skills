@@ -1,0 +1,15 @@
+{
+  "title": "Connotation Cop",
+  "category": "discovery",
+  "set": "Vocabulary",
+  "type": "Glossary · ADRs",
+  "tagline": "Settles what your project's words mean.",
+  "ability": "Calls out words that clash with your glossary or mean two things, settles them one question at a time, and books each term in CONTEXT.md on the spot. Big decisions that clear a strict bar become ADRs.",
+  "flavor": "Half of every design argument is two people using one word for two things.",
+  "stats": [
+    ["Beats", "5"],
+    ["ADR bar", "3 of 3"],
+    ["Glossary", "CONTEXT.md"],
+    ["Decisions", "docs/adr/"]
+  ]
+}

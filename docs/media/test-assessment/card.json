@@ -1,0 +1,15 @@
+{
+  "title": "Test Assessment",
+  "category": "code",
+  "set": "Test health",
+  "type": "Audit · test suite",
+  "tagline": "Finds the test gaps that can actually hurt you.",
+  "ability": "Inventories the test suite, maps every module by risk against coverage, flags weak and skipped tests, and ranks what to fix first. Never writes or runs a single test.",
+  "flavor": "Coverage percentage is a vanity metric.",
+  "stats": [
+    ["In", "Repo"],
+    ["Phases", "7"],
+    ["Risk map", "4 × 4"],
+    ["Out", "Ranked report"]
+  ]
+}

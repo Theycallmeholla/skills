@@ -1,0 +1,15 @@
+{
+  "title": "Conversion Audit",
+  "category": "ux",
+  "set": "Conversion",
+  "type": "Audit · one page, one action",
+  "tagline": "Does every element serve the ONE action?",
+  "ability": "Finds the one thing a page wants visitors to do, sends five cold visitor personas at it, maps the beliefs they need first, and returns a ranked plan of what to cut, move, add or rewrite.",
+  "flavor": "There is no neutral content: attention is finite, so a section that does no work does negative work.",
+  "stats": [
+    ["In", "URL or code"],
+    ["Personas", "5"],
+    ["Move tags", "4"],
+    ["Out", "Ranked moves"]
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "title": "Whiteboard Help",
+  "category": "discovery",
+  "set": "Cheat sheet",
+  "type": "Reference · whiteboard system",
+  "tagline": "The whiteboard system on one page.",
+  "ability": "Shows the whiteboard cheat sheet: the three-phase flow, the exact phrases to say, the rules and where things live. Ask a narrow question and you get just that part. It never starts work.",
+  "flavor": "You should never come back to a session idling on a ticket it could have done itself.",
+  "stats": [
+    [
+      "In",
+      "Nothing"
+    ],
+    [
+      "Phases",
+      "3"
+    ],
+    [
+      "Rules",
+      "6"
+    ],
+    [
+      "Does",
+      "Display only"
+    ]
+  ]
+}

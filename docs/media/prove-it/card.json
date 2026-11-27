@@ -1,0 +1,15 @@
+{
+  "title": "Prove It",
+  "category": "code",
+  "set": "Ship check",
+  "type": "Verifier · live deploy",
+  "tagline": "Proves it shipped before anyone says it did.",
+  "ability": "Checks seven layers, from unpushed code to the analytics event, and marks each PASS, FAIL or UNVERIFIED with the evidence inline. Unchecked never reads as working.",
+  "flavor": "A claim without a command output behind it is a guess.",
+  "stats": [
+    ["Layers", "7"],
+    ["Results", "4"],
+    ["Exit codes", "0 · 1 · 2 · 64"],
+    ["In", "URL or file"]
+  ]
+}

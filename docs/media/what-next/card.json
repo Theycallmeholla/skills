@@ -1,0 +1,15 @@
+{
+  "title": "What Next",
+  "category": "ux",
+  "set": "Action plan",
+  "type": "Plan · from a saved read",
+  "tagline": "The next move, closest to a customer first.",
+  "ability": "Turns a how-are-we-doing read into three ranked actions at most, closest to a booked customer first. Each has one measured number behind it and a dated check. Nothing starts until you pick.",
+  "flavor": "Three at most; fewer is normal; zero is a real answer.",
+  "stats": [
+    ["Plan", "3 at most"],
+    ["Tests", "4, all pass"],
+    ["Tiers", "5"],
+    ["Starts", "On your pick"]
+  ]
+}

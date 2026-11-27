@@ -1,0 +1,15 @@
+{
+  "title": "Secret Shopper",
+  "category": "ux",
+  "set": "Customer test",
+  "type": "Test · live site, phone-first",
+  "tagline": "A regular customer tries your site, out loud.",
+  "ability": "Uses the real site as a regular customer, does real tasks, and says every confusing moment in plain words. Reports task results and each moment rated Blocker to Papercut, TL;DR first.",
+  "flavor": "A short report on a clear site is a good report",
+  "stats": [
+    ["Rules", "9"],
+    ["Moment tags", "10"],
+    ["Severities", "3"],
+    ["Modes", "3"]
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Gap Scan",
+  "category": "ux",
+  "set": "Feature gaps",
+  "type": "Audit · what's missing",
+  "tagline": "Finds the features that should exist but don't.",
+  "ability": "Maps what a repo or app can do, runs six gap lenses against that map, and returns up to 10 evidence-backed missing features, one place to start, and a packet it can recheck later.",
+  "flavor": "If something exists but is bad, it's not a gap — hand it off.",
+  "stats": [
+    ["Lenses", "6"],
+    ["Max gaps", "10"],
+    ["Modes", "3"],
+    ["Out", "gap_packet"]
+  ]
+}

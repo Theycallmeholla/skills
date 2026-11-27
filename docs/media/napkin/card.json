@@ -1,0 +1,15 @@
+{
+  "title": "Napkin",
+  "category": "discovery",
+  "set": "Sketching",
+  "type": "Prototype · one question",
+  "tagline": "Throwaway code that settles one design question.",
+  "ability": "Writes the question down first, then builds a tiny terminal app to drive a state model, or several radically different UI variants on one route. The answer is saved; the code is deleted.",
+  "flavor": "Not a v1, not a head start — a question with a run command.",
+  "stats": [
+    ["Questions", "1"],
+    ["Branches", "2"],
+    ["UI variants", "3 to 5"],
+    ["Survives", "The answer"]
+  ]
+}

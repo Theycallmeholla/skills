@@ -1,0 +1,15 @@
+{
+  "title": "Skills Repo Push",
+  "category": "meta",
+  "set": "Repo ops",
+  "type": "Sync · repo to local",
+  "tagline": "Updates your local skills from the repo, safely",
+  "ability": "Labels every repo skill new, changed or identical against your local copy and writes nothing until --apply. Backs up what it replaces, keeps local-only skills and state files, and bundles the changes for app upload.",
+  "flavor": "local-only skills are left completely alone.",
+  "stats": [
+    ["Default", "Dry run"],
+    ["Labels", "3"],
+    ["Deletes", "Never"],
+    ["Backup", "Before write"]
+  ]
+}

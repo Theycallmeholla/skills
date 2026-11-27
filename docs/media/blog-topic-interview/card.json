@@ -1,0 +1,27 @@
+{
+  "title": "Blog Topic Interview",
+  "category": "discovery",
+  "set": "Author voice",
+  "type": "Interview · before drafting",
+  "tagline": "Your real take, captured before drafting.",
+  "ability": "Asks what you actually think about a blog topic, at most three questions at a time, then saves an Opinion Packet and an opinion bank so no later post re-asks or invents your views.",
+  "flavor": "A post published under someone's name should say what that person actually thinks.",
+  "stats": [
+    [
+      "Per batch",
+      "≤3 questions"
+    ],
+    [
+      "Out",
+      "Opinion Packet"
+    ],
+    [
+      "Memory",
+      "Per client"
+    ],
+    [
+      "Provenance",
+      "4 kinds"
+    ]
+  ]
+}

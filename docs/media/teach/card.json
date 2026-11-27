@@ -1,0 +1,15 @@
+{
+  "title": "Teach",
+  "category": "docs",
+  "set": "Dev docs",
+  "type": "Doc · one feature, traced",
+  "tagline": "How any feature in your code actually works.",
+  "ability": "Name a feature and it finds the code itself, traces it from the entry point, and writes a developer doc: execution flow, data flow, dependencies, failure modes and how to extend it, all with real snippets.",
+  "flavor": "Never ask the user to find the files for you unless the codebase search returns genuinely ambiguous results.",
+  "stats": [
+    ["Sections", "8, always"],
+    ["Reader", "Mid-level dev"],
+    ["Snippets", "5–20 lines"],
+    ["Out", "1 .md file"]
+  ]
+}

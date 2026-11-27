@@ -163,13 +163,65 @@ def index_order():
     return re.findall(r"^- \*\*([a-z0-9-]+)\*\*", section, re.M)
 
 
+def _hex(rgb):
+    return "#%02X%02X%02X" % tuple(max(0, min(255, round(c * 255))) for c in rgb)
+
+
+def sample_palette(image_path):
+    """Panel, accent and tint taken from an illustration (needs Pillow).
+
+    Panel: the hue of the picture's bottom band, pushed dark so cream text reads on it.
+    Accent: the most vivid bright colour in the picture, lifted if it is dull.
+    """
+    import colorsys
+    from PIL import Image
+
+    with Image.open(image_path) as im:
+        small = im.convert("RGB").resize((48, 72))
+    raw = small.tobytes()
+    px = [tuple(c / 255 for c in raw[i:i + 3]) for i in range(0, len(raw), 3)]
+
+    bottom = px[48 * 50:]
+    avg = [sum(p[i] for p in bottom) / len(bottom) for i in range(3)]
+    h, l, s = colorsys.rgb_to_hls(*avg)
+    panel = colorsys.hls_to_rgb(h, min(l, 0.13), min(max(s, 0.25), 0.65))
+    tint = colorsys.hls_to_rgb(h, 0.92, min(s, 0.45))
+
+    with Image.open(image_path) as im:
+        quant = im.convert("RGB").resize((96, 144)).quantize(colors=12)
+    pal = quant.getpalette()[:36]
+    counts = dict((idx, n) for n, idx in quant.getcolors())
+    best, best_score = None, -1.0
+    for i in range(12):
+        rgb = tuple(c / 255 for c in pal[i * 3:i * 3 + 3])
+        hh, ss, vv = colorsys.rgb_to_hsv(*rgb)
+        share = counts.get(i, 0) / (96 * 144)
+        if share < 0.004:
+            continue
+        score = ss * vv * (0.6 + min(share, 0.25))
+        if score > best_score:
+            best, best_score = (hh, ss, vv), score
+    hh, ss, vv = best
+    accent = colorsys.hsv_to_rgb(hh, max(ss, 0.6), max(vv, 0.88))
+    # Small labels use the accent on the dark panel, so keep it light enough to read.
+    lum = 0.2126 * accent[0] + 0.7152 * accent[1] + 0.0722 * accent[2]
+    if lum < 0.38:
+        ah, al, as_ = colorsys.rgb_to_hls(*accent)
+        accent = colorsys.hls_to_rgb(ah, min(0.72, al + (0.38 - lum) * 1.2), as_)
+    return {"panel": _hex(panel), "accent": _hex(accent), "tint": _hex(tint)}
+
+
 def load(skill_dir):
     data = json.loads((skill_dir / "card.json").read_text())
     order = index_order()
     if skill_dir.name not in order:
         raise SystemExit(f"{skill_dir.name}: not in the README skill index")
     data["no"] = order.index(skill_dir.name) + 1
+    if "illustration" not in data and (skill_dir / "illustration.webp").exists():
+        data["illustration"] = {"art": "illustration.webp"}
     label, panel, accent, tint = CATEGORIES[data["category"]]
+    if "palette" not in data and "illustration" in data:
+        data["palette"] = sample_palette(skill_dir / data["illustration"]["art"])
     pal = data.get("palette", {})
     data["_panel"] = pal.get("panel", panel)
     data["_accent"] = pal.get("accent", accent)

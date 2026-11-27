@@ -1,0 +1,15 @@
+{
+  "title": "Skill System Architect",
+  "category": "meta",
+  "set": "Skill design",
+  "type": "Spec · multi-command skill",
+  "tagline": "Designs a skill system before any file exists.",
+  "ability": "Designs the shared state first, then derives each command from it with what it reads, writes and must never cross, plus the router. Delivers an eight-part spec, or refuses when nothing is shared.",
+  "flavor": "Design the state schema first. Commands are just things that read and write it.",
+  "stats": [
+    ["Phases", "0-6"],
+    ["Gate", "Shared state"],
+    ["Spec parts", "8"],
+    ["Writes", "Spec only"]
+  ]
+}

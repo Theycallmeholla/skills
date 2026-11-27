@@ -1,0 +1,15 @@
+{
+  "title": "Handoff",
+  "category": "meta",
+  "set": "Session ops",
+  "type": "Document · one session",
+  "tagline": "Packs a session so a fresh agent can resume.",
+  "ability": "Compacts the conversation into a dense 1-3 page state doc in your temp folder: goal, current state, decisions, dead ends, facts vs. assumptions and next steps. Secrets become pointers.",
+  "flavor": "Failed attempts are first-class content.",
+  "stats": [
+    ["Length", "1-3 pages"],
+    ["Saved to", "OS temp dir"],
+    ["Quality checks", "5"],
+    ["Runs", "When you ask"]
+  ]
+}
