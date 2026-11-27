@@ -7,9 +7,24 @@
   "ability": "Separates your notes from pasted Codex output, lets your correction win, and returns one short ready-to-send message with the scope boundary and the command that proves the fix.",
   "flavor": "Treat a Codex claim that something passed, shipped, or is complete as a claim, not a fact.",
   "stats": [
-    ["Source tags", "4"],
-    ["Output", "1 message"],
-    ["Patterns", "8"],
-    ["Verdicts", "3"]
-  ]
+    [
+      "Source tags",
+      "4"
+    ],
+    [
+      "Output",
+      "1 message"
+    ],
+    [
+      "Patterns",
+      "8"
+    ],
+    [
+      "Verdicts",
+      "3"
+    ]
+  ],
+  "illustration": {
+    "art": "illustration-v2.webp"
+  }
 }
