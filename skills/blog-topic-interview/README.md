@@ -3,6 +3,10 @@
   <img src="../../docs/media/blog-topic-interview/back.svg" alt="Blog Topic Interview card back: asks what you actually think about a blog topic, at most three questions at a time, and saves an Opinion Packet plus an opinion bank" width="48%">
 </p>
 
+<!-- skill-family:start -->
+> **Part of [Who Let The Blogs Out](../who-let-the-blogs-out/).** It works alongside Who Let The Blogs Out and can also be installed on its own.
+<!-- skill-family:end -->
+
 > **TL;DR:** Before a blog post goes out under your name, Claude asks what you actually think: your stance, real stories, numbers, and what must never be said. It saves your answers so the writer uses your views, and no later post asks the same thing twice.
 
 ## Say this

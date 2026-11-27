@@ -3,6 +3,12 @@
   <img src="../../docs/media/fresh-eyes/back.svg" alt="Fresh Eyes card back: uses only what you hand it, follows instructions literally, and logs every confusion the moment it happens, ending in a first-contact report full of the obvious questions insiders can no longer see" width="48%">
 </p>
 
+<!-- skill-family:start -->
+**The family:** these skills are parts of this one, each also installable on its own.
+
+<p><a href="../../skills/cover-story/"><img src="../../docs/media/cover-story/thumb.svg" width="140" align="top" alt="Cover Story"></a></p>
+<!-- skill-family:end -->
+
 > **TL;DR:** Hand it your README, link or app and it tries the thing like someone who has never seen it, using only what you gave it. Every confusion gets written down before it's solved, so you see the questions you can no longer see yourself.
 
 ## Say this

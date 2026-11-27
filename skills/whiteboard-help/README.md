@@ -3,6 +3,10 @@
   <img src="../../docs/media/whiteboard-help/back.svg" alt="Whiteboard Help card back: shows the whiteboard cheat sheet with the flow, the exact phrases, the rules and where things live, and never starts work" width="48%">
 </p>
 
+<!-- skill-family:start -->
+> **Part of [Whiteboard](../whiteboard/).** It works alongside Whiteboard and can also be installed on its own.
+<!-- skill-family:end -->
+
 > **TL;DR:** Forgot how the whiteboard works? Ask, and Claude shows the cheat sheet: the steps, the exact words to say, and the rules. It only shows the guide. It never starts a board or does any work.
 
 ## Say this

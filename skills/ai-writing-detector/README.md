@@ -3,6 +3,10 @@
   <img src="../../docs/media/ai-writing-detector/back.svg" alt="AI Writing Detector card back: a script counts the mechanical tells, Claude reads for stance and specifics, and you get a 0 to 100 score with quoted evidence and fixes ranked by points recovered" width="48%">
 </p>
 
+<!-- skill-family:start -->
+> **Part of [Who Let The Blogs Out](../who-let-the-blogs-out/).** It works alongside Who Let The Blogs Out and can also be installed on its own.
+<!-- skill-family:end -->
+
 > **TL;DR:** Paste some writing and ask if it sounds like AI. You get a 0 to 100 score for how many AI-style habits it shows, the exact lines that gave it away, and the fixes that would help most. It never claims to know who wrote it.
 
 ## Say this

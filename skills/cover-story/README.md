@@ -3,6 +3,10 @@
   <img src="../../docs/media/cover-story/back.svg" alt="Cover Story card back: reads everything about your product, then writes the short brief a first-time tester gets: what it is and why it exists, nothing on how. A sealed envelope keeps what it held back" width="48%">
 </p>
 
+<!-- skill-family:start -->
+> **Part of [Fresh Eyes](../fresh-eyes/).** It works alongside Fresh Eyes and can also be installed on its own.
+<!-- skill-family:end -->
+
 > **TL;DR:** Before a newcomer test, it writes the short note a tester gets going in: what the product is and why it exists, but nothing about how to use it. Everything it held back goes in a separate sealed envelope, so afterwards you can check the tester's questions against its predictions.
 
 ## Say this

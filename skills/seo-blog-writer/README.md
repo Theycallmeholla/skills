@@ -3,6 +3,10 @@
   <img src="../../docs/media/seo-blog-writer/back.svg" alt="SEO Blog Writer card back: researches what ranks, commits to the reader's questions, verifies every claim, drafts under the author's own stance, and scores the draft before you see it" width="48%">
 </p>
 
+<!-- skill-family:start -->
+> **Part of [Who Let The Blogs Out](../who-let-the-blogs-out/).** It works alongside Who Let The Blogs Out and can also be installed on its own.
+<!-- skill-family:end -->
+
 > **TL;DR:** Give it a keyword. It studies what already ranks, writes a brief you can reject cheaply, then drafts a post that answers every question the searcher has and scores it before you read it. It never invents experience, results or opinions the author didn't give.
 
 ## Say this

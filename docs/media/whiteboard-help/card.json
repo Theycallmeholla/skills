@@ -23,5 +23,6 @@
       "Does",
       "Display only"
     ]
-  ]
+  ],
+  "parent": "whiteboard"
 }
