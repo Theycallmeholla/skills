@@ -15,6 +15,7 @@ the middle (the top and bottom get covered).
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: an inspector with a lantern and a giant magnifying glass examining the gears of an enormous clockwork machine, tying small red flags to a few faulty gears.
 
@@ -38,6 +39,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a bridge inspector tapping the steel supports of a tall bridge with a hammer; most girders glow green and safe, two are visibly cracked.
 
@@ -61,6 +63,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a climbing guide hammering safety pins into a cliff face at exactly the spots above the most dangerous drops, a rope trailing below.
 
@@ -84,6 +87,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a lighthouse keeper climbing a spiral stair inside a tall tower, lighting seven lamps one after another on the way to the top.
 
@@ -107,6 +111,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a magician's hands flicking glowing cards off a deck in four directions, left, right, up and down, one card frozen mid-air.
 
@@ -130,6 +135,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a single wooden chair under one hard spotlight on a dark stage, a person seated with arms crossed, facing one empty glowing speech bubble.
 
@@ -153,6 +159,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a cafe table with a machine sketched in pen on a paper napkin, and a tiny working paper model of that machine standing on top of the napkin.
 
@@ -176,6 +183,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a stern old-fashioned traffic cop in white gloves inside a grand library, stamping index cards and filing them into a tidy wooden card catalog.
 
@@ -199,6 +207,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a huge wall covered in sticky notes connected by taut string, a small figure on a rolling ladder pinning up one more note.
 
@@ -222,6 +231,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a pocket field guide lying open on a desk beside a large wall map, a compass and a pencil, the guide's pages showing only simple diagrams.
 
@@ -245,6 +255,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a cozy interview set: two armchairs facing each other, a vintage microphone on a small table between them, an open notebook, warm lamp light.
 
@@ -268,6 +279,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a treasure hunter in a dusty attic lifting the lid of one ordinary crate that glows gold inside, surrounded by other ignored crates (no real person).
 
@@ -291,6 +303,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: an inspector with a flashlight walking through a giant dollhouse-style cutaway building, each room a different page, tagging rooms as she goes.
 
@@ -314,6 +327,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a tiny traveler walking a winding path through a hedge maze, with potholes, dead ends and confusing forks along the way.
 
@@ -337,6 +351,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a jeweler with a loupe leaning over a large mosaic, spotting the one tile that doesn't match the others.
 
@@ -360,6 +375,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a raccoon detective in a trench coat examining a wall of identical website cards with a magnifying glass.
 
@@ -383,6 +399,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a long hallway ending at one glowing door, five shadowy figures walking toward it, two of them hesitating.
 
@@ -406,6 +423,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a newcomer stepping off a train into an unfamiliar town square, looking around wide-eyed, holding a map.
 
@@ -429,6 +447,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a spy's desk with a sealed envelope closed with a red wax seal, next to an open briefing folder.
 
@@ -452,6 +471,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: an undercover shopper in sunglasses and a trench coat pushing a cart down a store aisle, phone in hand.
 
@@ -475,6 +495,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a worker on a long wooden rope bridge kneeling at the one spot where a plank is missing, measuring the gap.
 
@@ -498,6 +519,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a stone door in a cliff swinging open to a beam of light, small friendly robot explorers lined up at the entrance.
 
@@ -521,6 +543,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a ship captain at the helm checking a panel of brass gauges and dials, open sea and a distant coastline ahead.
 
@@ -544,6 +567,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a hiker at a crossroads of three trails, one trail lit by a lantern hanging from a signpost with blank boards.
 
@@ -567,6 +591,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a professor guiding a student through a giant cutaway machine, pointing at the gears with a long pointer.
 
@@ -590,6 +615,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a friendly robot reading a picture book to a group of kids sitting on the floor, the book showing only pictures.
 
@@ -613,6 +639,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a film camera on a dolly track filming a tiny figure walking through a miniature city of web pages.
 
@@ -636,6 +663,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a dog running toward the viewer with a rolled-up newspaper in its mouth, the newspaper showing only lines, no words.
 
@@ -659,6 +687,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: an old writing desk with a quill and a stack of crisp pages, a brass telescope pointed out the window at a wide landscape.
 
@@ -682,6 +711,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: an old lie-detector machine with swinging needles scribbling lines on a paper roll, next to a typed page.
 
@@ -705,6 +735,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a museum curator placing a trophy into a glass display case under spotlights.
 
@@ -728,6 +759,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a football coach (not a real person) at a sideline chalkboard drawing play diagrams with arrows, a stadium behind him.
 
@@ -751,6 +783,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: an architect unrolling blueprints across a drafting table, a small model building rising out of the plans.
 
@@ -774,6 +807,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a genie rising from a brass lamp, frowning, while a lawyer holds up a long scroll and points at it with a magnifying glass.
 
@@ -797,6 +831,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a relay runner passing a glowing baton to the next runner mid-stride on a track.
 
@@ -820,6 +855,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a hand lifting one single glowing card out of a messy pile of crumpled papers.
 
@@ -843,6 +879,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: two workers carrying a long plank together through a workshop, one at the front calling directions.
 
@@ -866,6 +903,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a courtroom with a lawyer holding a magnifying glass up to a document on the witness stand.
 
@@ -889,6 +927,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: five blacksmiths at separate anvils in parallel lanes marked by chalk lines on the floor, each forging a different piece.
 
@@ -912,6 +951,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a small delivery drone carrying boxes from a cozy home workshop up to a warehouse floating in the clouds.
 
@@ -935,6 +975,7 @@ Rules:
 
 ```text
 Portrait illustration, 1024 x 1536.
+Output: a raster image, PNG or JPEG. NOT SVG, not vector, not code.
 
 Scene: a small delivery drone bringing boxes down from a warehouse in the clouds to the shelves of a cozy home workshop.
 

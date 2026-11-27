@@ -4,6 +4,10 @@ Every skill folder has a `README.md` that GitHub shows when you open the folder.
 a trading card, front and back. The images live here, one folder per skill, so they never ship
 inside an installed skill.
 
+**Art you supply is a PNG or JPEG picture.** Every `.svg` here is produced by the build script;
+nobody needs to make an SVG by hand. Prompts for the pictures: `prompts.json` (for an API script)
+and `PROMPTS.md` (to copy by hand).
+
 ```
 docs/media/<skill>/
   card.json        card text, stats, colours          (you edit)
