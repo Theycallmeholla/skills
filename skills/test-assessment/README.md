@@ -3,6 +3,12 @@
   <img src="../../docs/media/test-assessment/back.svg" alt="Test Assessment card back: inventories the test suite, maps every module by risk against coverage, flags weak and skipped tests, and ranks what to fix first. Never writes or runs a single test" width="48%">
 </p>
 
+<!-- skill-family:start -->
+**The family:** these skills are parts of this one, each also installable on its own.
+
+<p><a href="../../skills/test-suggest/"><img src="../../docs/media/test-suggest/thumb.svg" width="140" align="top" alt="Test Suggest"></a></p>
+<!-- skill-family:end -->
+
 > **TL;DR:** Point it at a repo and ask if it's well tested. You get a report that puts every module on a risk-versus-coverage grid, so the untested payments code shows up long before the untested logging code.
 
 ## Say this

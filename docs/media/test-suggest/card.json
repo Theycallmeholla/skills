@@ -7,9 +7,22 @@
   "ability": "Reads one file or one assessment finding, learns how your repo writes tests, skips what is already covered, and ranks concrete cases from must-have to nice-to-have. Stops before writing code.",
   "flavor": "A good suggestion specifies enough that someone could write the test without re-reading the source.",
   "stats": [
-    ["In", "1 target"],
-    ["Phases", "8"],
-    ["Must-haves", "3 to 7 max"],
-    ["Out", "Case list"]
-  ]
+    [
+      "In",
+      "1 target"
+    ],
+    [
+      "Phases",
+      "8"
+    ],
+    [
+      "Must-haves",
+      "3 to 7 max"
+    ],
+    [
+      "Out",
+      "Case list"
+    ]
+  ],
+  "parent": "test-assessment"
 }

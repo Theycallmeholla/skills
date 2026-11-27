@@ -3,6 +3,10 @@
   <img src="../../docs/media/hot-seat/back.svg" alt="Hot Seat card back: one question per message, each with a recommended answer, ending in a decision log" width="48%">
 </p>
 
+<!-- skill-family:start -->
+> **Part of [Whiteboard](../whiteboard/).** It works alongside Whiteboard and can also be installed on its own.
+<!-- skill-family:end -->
+
 > **TL;DR:** Drop a plan. Claude asks one question at a time, each with the answer it would pick, until it could state your whole plan and you'd sign it unchanged. You leave with a short decision log.
 
 ## Say this
