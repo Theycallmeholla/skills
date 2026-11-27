@@ -306,14 +306,27 @@ THUMB_W = 360   # art width inside gallery thumbnails
 
 
 def _thumb_art(path):
-    """First frame of the art, shrunk for the README gallery (needs Pillow)."""
+    """The art shrunk for the README gallery, animation kept (needs Pillow)."""
     from PIL import Image
 
-    with Image.open(path) as im:
-        frame0 = im.convert("RGB")
-    frame0.thumbnail((THUMB_W, THUMB_W * 3 // 2))
+    size = (THUMB_W, THUMB_W * 3 // 2)
     buf = io.BytesIO()
-    frame0.save(buf, "WEBP", quality=68)
+    with Image.open(path) as im:
+        if getattr(im, "is_animated", False):
+            # Keep the motion: shrink every frame, keep each frame's timing.
+            frames, durations = [], []
+            for i in range(im.n_frames):
+                im.seek(i)
+                frame = im.convert("RGB")
+                frame.thumbnail(size)
+                frames.append(frame)
+                durations.append(im.info.get("duration", 100))
+            frames[0].save(buf, "WEBP", save_all=True, append_images=frames[1:],
+                           duration=durations, loop=0, quality=60)
+        else:
+            frame0 = im.convert("RGB")
+            frame0.thumbnail(size)
+            frame0.save(buf, "WEBP", quality=68)
     return "webp", base64.b64encode(buf.getvalue()).decode()
 
 
@@ -456,7 +469,7 @@ def write_gallery():
         parts = []
         if c % 2:   # every other column starts half a card lower
             parts.append(f'<img src="docs/media/_spacer.svg" width="{GALLERY_W}" '
-                         f'height="{GALLERY_W * 3 // 4}" alt="">')
+                         f'height="{GALLERY_W * 3 // 4}" align="top" alt="">')
         for name in names:
             card = MEDIA / name / "card.json"
             title = json.loads(card.read_text())["title"] if card.exists() else name
@@ -464,8 +477,10 @@ def write_gallery():
             if not (MEDIA / name / "thumb.svg").exists():
                 src = f"docs/media/{name}/front.svg"
             parts.append(f'<a href="skills/{name}/"><img src="{src}" width="{GALLERY_W}" '
-                         f'alt="{escape(title)}"></a>')
-        cells.append('<td valign="top" align="center">\n' + "<br>\n".join(parts) + "\n</td>")
+                         f'align="top" alt="{escape(title)}"></a>')
+        # align=top + <br> with no whitespace stacks cards flush (measured on github.com);
+        # GitHub's own table-cell padding sets the column gap.
+        cells.append('<td valign="top" align="center">' + "<br>".join(parts) + "</td>")
     block = (f"{GALLERY_START}\n<table>\n<tr>\n" + "\n".join(cells)
              + f"\n</tr>\n</table>\n{GALLERY_END}")
     start, end = text.index(GALLERY_START), text.index(GALLERY_END) + len(GALLERY_END)
