@@ -3,6 +3,10 @@
   <img src="../../docs/media/napkin/back.svg" alt="Napkin card back: writes the question down first, then builds a tiny terminal app to drive a state model, or several radically different UI variants on one route. The answer is saved; the code is deleted" width="48%">
 </p>
 
+<!-- skill-family:start -->
+> **Part of [Whiteboard](../whiteboard/).** It works alongside Whiteboard and can also be installed on its own.
+<!-- skill-family:end -->
+
 > **TL;DR:** When you can't decide until you see it or drive it, Claude builds a disposable sketch that answers one written question. The answer gets saved somewhere permanent; the code gets thrown away.
 
 ## Say this

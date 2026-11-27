@@ -26,5 +26,6 @@
   ],
   "illustration": {
     "art": "illustration-v2.webp"
-  }
+  },
+  "parent": "whiteboard"
 }

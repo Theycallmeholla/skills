@@ -3,6 +3,10 @@
   <img src="../../docs/media/test-suggest/back.svg" alt="Test Suggest card back: reads one file or one assessment finding, learns how your repo writes tests, skips what is already covered, and ranks concrete cases from must-have to nice-to-have. Stops before writing code" width="48%">
 </p>
 
+<!-- skill-family:start -->
+> **Part of [Test Assessment](../test-assessment/).** It works alongside Test Assessment and can also be installed on its own.
+<!-- skill-family:end -->
+
 > **TL;DR:** Name a file, or paste a gap from a test assessment. You get a ranked list of specific tests to write, each with its setup, what to call, what to check and why it matters, detailed enough to write without rereading the code.
 
 ## Say this

@@ -3,6 +3,10 @@
   <img src="../../docs/media/connotation-cop/back.svg" alt="Connotation Cop card back: calls out words that clash with your glossary or mean two things, settles them one question at a time, and books each term in CONTEXT.md on the spot. Big decisions that clear a strict bar become ADRs" width="48%">
 </p>
 
+<!-- skill-family:start -->
+> **Part of [Whiteboard](../whiteboard/).** It works alongside Whiteboard and can also be installed on its own.
+<!-- skill-family:end -->
+
 > **TL;DR:** Half of every design argument is two people using one word for two things. This catches it, settles the word with you, writes it into a glossary right away, and records the big, hard-to-undo decisions as short ADRs.
 
 ## Say this
