@@ -216,7 +216,7 @@ def load(skill_dir):
     order = index_order()
     if skill_dir.name not in order:
         raise SystemExit(f"{skill_dir.name}: not in the README skill index")
-    data["no"] = order.index(skill_dir.name) + 1
+    data["no"] = card_labels()[skill_dir.name]
     if "illustration" not in data and (skill_dir / "illustration.webp").exists():
         data["illustration"] = {"art": "illustration.webp"}
     label, panel, accent, tint = CATEGORIES[data["category"]]
@@ -243,7 +243,7 @@ def frame(d, label):
         t(PAD, 128, "SKILL COLLECTION", "Card600", 40, CREAM, spacing=10),
         f'<rect x="{PAD}" y="160" width="90" height="9" fill="{accent}"/>',
         t(PAD + 112, 172, d["set"].upper(), "Card600", 23, CREAM, spacing=7, opacity=0.85),
-        t(944, 192, f'{d["no"]:02d}', "Card900i", 124, panel, "end"),
+        t(944, 192, d["no"], "Card900i", 124, panel, "end"),
     ]
 
 
@@ -417,7 +417,7 @@ def build_art_front(skill_dir, d):
         f'<defs><clipPath id="card"><rect width="{W}" height="{H}" rx="64"/></clipPath></defs>',
         f'<image clip-path="url(#card)" href="data:image/webp;base64,{data}" width="{W}" height="{H}"/>',
         f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{spec["patch"]}"/>',
-        t(x + w - 6, y + h - 22, f'{d["no"]:02d}', "Card900i", spec.get("number_size", 104),
+        t(x + w - 6, y + h - 22, d["no"], "Card900i", spec.get("number_size", 104),
           spec["number_color"], "end"),
         "</svg>",
     ])
@@ -471,6 +471,26 @@ def families():
                 raise SystemExit(f"{name}: parent '{parent}' is not a skill in the README index")
             kids.setdefault(parent, []).append(name)
     return order, kids
+
+
+_labels = None
+
+
+def card_labels():
+    """Card numbers: main skills 01, 02, ... in index order; a sub-skill takes its
+    parent's number plus a letter (05a, 05b, ...)."""
+    global _labels
+    if _labels is None:
+        order, kids = families()
+        _labels, n = {}, 0
+        for name in order:
+            if _card(name).get("parent"):
+                continue
+            n += 1
+            _labels[name] = f"{n:02d}"
+            for i, kid in enumerate(kids.get(name, [])):
+                _labels[kid] = f"{n:02d}{chr(97 + i)}"
+    return _labels
 
 
 def _thumb(name, width, href_prefix="", src_prefix=""):
