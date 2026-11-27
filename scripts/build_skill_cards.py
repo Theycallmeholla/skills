@@ -250,6 +250,56 @@ def build_back(skill_dir, d):
     return "\n".join(out)
 
 
+def build_illustrated_front(skill_dir, d):
+    """A text-free illustration set behind the card: header, number and title band sit on top."""
+    panel, accent = d["_panel"], d["_accent"]
+    spec = d["illustration"]
+    ext = Path(spec["art"]).suffix.lstrip(".").replace("jpg", "jpeg")
+    data = base64.b64encode((skill_dir / spec["art"]).read_bytes()).decode()
+    align = spec.get("align", "xMidYMid")
+    out = frame(d, f'{d["title"]}: {d.get("tagline", d["ability"])}')
+    art = [
+        '<defs>'
+        f'<linearGradient id="topfade" x1="0" y1="0" x2="0" y2="1">'
+        f'<stop offset="0" stop-color="{panel}" stop-opacity=".92"/>'
+        f'<stop offset="1" stop-color="{panel}" stop-opacity="0"/></linearGradient>'
+        f'<linearGradient id="lowfade" x1="0" y1="0" x2="0" y2="1">'
+        f'<stop offset="0" stop-color="{panel}" stop-opacity="0"/>'
+        f'<stop offset="1" stop-color="{panel}" stop-opacity=".85"/></linearGradient>'
+        '</defs>',
+        f'<image clip-path="url(#panel)" href="data:image/{ext};base64,{data}" '
+        f'x="32" y="32" width="960" height="1180" preserveAspectRatio="{align} slice"/>',
+        f'<rect clip-path="url(#panel)" x="32" y="32" width="960" height="270" fill="url(#topfade)"/>',
+        f'<rect x="32" y="900" width="960" height="250" fill="url(#lowfade)"/>',
+        # Title band with a slanted top edge, drawn over the art.
+        f'<polygon clip-path="url(#panel)" points="32,1150 992,1060 992,1504 32,1504" fill="{panel}"/>',
+        f'<polygon clip-path="url(#panel)" points="32,1150 992,1060 992,1070 32,1160" fill="{accent}"/>',
+    ]
+    out[4:4] = art   # after the panel background, before the accent slice and header text
+
+    # Lay out bottom-up: tagline ends above the accent bar, title sits on top of it,
+    # and both shrink until the title clears the band's slanted edge.
+    tagline = d.get("tagline", d["type"])
+    for title_max, tag_size in ((104, 34), (92, 32), (84, 30), (76, 28)):
+        size, lines = fit_lines(d["title"].upper(), "Card800", title_max, TEXT_W, 2)
+        tag_lines = wrap(tagline, "Card500", tag_size, TEXT_W)[:2]
+        tag_top = 1412 - (len(tag_lines) - 1) * tag_size * 1.35
+        first_baseline = tag_top - tag_size * 1.5 - (len(lines) - 1) * size * 1.02
+        if first_baseline - size * 0.75 >= 1170:
+            break
+    y = first_baseline
+    for line in lines:
+        out.append(t(PAD - 4, round(y), line, "Card800", size, CREAM))
+        y += size * 1.02
+    y = tag_top
+    for line in tag_lines:
+        out.append(t(PAD, round(y), line, "Card500", tag_size, CREAM, opacity=0.9))
+        y += tag_size * 1.35
+    out.append(f'<rect x="{PAD}" y="1446" width="110" height="10" fill="{accent}"/>')
+    out.append("</svg>")
+    return "\n".join(out)
+
+
 def build_generated_front(skill_dir, d):
     accent, tint = d["_accent"], d["_tint"]
     out = frame(d, f'{d["title"]}: {d.get("tagline", d["ability"])}')
@@ -301,7 +351,12 @@ def build_sources(skill_dir):
 
 def build(skill_dir):
     d = load(skill_dir)
-    front = build_art_front(skill_dir, d) if "front" in d else build_generated_front(skill_dir, d)
+    if "illustration" in d:
+        front = build_illustrated_front(skill_dir, d)
+    elif "front" in d:
+        front = build_art_front(skill_dir, d)
+    else:
+        front = build_generated_front(skill_dir, d)
     (skill_dir / "front.svg").write_text(embed_fonts(front))
     (skill_dir / "back.svg").write_text(embed_fonts(build_back(skill_dir, d)))
     return [skill_dir / "front.svg", skill_dir / "back.svg"] + build_sources(skill_dir)

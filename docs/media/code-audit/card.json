@@ -23,5 +23,13 @@
     ]
   ],
   "set": "Code health",
-  "tagline": "Finds what can hurt you in a codebase and ranks it."
+  "tagline": "Finds what can hurt you in a codebase, ranked.",
+  "palette": {
+    "panel": "#01353A",
+    "accent": "#E8B931",
+    "tint": "#DCEFF1"
+  },
+  "illustration": {
+    "art": "illustration.webp"
+  }
 }

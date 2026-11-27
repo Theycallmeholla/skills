@@ -3,10 +3,33 @@
   "category": "content",
   "set": "Content system",
   "type": "System · 14 commands",
-  "tagline": "Plan / interview / write / publish",
+  "tagline": "Plan, interview, write, publish. Every claim checked.",
   "ability": "A blog system with per-client memory. It plans topics, interviews the author for their real take, verifies every claim, writes, scores the draft for quality and AI tells, revises, and exports into your site.",
   "flavor": "Published under a name means true under that name.",
-  "stats": [["Commands", "14 + help"], ["Rules", "11"], ["Memory", "Per client"], ["Never", "Publishes"]],
-  "palette": {"panel": "#1C1B1A", "accent": "#F25A05", "tint": "#F3EEE6"},
-  "front": {"art": "front-art.webp", "number_box": [836, 58, 142, 112], "patch": "#F25A05", "number_color": "#FAF1E4"}
+  "stats": [
+    [
+      "Commands",
+      "14 + help"
+    ],
+    [
+      "Rules",
+      "11"
+    ],
+    [
+      "Memory",
+      "Per client"
+    ],
+    [
+      "Never",
+      "Publishes"
+    ]
+  ],
+  "palette": {
+    "panel": "#17120E",
+    "accent": "#F46202",
+    "tint": "#F3EEE6"
+  },
+  "illustration": {
+    "art": "illustration.webp"
+  }
 }
