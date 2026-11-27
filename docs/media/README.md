@@ -55,7 +55,7 @@ The card number comes from the skill's position in the main README index.
 | `ability` | The back's main text, the TL;DR |
 | `flavor` | A real line from the skill's `SKILL.md`, never invented |
 | `stats` | Four `[label, value]` pairs; facts from the SKILL.md only |
-| `parent` | Optional: the skill this one is a part of. It then sits under the parent on the card wall, and both pages show the family |
+| `parent` | Optional: the skill this one is a part of. It is left off the README card wall; its card shows on the parent's page instead, and its own page links back |
 | `palette` | Optional `panel`, `accent`, `tint` colours, matched to a hand-made front |
 | `front` | Optional: `art` (file), `number_box` `[x, y, w, h]` for the stamp, `patch` (colour under it), `number_color`, `number_size` |
 
