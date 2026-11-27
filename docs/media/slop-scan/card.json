@@ -25,11 +25,11 @@
     ]
   ],
   "palette": {
-    "panel": "#3E112E",
-    "accent": "#E3B23C",
-    "tint": "#F4DCE6"
+    "panel": "#2B1A10",
+    "accent": "#F2A03D",
+    "tint": "#F4E3D3"
   },
   "illustration": {
-    "art": "illustration.webp"
+    "art": "illustration-pig.webp"
   }
 }
