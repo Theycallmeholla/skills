@@ -1,0 +1,44 @@
+{
+  "title": "Slop Scan",
+  "category": "ux",
+  "set": "Visual audit",
+  "type": "Audit · rendered site",
+  "tagline": "Detects common AI-generated website design patterns and helps remove them from the code.",
+  "ability": "Renders the page, measures every visual AI fingerprint, and gives a verdict from strong to few. Then, only when you say go, removes the fingerprints without swapping in the next cliché.",
+  "flavor": "One tell alone is a trend. The AI look is several landing together.",
+  "stats": [
+    [
+      "In",
+      "URL or folder"
+    ],
+    [
+      "Big tells",
+      "9"
+    ],
+    [
+      "Verdicts",
+      "3"
+    ],
+    [
+      "Out",
+      "Fix order"
+    ]
+  ],
+  "palette": {
+    "panel": "#3F1027",
+    "accent": "#FDBE2A",
+    "tint": "#F4DCE6"
+  },
+  "front": {
+    "art": "front-art.webp",
+    "number_box": [
+      820,
+      48,
+      166,
+      140
+    ],
+    "patch": "#401028",
+    "number_color": "#FDBE2A",
+    "number_size": 112
+  }
+}

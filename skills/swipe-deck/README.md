@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="../../docs/media/swipe-deck/card.svg" alt="Swipe Deck card: turns a vague idea into a 70 to 110 card deck; you swipe until the signal meter fills, then it writes the brief." width="100%">
+  <img src="../../docs/media/swipe-deck/front.svg" alt="Swipe Deck card front: swipe until it knows what you actually want" width="48%">
+  <img src="../../docs/media/swipe-deck/back.svg" alt="Swipe Deck card back: a 70 to 110 card deck you swipe until the signal meter fills, then it writes the brief" width="48%">
 </p>
 
 > **TL;DR:** Instead of a list of questions, you get a deck of statements to swipe. It learns from every swipe, stops when it has stopped being surprised by you, and writes up what you actually want.

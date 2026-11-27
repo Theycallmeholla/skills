@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="How slop-scan reaches a verdict: 0 to 2 fingerprints is No, 3 to 5 is Some, 6 or more is Strong; the example site has 9">
+  <rect x="14" y="14" width="1172" height="492" rx="14" fill="#1D1A16"/>
+  <rect x="4" y="4" width="1172" height="492" rx="14" fill="#F6F1E7" stroke="#1D1A16" stroke-width="3"/>
+  <text x="36" y="56" font-family="Display700" font-size="18" fill="#C96F1A" letter-spacing="3">HOW THE VERDICT IS DECIDED</text>
+  <text x="36" y="96" font-family="Body700" font-size="22" fill="#1D1A16">Count the fingerprints that are present. One alone is a trend; the AI look is several together.</text>
+
+  <!-- scale: 0..12, 80px per step, origin x=60 -->
+  <g stroke="#1D1A16" stroke-width="3">
+    <rect x="60" y="150" width="240" height="70" fill="#E3EFD9"/>
+    <rect x="300" y="150" width="240" height="70" fill="#FBEAD5"/>
+    <rect x="540" y="150" width="560" height="70" fill="#F4C7BF"/>
+  </g>
+  <g font-family="Display900" font-size="28" fill="#1D1A16">
+    <text x="80" y="196">NO · FEW</text>
+    <text x="320" y="196">SOME</text>
+    <text x="560" y="196">YES · STRONG</text>
+  </g>
+  <g font-family="Body700" font-size="16" fill="#1D1A16" text-anchor="middle"><text x="100" y="248">0</text><text x="180" y="248">1</text><text x="260" y="248">2</text><text x="340" y="248">3</text><text x="420" y="248">4</text><text x="500" y="248">5</text><text x="580" y="248">6</text><text x="660" y="248">7</text><text x="740" y="248">8</text><text x="820" y="248">9</text><text x="900" y="248">10</text><text x="980" y="248">11</text><text x="1060" y="248">12+</text></g>
+  <text x="60" y="284" font-family="Body400" font-size="15" fill="#5B544A">fingerprints present</text>
+
+  <!-- example marker at 9 -->
+  <polygon points="820,256 806,274 834,274" fill="#1D1A16"/>
+  <rect x="740" y="272" width="160" height="28" fill="#1D1A16"/>
+  <text x="820" y="292" text-anchor="middle" font-family="Display700" font-size="16" fill="#F6F1E7" letter-spacing="2">EXAMPLE SITE: 9</text>
+
+  <!-- big tells shortcut -->
+  <line x1="36" y1="316" x2="1144" y2="316" stroke="#1D1A16" stroke-width="2"/>
+  <text x="36" y="344" font-family="Display700" font-size="18" fill="#C96F1A" letter-spacing="3">SHORTCUT: THE 9 BIG TELLS</text>
+  <text x="560" y="344" font-family="Body400" font-size="17" fill="#1D1A16">2 of them = Some. 3 or more = Strong, whatever the total.</text>
+  <g font-family="Body700" font-size="16" fill="#1D1A16" stroke-width="2">
+    <rect x="36" y="366" width="200" height="42" fill="#FFFDF8" stroke="#1D1A16"/><text x="52" y="393">Em dashes in copy</text>
+    <rect x="248" y="366" width="244" height="42" fill="#FFFDF8" stroke="#1D1A16"/><text x="264" y="393">Accent word in headings</text>
+    <rect x="504" y="366" width="232" height="42" fill="#FFFDF8" stroke="#1D1A16"/><text x="520" y="393">Gradient text or fills</text>
+    <rect x="748" y="366" width="140" height="42" fill="#FFFDF8" stroke="#1D1A16"/><text x="764" y="393">Glow blobs</text>
+    <rect x="900" y="366" width="244" height="42" fill="#FFFDF8" stroke="#1D1A16"/><text x="916" y="393">Pill and eyebrow overload</text>
+    <rect x="36" y="420" width="250" height="42" fill="#FFFDF8" stroke="#1D1A16"/><text x="52" y="447">Icons in rounded tiles</text>
+    <rect x="298" y="420" width="236" height="42" fill="#FFFDF8" stroke="#1D1A16"/><text x="314" y="447">Repeated 3-card rows</text>
+    <rect x="546" y="420" width="276" height="42" fill="#FFFDF8" stroke="#1D1A16"/><text x="562" y="447">Mechanical spacing rhythm</text>
+    <rect x="834" y="420" width="310" height="42" fill="#FFFDF8" stroke="#1D1A16"/><text x="850" y="447">Centered hero + two buttons</text>
+  </g>
+</svg>

@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-"""Build the trading-card images that illustrate each skill's README.
+"""Build the trading cards (front + back) and example images for each skill's README.
 
-Inputs live in docs/media/<skill>/:
-  card.json       card text and stats (see docs/media/README.md for the fields)
-  art.svg         the art-window illustration, drawn on a 420x468 canvas
-  *.src.svg       any other image (example output, charts); text uses the card fonts
+Inputs live in docs/media/<skill>/ (field reference: docs/media/README.md):
+  card.json        card text, stats, colours, and where the front comes from
+  front-art.webp   a hand-made front (optional); the card number is stamped onto it
+  art.svg          illustration for a generated front, 420x468 canvas (used when no front-art)
+  *.src.svg        other images (example output, charts) that use the card fonts
 
 Outputs, written next to the inputs:
-  card.svg        the finished card
-  <name>.svg      each *.src.svg with its fonts embedded
+  front.svg, back.svg, and <name>.svg for each *.src.svg
 
-Fonts are subset to the characters each file uses and embedded as base64 WOFF2, because
-GitHub shows README images through <img>, which cannot load external fonts.
+Fonts are subset to the characters each file uses and embedded as base64 WOFF2, and
+front art is embedded as base64 WebP, because GitHub shows README images through <img>,
+which cannot load anything external.
 
 Dev-only dependency:  pip install fonttools brotli
 Usage:  python3 scripts/build_skill_cards.py [skill ...]
@@ -37,21 +38,28 @@ FONTS = {  # family name used in SVGs -> (file, weight, style)
     "Body400": ("atkinson-hyperlegible-latin-400-normal.woff2", 400, "normal"),
     "Body700": ("atkinson-hyperlegible-latin-700-normal.woff2", 700, "normal"),
     "BodyItalic": ("atkinson-hyperlegible-latin-400-italic.woff2", 400, "italic"),
+    "Card500": ("montserrat-latin-500-normal.woff2", 500, "normal"),
+    "Card500i": ("montserrat-latin-500-italic.woff2", 500, "italic"),
+    "Card600": ("montserrat-latin-600-normal.woff2", 600, "normal"),
+    "Card800": ("montserrat-latin-800-normal.woff2", 800, "normal"),
+    "Card900i": ("montserrat-latin-900-italic.woff2", 900, "italic"),
 }
 
-INK = "#1D1A16"
-INK_SOFT = "#5B544A"
-STOCK = "#F6F1E7"
+CREAM = "#F6EFE3"
 
-# Category colours: frame (strong) and tint (art window, type line).
+# Category -> (label, dark panel, accent, light tint for generated art windows).
 CATEGORIES = {
-    "discovery": ("Requirements &amp; discovery", "#6B4FD8", "#E9E3FB"),
-    "code": ("Code quality &amp; testing", "#0F7C8C", "#DCEFF1"),
-    "ux": ("Site, UX &amp; conversion", "#C96F1A", "#FBEAD5"),
-    "docs": ("Documentation", "#2F8F4E", "#DFF1E3"),
-    "content": ("Content", "#C2367A", "#F9DFEA"),
-    "meta": ("Prompting, workflow &amp; repo ops", "#3E4C66", "#E3E7EE"),
+    "discovery": ("Requirements & discovery", "#2A1D5A", "#FFC94A", "#E9E3FB"),
+    "code": ("Code quality & testing", "#0D3940", "#FFB627", "#DCEFF1"),
+    "ux": ("Site, UX & conversion", "#3D2410", "#FF9F43", "#FBEAD5"),
+    "docs": ("Documentation", "#12371F", "#8BE3A8", "#DFF1E3"),
+    "content": ("Content", "#3B1630", "#F2C230", "#F9DFEA"),
+    "meta": ("Prompting, workflow & repo ops", "#1D2433", "#9DB4E0", "#E3E7EE"),
 }
+
+W, H = 1024, 1536
+PAD = 84                       # text inset from the card edge
+TEXT_W = W - 2 * PAD
 
 _fonts = {}
 
@@ -74,11 +82,11 @@ def text_width(s, family, size, spacing=0.0):
     return total * size / upm + spacing * max(len(s) - 1, 0)
 
 
-def wrap(s, family, size, width):
+def wrap(s, family, size, width, spacing=0.0):
     lines, line = [], ""
     for word in s.split():
         trial = f"{line} {word}".strip()
-        if line and text_width(trial, family, size) > width:
+        if line and text_width(trial, family, size, spacing) > width:
             lines.append(line)
             line = word
         else:
@@ -88,11 +96,15 @@ def wrap(s, family, size, width):
     return lines
 
 
-def fit_size(s, family, start, width, spacing=0.0, floor=10):
+def fit_lines(s, family, start, width, max_lines, spacing=0.0, floor=24):
+    """Largest size (<= start) at which s wraps into max_lines lines that fit width."""
     size = start
-    while size > floor and text_width(s, family, size, spacing) > width:
-        size -= 1
-    return size
+    while size > floor:
+        lines = wrap(s, family, size, width, spacing)
+        if len(lines) <= max_lines and all(text_width(l, family, size, spacing) <= width for l in lines):
+            return size, lines
+        size -= 2
+    return size, wrap(s, family, size, width, spacing)[:max_lines]
 
 
 def subset_b64(family, chars):
@@ -111,10 +123,11 @@ def subset_b64(family, chars):
 
 def embed_fonts(svg):
     """Insert @font-face rules for every font family the SVG mentions."""
-    used = [fam for fam in FONTS if re.search(rf"font-family=\"{fam}\"|font-family:\s*{fam}", svg)]
+    used = [fam for fam in FONTS if re.search(rf"font-family=\"{fam}\"|font-family:\s*{fam}\b", svg)]
     if not used:
         return svg
-    plain = re.sub(r"<[^>]+>", " ", svg)
+    plain = re.sub(r"<image[^>]*>", " ", svg)
+    plain = re.sub(r"<[^>]+>", " ", plain)
     plain = (plain.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
              .replace("&quot;", '"').replace("&#39;", "'"))
     rules = []
@@ -136,10 +149,11 @@ def strip_svg_wrapper(art):
     return inner.group(1)
 
 
-def t(x, y, s, family, size, fill=INK, anchor="start", spacing=0, extra=""):
+def t(x, y, s, family, size, fill, anchor="start", spacing=0, opacity=None):
     ls = f' letter-spacing="{spacing}"' if spacing else ""
+    op = f' fill-opacity="{opacity}"' if opacity is not None else ""
     return (f'<text x="{x}" y="{y}" font-family="{family}" font-size="{size}" fill="{fill}"'
-            f' text-anchor="{anchor}"{ls}{extra}>{escape(s)}</text>')
+            f' text-anchor="{anchor}"{ls}{op}>{escape(s)}</text>')
 
 
 def index_order():
@@ -149,78 +163,131 @@ def index_order():
     return re.findall(r"^- \*\*([a-z0-9-]+)\*\*", section, re.M)
 
 
-def build_card(skill_dir):
+def load(skill_dir):
     data = json.loads((skill_dir / "card.json").read_text())
     order = index_order()
     if skill_dir.name not in order:
         raise SystemExit(f"{skill_dir.name}: not in the README skill index")
-    data["no"], data["of"] = order.index(skill_dir.name) + 1, len(order)
-    cat_label, frame, tint = CATEGORIES[data["category"]]
+    data["no"] = order.index(skill_dir.name) + 1
+    label, panel, accent, tint = CATEGORIES[data["category"]]
+    pal = data.get("palette", {})
+    data["_panel"] = pal.get("panel", panel)
+    data["_accent"] = pal.get("accent", accent)
+    data["_tint"] = pal.get("tint", tint)
+    data.setdefault("set", label)
+    return data
+
+
+def frame(d, label):
+    """Cream card border, coloured panel, header, accent slice with the card number."""
+    panel, accent = d["_panel"], d["_accent"]
+    return [
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" '
+        f'role="img" aria-label="{escape(label)}">',
+        '<defs><clipPath id="panel"><rect x="32" y="32" width="960" height="1472" rx="44"/></clipPath></defs>',
+        f'<rect width="{W}" height="{H}" rx="64" fill="{CREAM}"/>',
+        f'<rect x="32" y="32" width="960" height="1472" rx="44" fill="{panel}"/>',
+        f'<polygon clip-path="url(#panel)" points="760,32 1000,32 1000,236 676,236" fill="{accent}"/>',
+        t(PAD, 128, "SKILL COLLECTION", "Card600", 40, CREAM, spacing=10),
+        f'<rect x="{PAD}" y="160" width="90" height="9" fill="{accent}"/>',
+        t(PAD + 112, 172, d["set"].upper(), "Card600", 23, CREAM, spacing=7, opacity=0.85),
+        t(944, 192, f'{d["no"]:02d}', "Card900i", 124, panel, "end"),
+    ]
+
+
+def build_back(skill_dir, d):
+    accent = d["_accent"]
+    out = frame(d, f'{d["title"]}, card back: {d["ability"]}')
+
+    size, lines = fit_lines(d["title"].upper(), "Card800", 96, TEXT_W, 2)
+    y = 300 + size * 0.8
+    for line in lines:
+        out.append(t(PAD - 4, round(y), line, "Card800", size, CREAM))
+        y += size * 1.04
+    y += 18
+    out.append(t(PAD, round(y), d["type"].upper(), "Card600", 27, accent, spacing=4))
+    y += 40
+    out.append(f'<rect x="{PAD}" y="{round(y)}" width="{TEXT_W}" height="2" fill="{CREAM}" fill-opacity=".25"/>')
+
+    # Ability + flavor: the largest size that still ends above the stat grid.
+    flavor = f'“{d["flavor"]}”' if d.get("flavor") else ""
+    start = y
+    for size in range(48, 33, -2):
+        a_lines = wrap(d["ability"], "Card500", size, TEXT_W)
+        f_size = round(size * 0.8)
+        f_lines = wrap(flavor, "Card500i", f_size, TEXT_W) if flavor else []
+        end = (start + size * 1.9 + len(a_lines) * size * 1.45
+               + (24 + len(f_lines) * f_size * 1.42 if f_lines else 0))
+        if end <= 1090:
+            break
+    y = start + size * 1.9
+    for line in a_lines:
+        out.append(t(PAD, round(y), line, "Card500", size, CREAM))
+        y += size * 1.45
+    if f_lines:
+        y += 24
+        for line in f_lines:
+            out.append(t(PAD, round(y), line, "Card500i", f_size, CREAM, opacity=0.7))
+            y += f_size * 1.42
+    if y > 1110:
+        raise SystemExit(f"{skill_dir.name}: back text runs into the stats; shorten ability/flavor")
+
+    # 2x2 stat grid.
+    cell_w, top = TEXT_W / 2, 1140
+    out.append(f'<rect x="{PAD}" y="{top - 30}" width="{TEXT_W}" height="2" fill="{CREAM}" fill-opacity=".25"/>')
+    for i, (label, value) in enumerate(d["stats"][:4]):
+        cx = PAD + (i % 2) * cell_w + (24 if i % 2 else 0)
+        cy = top + (i // 2) * 150
+        out.append(t(cx, cy + 22, label.upper(), "Card600", 24, accent, spacing=5))
+        vsize = 60
+        while vsize > 30 and text_width(value.upper(), "Card800", vsize) > cell_w - 40:
+            vsize -= 2
+        out.append(t(cx, cy + 90, value.upper(), "Card800", vsize, CREAM))
+    out.append(f'<rect x="{PAD + cell_w}" y="{top - 6}" width="2" height="270" fill="{CREAM}" fill-opacity=".25"/>')
+    out.append(f'<rect x="{PAD}" y="1446" width="110" height="10" fill="{accent}"/>')
+    out.append(t(940, 1456, "BACK", "Card600", 22, CREAM, "end", spacing=8, opacity=0.5))
+    out.append("</svg>")
+    return "\n".join(out)
+
+
+def build_generated_front(skill_dir, d):
+    accent, tint = d["_accent"], d["_tint"]
+    out = frame(d, f'{d["title"]}: {d.get("tagline", d["ability"])}')
     art_path = skill_dir / "art.svg"
     art = strip_svg_wrapper(art_path.read_text()) if art_path.exists() else ""
+    out.append(f'<rect x="{PAD}" y="256" width="{TEXT_W}" height="820" rx="28" fill="{tint}"/>')
+    out.append(f'<svg x="{PAD}" y="256" width="{TEXT_W}" height="820" viewBox="0 0 420 468" '
+               f'preserveAspectRatio="xMidYMid meet">{art}</svg>')
 
-    W, H = 1200, 560
-    col_x, col_w = 500, 640
-    out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W + 12} {H + 12}" '
-           f'width="{W + 12}" height="{H + 12}" role="img" '
-           f'aria-label="{escape(data["title"])}: {escape(data["ability"])}">']
-    # Card body: offset print shadow, coloured frame, card stock.
-    out.append(f'<rect x="22" y="22" width="{W - 10}" height="{H - 10}" rx="30" fill="{INK}"/>')
-    out.append(f'<rect x="10" y="10" width="{W - 10}" height="{H - 10}" rx="30" fill="{frame}"/>')
-    out.append(f'<rect x="26" y="26" width="{W - 42}" height="{H - 42}" rx="18" fill="{STOCK}"/>')
-
-    # Art window.
-    out.append(f'<rect x="46" y="46" width="420" height="468" rx="10" fill="{tint}"/>')
-    out.append(f'<svg x="46" y="46" width="420" height="468" viewBox="0 0 420 468" overflow="hidden">'
-               f'{art}</svg>')
-    out.append(f'<rect x="46" y="46" width="420" height="468" rx="10" fill="none" '
-               f'stroke="{INK}" stroke-width="2"/>')
-
-    # Header: category stamp + card number.
-    out.append(t(col_x, 84, cat_label.replace("&amp;", "&").upper(), "Display700", 20, frame, spacing=3))
-    out.append(t(col_x + col_w, 84, f'No. {data["no"]:02d} / {data["of"]}', "Display700", 20,
-                 INK_SOFT, "end", spacing=2))
-
-    # Name, shrunk to fit the column.
-    name = data["title"].upper()
-    size = fit_size(name, "Display900", 104, col_w, spacing=1)
-    out.append(t(col_x - 3, 180, name, "Display900", size, INK, spacing=1))
-
-    # Type line.
-    out.append(f'<rect x="{col_x}" y="200" width="{col_w}" height="42" fill="{tint}"/>')
-    out.append(f'<rect x="{col_x}" y="200" width="6" height="42" fill="{frame}"/>')
-    out.append(t(col_x + 20, 228, data["type"], "Body700", 20, INK))
-
-    # Ability text (the TL;DR).
-    y = 288
-    for line in wrap(data["ability"], "Body400", 25, col_w)[:4]:
-        out.append(t(col_x, y, line, "Body400", 25, INK))
-        y += 34
-
-    # Flavor text: a real line from the SKILL.md.
-    if data.get("flavor"):
-        y += 8
-        for line in wrap(f'“{data["flavor"]}”', "BodyItalic", 19, col_w)[:2]:
-            out.append(t(col_x, y, line, "BodyItalic", 19, INK_SOFT))
-            y += 26
-
-    # Stat bar.
-    stats = data["stats"][:4]
-    out.append(f'<line x1="{col_x}" y1="430" x2="{col_x + col_w}" y2="430" stroke="{INK}" stroke-width="2"/>')
-    cell = col_w / len(stats)
-    for i, (label, value) in enumerate(stats):
-        cx = col_x + i * cell
-        if i:
-            out.append(f'<line x1="{cx}" y1="446" x2="{cx}" y2="510" stroke="{INK}" stroke-opacity=".25"/>')
-        pad = 0 if i == 0 else 16
-        out.append(t(cx + pad, 462, label.upper(), "Display700", 17, frame, spacing=2))
-        vsize = fit_size(value.upper(), "Display900", 40, cell - pad - 10, spacing=0.5)
-        out.append(t(cx + pad, 506, value.upper(), "Display900", vsize, INK, spacing=0.5))
-
+    size, lines = fit_lines(d["title"].upper(), "Card800", 104, TEXT_W, 2)
+    y = 1130 + size * 0.85
+    for line in lines:
+        out.append(t(PAD - 4, round(y), line, "Card800", size, CREAM))
+        y += size * 1.02
+    y += 22
+    for line in wrap(d.get("tagline", d["type"]), "Card500", 40, TEXT_W)[:3]:
+        out.append(t(PAD, round(y), line, "Card500", 40, CREAM, opacity=0.9))
+        y += 54
+    out.append(f'<rect x="{PAD}" y="1446" width="110" height="10" fill="{accent}"/>')
     out.append("</svg>")
-    svg = embed_fonts("\n".join(out))
-    (skill_dir / "card.svg").write_text(svg)
-    return skill_dir / "card.svg"
+    return "\n".join(out)
+
+
+def build_art_front(skill_dir, d):
+    """A hand-made front, with the card number stamped into its corner."""
+    spec = d["front"]
+    data = base64.b64encode((skill_dir / spec["art"]).read_bytes()).decode()
+    x, y, w, h = spec["number_box"]
+    return "\n".join([
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" '
+        f'role="img" aria-label="{escape(d["title"])}: {escape(d.get("tagline", d["ability"]))}">',
+        f'<defs><clipPath id="card"><rect width="{W}" height="{H}" rx="64"/></clipPath></defs>',
+        f'<image clip-path="url(#card)" href="data:image/webp;base64,{data}" width="{W}" height="{H}"/>',
+        f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{spec["patch"]}"/>',
+        t(x + w - 6, y + h - 22, f'{d["no"]:02d}', "Card900i", spec.get("number_size", 104),
+          spec["number_color"], "end"),
+        "</svg>",
+    ])
 
 
 def build_sources(skill_dir):
@@ -232,6 +299,14 @@ def build_sources(skill_dir):
     return built
 
 
+def build(skill_dir):
+    d = load(skill_dir)
+    front = build_art_front(skill_dir, d) if "front" in d else build_generated_front(skill_dir, d)
+    (skill_dir / "front.svg").write_text(embed_fonts(front))
+    (skill_dir / "back.svg").write_text(embed_fonts(build_back(skill_dir, d)))
+    return [skill_dir / "front.svg", skill_dir / "back.svg"] + build_sources(skill_dir)
+
+
 def main(argv):
     names = argv or sorted(p.name for p in MEDIA.iterdir()
                            if p.is_dir() and (p / "card.json").exists())
@@ -239,8 +314,7 @@ def main(argv):
         skill_dir = MEDIA / name
         if not (skill_dir / "card.json").exists():
             raise SystemExit(f"{name}: no docs/media/{name}/card.json")
-        outputs = [build_card(skill_dir)] + build_sources(skill_dir)
-        for path in outputs:
+        for path in build(skill_dir):
             print(f"{path.relative_to(ROOT)}  {path.stat().st_size // 1024} KB")
 
 

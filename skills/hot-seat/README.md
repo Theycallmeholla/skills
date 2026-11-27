@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="../../docs/media/hot-seat/card.svg" alt="Hot Seat card: grills your plan one question per message, each with its own recommended answer, until you both hold the same picture. Ends with a decision log." width="100%">
+  <img src="../../docs/media/hot-seat/front.svg" alt="Hot Seat card front: one question at a time until your plan holds up" width="48%">
+  <img src="../../docs/media/hot-seat/back.svg" alt="Hot Seat card back: one question per message, each with a recommended answer, ending in a decision log" width="48%">
 </p>
 
 > **TL;DR:** Drop a plan. Claude asks one question at a time, each with the answer it would pick, until it could state your whole plan and you'd sign it unchanged. You leave with a short decision log.

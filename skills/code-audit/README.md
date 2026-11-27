@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="../../docs/media/code-audit/card.svg" alt="Code Audit card: sweeps an entire repo in nine phases, pins every finding to a file and line, ranks them Critical to Info, and hands you a fix plan in priority order." width="100%">
+  <img src="../../docs/media/code-audit/front.svg" alt="Code Audit card front: finds what can hurt you in a codebase and ranks it" width="48%">
+  <img src="../../docs/media/code-audit/back.svg" alt="Code Audit card back: sweeps an entire repo in nine phases, ranks findings Critical to Info, and hands you a fix plan in priority order" width="48%">
 </p>
 
 > **TL;DR:** Point it at a repo. You get a report that ranks every problem by how much it can hurt you, with the file and line for each one and a plan for what to fix first.
