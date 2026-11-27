@@ -105,7 +105,6 @@ Every command ends with a `### Next` block: one exact command to type, the reaso
 ## Plays well with
 
 - **[whiteboard](../whiteboard/)**: when a change isn't shaped enough for `gameplan` yet, it belongs on a whiteboard first
-- **[skill-system-architect](../skill-system-architect/)**: designs a skill system; this keeps the repo it runs in honest
 
 ## Not for
 
