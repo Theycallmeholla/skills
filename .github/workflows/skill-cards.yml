@@ -3,7 +3,7 @@ name: Skill cards
 # On every push to main that touches skills or their card data:
 #   1. generate card art for any skill that has a prompt but no picture yet
 #      (docs/media/prompts.json -> docs/media/<skill>/illustration.webp), at most MAX_NEW per run
-#   2. rebuild every card front and back (numbers follow the README index)
+#   2. rebuild every card front, back and gallery thumbnail, plus the README card wall
 #   3. commit the results back to main
 # The bot commit says [skip ci], so it does not trigger this workflow again.
 
@@ -98,7 +98,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/media
+          git add docs/media README.md
           if git diff --cached --quiet; then
             echo "Cards already up to date."
           else

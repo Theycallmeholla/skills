@@ -302,12 +302,30 @@ def build_back(skill_dir, d):
     return "\n".join(out)
 
 
-def build_illustrated_front(skill_dir, d):
+THUMB_W = 360   # art width inside gallery thumbnails
+
+
+def _thumb_art(path):
+    """First frame of the art, shrunk for the README gallery (needs Pillow)."""
+    from PIL import Image
+
+    with Image.open(path) as im:
+        frame0 = im.convert("RGB")
+    frame0.thumbnail((THUMB_W, THUMB_W * 3 // 2))
+    buf = io.BytesIO()
+    frame0.save(buf, "WEBP", quality=68)
+    return "webp", base64.b64encode(buf.getvalue()).decode()
+
+
+def build_illustrated_front(skill_dir, d, thumb=False):
     """A text-free illustration set behind the card: header, number and title band sit on top."""
     panel, accent = d["_panel"], d["_accent"]
     spec = d["illustration"]
-    ext = Path(spec["art"]).suffix.lstrip(".").replace("jpg", "jpeg")
-    data = base64.b64encode((skill_dir / spec["art"]).read_bytes()).decode()
+    if thumb:
+        ext, data = _thumb_art(skill_dir / spec["art"])
+    else:
+        ext = Path(spec["art"]).suffix.lstrip(".").replace("jpg", "jpeg")
+        data = base64.b64encode((skill_dir / spec["art"]).read_bytes()).decode()
     align = spec.get("align", "xMidYMid")
     out = frame(d, f'{d["title"]}: {d.get("tagline", d["ability"])}')
     art = [
@@ -409,9 +427,52 @@ def build(skill_dir):
         front = build_art_front(skill_dir, d)
     else:
         front = build_generated_front(skill_dir, d)
-    (skill_dir / "front.svg").write_text(embed_fonts(front))
+    front_svg = embed_fonts(front)
+    (skill_dir / "front.svg").write_text(front_svg)
+    thumb_svg = embed_fonts(build_illustrated_front(skill_dir, d, thumb=True)) \
+        if "illustration" in d else front_svg
+    (skill_dir / "thumb.svg").write_text(thumb_svg)
     (skill_dir / "back.svg").write_text(embed_fonts(build_back(skill_dir, d)))
-    return [skill_dir / "front.svg", skill_dir / "back.svg"] + build_sources(skill_dir)
+    return ([skill_dir / "front.svg", skill_dir / "thumb.svg", skill_dir / "back.svg"]
+            + build_sources(skill_dir))
+
+
+GALLERY_START = "<!-- skill-gallery:start -->"
+GALLERY_END = "<!-- skill-gallery:end -->"
+GALLERY_COLS, GALLERY_W = 4, 180
+
+
+def write_gallery():
+    """Staggered card wall in the root README, between the gallery markers, in index order."""
+    readme = ROOT / "README.md"
+    text = readme.read_text()
+    if GALLERY_START not in text or GALLERY_END not in text:
+        return False
+    columns = [[] for _ in range(GALLERY_COLS)]
+    for i, name in enumerate(index_order()):
+        columns[i % GALLERY_COLS].append(name)
+    cells = []
+    for c, names in enumerate(columns):
+        parts = []
+        if c % 2:   # every other column starts half a card lower
+            parts.append(f'<img src="docs/media/_spacer.svg" width="{GALLERY_W}" '
+                         f'height="{GALLERY_W * 3 // 4}" alt="">')
+        for name in names:
+            card = MEDIA / name / "card.json"
+            title = json.loads(card.read_text())["title"] if card.exists() else name
+            src = f"docs/media/{name}/thumb.svg"
+            if not (MEDIA / name / "thumb.svg").exists():
+                src = f"docs/media/{name}/front.svg"
+            parts.append(f'<a href="skills/{name}/"><img src="{src}" width="{GALLERY_W}" '
+                         f'alt="{escape(title)}"></a>')
+        cells.append('<td valign="top" align="center">\n' + "<br>\n".join(parts) + "\n</td>")
+    block = (f"{GALLERY_START}\n<table>\n<tr>\n" + "\n".join(cells)
+             + f"\n</tr>\n</table>\n{GALLERY_END}")
+    start, end = text.index(GALLERY_START), text.index(GALLERY_END) + len(GALLERY_END)
+    new = text[:start] + block + text[end:]
+    if new != text:
+        readme.write_text(new)
+    return True
 
 
 def main(argv):
@@ -423,6 +484,8 @@ def main(argv):
             raise SystemExit(f"{name}: no docs/media/{name}/card.json")
         for path in build(skill_dir):
             print(f"{path.relative_to(ROOT)}  {path.stat().st_size // 1024} KB")
+    if write_gallery():
+        print("README.md gallery updated")
 
 
 if __name__ == "__main__":
