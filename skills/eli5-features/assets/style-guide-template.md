@@ -8,7 +8,7 @@ The skill reads this file every time it runs. Defaults are below — change what
 
 ## Product
 
-**Product name:** [fill in — e.g., "Cursive ASAP Ticketing"]
+**Product name:** [fill in — e.g., "Acme Help Desk"]
 
 **Who reads these docs:** [e.g., "operations team and clients using the ticketing portal", "small business owners using our app"]
 
