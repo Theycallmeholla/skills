@@ -168,6 +168,26 @@ def check_readme(root, skills):
 CARD_KEYS = ("title", "category", "set", "type", "tagline", "ability", "flavor", "stats")
 
 
+def _card_parent(root, name):
+    import json
+    try:
+        with open(os.path.join(root, "docs", "media", name, "card.json"), encoding="utf-8") as fh:
+            return json.load(fh).get("parent")
+    except (OSError, ValueError):
+        return None
+
+
+def _card_categories(root):
+    """Category keys from the CATEGORIES table in scripts/build_skill_cards.py."""
+    try:
+        with open(os.path.join(root, "scripts", "build_skill_cards.py"), encoding="utf-8") as fh:
+            src = fh.read()
+    except OSError:
+        return set()
+    block = re.search(r"^CATEGORIES = \{(.*?)^\}", src, re.S | re.M)
+    return set(re.findall(r'^\s+"(\w+)": \(', block.group(1), re.M)) if block else set()
+
+
 def check_pages(root, skills):
     """Every skill needs its GitHub page, card text and an artwork prompt (docs/media/README.md)."""
     import json
@@ -194,8 +214,19 @@ def check_pages(root, skills):
                 if missing:
                     err(name, f"card.json missing: {', '.join(missing)}")
                 parent = data.get("parent")
-                if parent and parent not in skills:
+                if parent == name:
+                    err(name, "card.json parent points at itself")
+                elif parent and parent not in skills:
                     err(name, f"card.json parent '{parent}' is not a skill in this repo")
+                elif parent and _card_parent(root, parent):
+                    err(name, f"card.json parent '{parent}' is itself a sub-skill; nest one level only")
+                cats = _card_categories(root)
+                if cats and data.get("category") not in cats:
+                    err(name, f"card.json category '{data.get('category')}' is not one of: {', '.join(sorted(cats))}")
+                for key in ("illustration", "front"):
+                    art = (data.get(key) or {}).get("art") if isinstance(data.get(key), dict) else None
+                    if art and not os.path.isfile(os.path.join(root, "docs", "media", name, art)):
+                        err(name, f"card.json {key}.art '{art}' does not exist in docs/media/{name}/")
         if name not in prompted:
             err(name, "no entry in docs/media/prompts.json (its card art prompt)")
     for stale in sorted(prompted - skills):
