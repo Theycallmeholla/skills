@@ -18,10 +18,10 @@ at a time.
 | | |
 |---|---|
 | **Skills** | 37 |
-| **Bundled reference files** | 80 |
-| **Templates & assets** | 8 |
-| **Executable scripts** | 21 (12 shell, 8 Python, 1 Node) |
-| **Total files** | 143 |
+| **Bundled reference files** | 112 |
+| **Templates & assets** | 11 |
+| **Executable scripts** | 31 (15 Python, 14 shell, 2 Node) |
+| **Total files** | 234 |
 | **Enforced in CI** | spec validator, secret scan, `shellcheck`, Playwright regression suite |
 | **License** | MIT |
 
@@ -29,17 +29,19 @@ at a time.
 
 ## The deck
 
-Every skill is a card. Click one to open its page.
+Every main skill is a card. Click one to open its page.
 
 <!-- skill-gallery:start -->
 <table>
 <tr>
-<td valign="top" align="center"><a href="skills/code-audit/"><img src="docs/media/code-audit/thumb.svg" width="180" align="top" alt="Code Audit"></a><br><a href="skills/whiteboard/"><img src="docs/media/whiteboard/thumb.svg" width="180" align="top" alt="Whiteboard"></a><br><a href="skills/ui-oddity-scan/"><img src="docs/media/ui-oddity-scan/thumb.svg" width="180" align="top" alt="UI Oddity Scan"></a><br><a href="skills/secret-shopper/"><img src="docs/media/secret-shopper/thumb.svg" width="180" align="top" alt="Secret Shopper"></a><br><a href="skills/teach/"><img src="docs/media/teach/thumb.svg" width="180" align="top" alt="Teach"></a><br><a href="skills/case-study-builder/"><img src="docs/media/case-study-builder/thumb.svg" width="180" align="top" alt="Case Study Builder"></a><br><a href="skills/elihadhd/"><img src="docs/media/elihadhd/thumb.svg" width="180" align="top" alt="ELIHADHD"></a></td>
-<td valign="top" align="center"><img src="docs/media/_spacer.svg" width="180" height="135" align="top" alt=""><br><a href="skills/test-assessment/"><img src="docs/media/test-assessment/thumb.svg" width="180" align="top" alt="Test Assessment"></a><br><a href="skills/what-would-bezos-do/"><img src="docs/media/what-would-bezos-do/thumb.svg" width="180" align="top" alt="What Would Bezos Do"></a><br><a href="skills/slop-scan/"><img src="docs/media/slop-scan/thumb.svg" width="180" align="top" alt="Slop Scan"></a><br><a href="skills/gap-scan/"><img src="docs/media/gap-scan/thumb.svg" width="180" align="top" alt="Gap Scan"></a><br><a href="skills/eli5-features/"><img src="docs/media/eli5-features/thumb.svg" width="180" align="top" alt="ELI5 Features"></a><br><a href="skills/nick-saban/"><img src="docs/media/nick-saban/thumb.svg" width="180" align="top" alt="Nick Saban"></a><br><a href="skills/cowork-with-codex/"><img src="docs/media/cowork-with-codex/thumb.svg" width="180" align="top" alt="Cowork With Codex"></a></td>
-<td valign="top" align="center"><a href="skills/prove-it/"><img src="docs/media/prove-it/thumb.svg" width="180" align="top" alt="Prove It"></a><br><a href="skills/website-audit/"><img src="docs/media/website-audit/thumb.svg" width="180" align="top" alt="Website Audit"></a><br><a href="skills/conversion-audit/"><img src="docs/media/conversion-audit/thumb.svg" width="180" align="top" alt="Conversion Audit"></a><br><a href="skills/open-saysai/"><img src="docs/media/open-saysai/thumb.svg" width="180" align="top" alt="Open SaysAI"></a><br><a href="skills/walkthrough-gif/"><img src="docs/media/walkthrough-gif/thumb.svg" width="180" align="top" alt="Walkthrough GIF"></a><br><a href="skills/genie-proof-prompts/"><img src="docs/media/genie-proof-prompts/thumb.svg" width="180" align="top" alt="Genie-Proof Prompts"></a><br><a href="skills/cross-exam/"><img src="docs/media/cross-exam/thumb.svg" width="180" align="top" alt="Cross-Exam"></a></td>
-<td valign="top" align="center"><img src="docs/media/_spacer.svg" width="180" height="135" align="top" alt=""><br><a href="skills/swipe-deck/"><img src="docs/media/swipe-deck/thumb.svg" width="180" align="top" alt="Swipe Deck"></a><br><a href="skills/ux-audit/"><img src="docs/media/ux-audit/thumb.svg" width="180" align="top" alt="UX Audit"></a><br><a href="skills/fresh-eyes/"><img src="docs/media/fresh-eyes/thumb.svg" width="180" align="top" alt="Fresh Eyes"></a><br><a href="skills/what-next/"><img src="docs/media/what-next/thumb.svg" width="180" align="top" alt="What Next"></a><br><a href="skills/who-let-the-blogs-out/"><img src="docs/media/who-let-the-blogs-out/thumb.svg" width="180" align="top" alt="Who Let The Blogs Out"></a><br><a href="skills/handoff/"><img src="docs/media/handoff/thumb.svg" width="180" align="top" alt="Handoff"></a><br><a href="skills/agent-smiths/"><img src="docs/media/agent-smiths/thumb.svg" width="180" align="top" alt="Agent Smiths"></a></td>
+<td valign="top" align="center"><a href="skills/code-audit/"><img src="docs/media/code-audit/thumb.svg" width="180" align="top" alt="Code Audit: Finds what can hurt you in a codebase, ranked."></a><br><a href="skills/whiteboard/"><img src="docs/media/whiteboard/thumb.svg" width="180" align="top" alt="Whiteboard: Maps work too big for one session into tickets."></a><br><a href="skills/ui-oddity-scan/"><img src="docs/media/ui-oddity-scan/thumb.svg" width="180" align="top" alt="UI Oddity Scan: Finds what's off on a page, pinned on screenshots."></a><br><a href="skills/secret-shopper/"><img src="docs/media/secret-shopper/thumb.svg" width="180" align="top" alt="Secret Shopper: A regular customer tries your site, out loud."></a><br><a href="skills/teach/"><img src="docs/media/teach/thumb.svg" width="180" align="top" alt="Teach: How any feature in your code actually works."></a><br><a href="skills/case-study-builder/"><img src="docs/media/case-study-builder/thumb.svg" width="180" align="top" alt="Case Study Builder: Turns finished client work into a case study."></a><br><a href="skills/elihadhd/"><img src="docs/media/elihadhd/thumb.svg" width="180" align="top" alt="ELIHADHD: Answer first. Short steps. One next move."></a></td>
+<td valign="top" align="center"><img src="docs/media/_spacer.svg" width="180" height="135" align="top" alt=""><br><a href="skills/test-assessment/"><img src="docs/media/test-assessment/thumb.svg" width="180" align="top" alt="Test Assessment: Finds the test gaps that can actually hurt you."></a><br><a href="skills/what-would-bezos-do/"><img src="docs/media/what-would-bezos-do/thumb.svg" width="180" align="top" alt="What Would Bezos Do: What you already built that could earn more."></a><br><a href="skills/slop-scan/"><img src="docs/media/slop-scan/thumb.svg" width="180" align="top" alt="Slop Scan: Spots the AI-generated look, then strips it out."></a><br><a href="skills/gap-scan/"><img src="docs/media/gap-scan/thumb.svg" width="180" align="top" alt="Gap Scan: Finds the features that should exist but don't."></a><br><a href="skills/eli5-features/"><img src="docs/media/eli5-features/thumb.svg" width="180" align="top" alt="ELI5 Features: Help docs in your app's own words."></a><br><a href="skills/nick-saban/"><img src="docs/media/nick-saban/thumb.svg" width="180" align="top" alt="Nick Saban: Builds, scores and enforces your Claude setup."></a><br><a href="skills/cowork-with-codex/"><img src="docs/media/cowork-with-codex/thumb.svg" width="180" align="top" alt="Cowork With Codex: Writes the exact message to send back to Codex"></a></td>
+<td valign="top" align="center"><a href="skills/prove-it/"><img src="docs/media/prove-it/thumb.svg" width="180" align="top" alt="Prove It: Proves it shipped before anyone says it did."></a><br><a href="skills/website-audit/"><img src="docs/media/website-audit/thumb.svg" width="180" align="top" alt="Website Audit: Crawl a whole site, score it, prove each finding."></a><br><a href="skills/conversion-audit/"><img src="docs/media/conversion-audit/thumb.svg" width="180" align="top" alt="Conversion Audit: Does every element serve the ONE action?"></a><br><a href="skills/open-saysai/"><img src="docs/media/open-saysai/thumb.svg" width="180" align="top" alt="Open SaysAI: Can AI answer engines reach, use and cite you?"></a><br><a href="skills/walkthrough-gif/"><img src="docs/media/walkthrough-gif/thumb.svg" width="180" align="top" alt="Walkthrough GIF: Describe a flow, get a re-runnable recording."></a><br><a href="skills/genie-proof-prompts/"><img src="docs/media/genie-proof-prompts/thumb.svg" width="180" align="top" alt="Genie-Proof Prompts: Rewrites a prompt so it can't be twisted."></a><br><a href="skills/cross-exam/"><img src="docs/media/cross-exam/thumb.svg" width="180" align="top" alt="Cross-Exam: Weighs a second opinion without caving or stalling"></a></td>
+<td valign="top" align="center"><img src="docs/media/_spacer.svg" width="180" height="135" align="top" alt=""><br><a href="skills/swipe-deck/"><img src="docs/media/swipe-deck/thumb.svg" width="180" align="top" alt="Swipe Deck: Swipe until it knows what you actually want."></a><br><a href="skills/ux-audit/"><img src="docs/media/ux-audit/thumb.svg" width="180" align="top" alt="UX Audit: Finds where people get stuck in a flow."></a><br><a href="skills/fresh-eyes/"><img src="docs/media/fresh-eyes/thumb.svg" width="180" align="top" alt="Fresh Eyes: Tries your product like a total newcomer."></a><br><a href="skills/what-next/"><img src="docs/media/what-next/thumb.svg" width="180" align="top" alt="What Next: The next move, closest to a customer first."></a><br><a href="skills/who-let-the-blogs-out/"><img src="docs/media/who-let-the-blogs-out/thumb.svg" width="180" align="top" alt="Who Let The Blogs Out: Plan, interview, write, publish. Every claim checked."></a><br><a href="skills/handoff/"><img src="docs/media/handoff/thumb.svg" width="180" align="top" alt="Handoff: Packs a session so a fresh agent can resume."></a><br><a href="skills/agent-smiths/"><img src="docs/media/agent-smiths/thumb.svg" width="180" align="top" alt="Agent Smiths: Splits a plan so parallel agents never collide"></a></td>
 </tr>
 </table>
+
+28 cards here, plus 9 sub-skills that live on their parent's page (for example Whiteboard, card 05, holds 05a–05d). Each sub-skill can still be installed on its own.
 <!-- skill-gallery:end -->
 
 ---
@@ -78,6 +80,7 @@ flowchart LR
         CA[code-audit]
         TA[test-assessment]
         TS[test-suggest]
+        PI[prove-it]
     end
 
     subgraph UXG["🖥️ Site, UX & conversion"]
@@ -90,6 +93,8 @@ flowchart LR
         CS[cover-story]
         SS[secret-shopper]
         OSA[open-saysai]
+        SLS[slop-scan]
+        WN[what-next]
     end
 
     subgraph DOC["📚 Documentation"]
@@ -113,6 +118,7 @@ flowchart LR
         EA[elihadhd]
         CX[cross-exam]
         AS[agent-smiths]
+        CWX[cowork-with-codex]
     end
 
     WB -->|ticket type| HS
@@ -147,12 +153,12 @@ flowchart LR
     classDef doc fill:#dcfce7,stroke:#15803d,color:#111
     classDef cont fill:#fce7f3,stroke:#be185d,color:#111
     classDef meta fill:#e5e7eb,stroke:#374151,color:#111
-    class SW,HS,NK,CC,WB,WBH disc
-    class CA,TA,TS code
-    class WA,UX1,UO,CV,FE,CS,SS ux
+    class SW,HS,NK,CC,WB,WBH,WWBD disc
+    class CA,TA,TS,PI code
+    class WA,UX1,UO,CV,GS,FE,CS,SS,OSA,SLS,WN ux
     class TE,EL,WG doc
     class WLT,BTI,SEO,AID,CSB cont
-    class NS,GPP,HO,EA,CX,AS meta
+    class NS,GPP,HO,EA,CX,AS,CWX meta
 ```
 
 Solid arrows are real handoffs — one skill produces an artifact another consumes. Dashed arrows are

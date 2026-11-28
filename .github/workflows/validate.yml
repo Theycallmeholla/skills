@@ -21,6 +21,13 @@ jobs:
       - name: Validate skill spec compliance
         run: python3 scripts/validate_skills.py .
 
+      - name: Check skill cards build
+        # The card bot only runs after merge; building here catches a card.json that
+        # would crash it (e.g. back text too long). Output is discarded.
+        run: |
+          pip install fonttools brotli pillow
+          python3 scripts/build_skill_cards.py > /dev/null
+
       - name: Validate cross-platform declarations
         run: python3 scripts/validate_cross_platform.py .
 
@@ -65,12 +72,14 @@ jobs:
         with:
           name: chatgpt-skills
           path: dist/chatgpt/*/skill.zip
+          retention-days: 7
 
       - name: Upload Claude skill packages
         uses: actions/upload-artifact@v4
         with:
           name: claude-skills
           path: dist/claude/*/skill.zip
+          retention-days: 7
 
   swipe-deck-tests:
     runs-on: ubuntu-latest

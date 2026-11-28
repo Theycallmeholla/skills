@@ -108,7 +108,9 @@ def fit_lines(s, family, start, width, max_lines, spacing=0.0, floor=24):
 
 
 def subset_b64(family, chars):
-    f = TTFont(FONT_DIR / FONTS[family][0])
+    # recalcTimestamp=False keeps the output identical between builds; otherwise every
+    # rebuild rewrites every SVG with a fresh font timestamp.
+    f = TTFont(FONT_DIR / FONTS[family][0], recalcTimestamp=False)
     opts = Options()
     opts.flavor = "woff2"
     opts.layout_features = ["kern", "liga"]
@@ -226,8 +228,43 @@ def load(skill_dir):
     data["_panel"] = pal.get("panel", panel)
     data["_accent"] = pal.get("accent", accent)
     data["_tint"] = pal.get("tint", tint)
+    # Small accent-coloured text (type line, stat labels) must read on the panel.
+    data["_label"] = readable(data["_accent"], data["_panel"])
     data.setdefault("set", label)
     return data
+
+
+def _luminance(hex_color):
+    """WCAG relative luminance of a #RRGGBB colour."""
+    out = []
+    for i in (1, 3, 5):
+        c = int(hex_color[i:i + 2], 16) / 255
+        out.append(c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4)
+    return 0.2126 * out[0] + 0.7152 * out[1] + 0.0722 * out[2]
+
+
+def contrast(a, b):
+    la, lb = sorted((_luminance(a), _luminance(b)), reverse=True)
+    return (la + 0.05) / (lb + 0.05)
+
+
+def readable(fg, bg, target=4.6):
+    """fg, lightened in its own hue just enough to reach WCAG AA contrast on bg."""
+    import colorsys
+    if contrast(fg, bg) >= target:
+        return fg
+    h, l, s = colorsys.rgb_to_hls(*(int(fg[i:i + 2], 16) / 255 for i in (1, 3, 5)))
+    while l < 0.97:
+        l = min(0.97, l + 0.02)
+        cand = _hex(colorsys.hls_to_rgb(h, l, s))
+        if contrast(cand, bg) >= target:
+            return cand
+    return CREAM
+
+
+def attr(s):
+    """Escape text for an XML/HTML attribute value (quotes included)."""
+    return escape(str(s), {'"': "&quot;"})
 
 
 def frame(d, label):
@@ -235,7 +272,7 @@ def frame(d, label):
     panel, accent = d["_panel"], d["_accent"]
     return [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" '
-        f'role="img" aria-label="{escape(label)}">',
+        f'role="img" aria-label="{attr(label)}">',
         '<defs><clipPath id="panel"><rect x="32" y="32" width="960" height="1472" rx="44"/></clipPath></defs>',
         f'<rect width="{W}" height="{H}" rx="64" fill="{CREAM}"/>',
         f'<rect x="32" y="32" width="960" height="1472" rx="44" fill="{panel}"/>',
@@ -257,7 +294,7 @@ def build_back(skill_dir, d):
         out.append(t(PAD - 4, round(y), line, "Card800", size, CREAM))
         y += size * 1.04
     y += 18
-    out.append(t(PAD, round(y), d["type"].upper(), "Card600", 27, accent, spacing=4))
+    out.append(t(PAD, round(y), d["type"].upper(), "Card600", 27, d["_label"], spacing=4))
     y += 40
     out.append(f'<rect x="{PAD}" y="{round(y)}" width="{TEXT_W}" height="2" fill="{CREAM}" fill-opacity=".25"/>')
 
@@ -290,7 +327,7 @@ def build_back(skill_dir, d):
     for i, (label, value) in enumerate(d["stats"][:4]):
         cx = PAD + (i % 2) * cell_w + (24 if i % 2 else 0)
         cy = top + (i // 2) * 150
-        out.append(t(cx, cy + 22, label.upper(), "Card600", 24, accent, spacing=5))
+        out.append(t(cx, cy + 22, label.upper(), "Card600", 24, d["_label"], spacing=5))
         vsize = 60
         while vsize > 30 and text_width(value.upper(), "Card800", vsize) > cell_w - 40:
             vsize -= 2
@@ -413,7 +450,7 @@ def build_art_front(skill_dir, d):
     x, y, w, h = spec["number_box"]
     return "\n".join([
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" '
-        f'role="img" aria-label="{escape(d["title"])}: {escape(d.get("tagline", d["ability"]))}">',
+        f'role="img" aria-label="{attr(d["title"])}: {attr(d.get("tagline", d["ability"]))}">',
         f'<defs><clipPath id="card"><rect width="{W}" height="{H}" rx="64"/></clipPath></defs>',
         f'<image clip-path="url(#card)" href="data:image/webp;base64,{data}" width="{W}" height="{H}"/>',
         f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{spec["patch"]}"/>',
@@ -497,9 +534,12 @@ def _thumb(name, width, href_prefix="", src_prefix=""):
     src = f"{src_prefix}docs/media/{name}/thumb.svg"
     if not (MEDIA / name / "thumb.svg").exists():
         src = f"{src_prefix}docs/media/{name}/front.svg"
-    title = escape(_card(name).get("title", name))
+    card = _card(name)
+    alt = card.get("title", name)
+    if card.get("tagline"):
+        alt = f"{alt}: {card['tagline']}"
     return (f'<a href="{href_prefix}skills/{name}/"><img src="{src}" width="{width}" '
-            f'align="top" alt="{title}"></a>')
+            f'align="top" alt="{attr(alt)}"></a>')
 
 
 def write_gallery():
@@ -527,8 +567,18 @@ def write_gallery():
         # align=top + <br> with no whitespace stacks cards flush (measured on github.com);
         # GitHub's own table-cell padding sets the column gap.
         cells.append('<td valign="top" align="center">' + "<br>".join(parts) + "</td>")
+    subs = len(order) - len(tops)
+    example = max(tops, key=lambda p: len(kids.get(p, [])), default=None)
+    note = ""
+    if subs and example and kids.get(example):
+        labels = card_labels()
+        first, last = labels[kids[example][0]], labels[kids[example][-1]]
+        ex_title = _card(example).get("title", example)
+        note = (f"\n\n{len(tops)} cards here, plus {subs} sub-skills that live on their parent's page "
+                f"(for example {ex_title}, card {labels[example]}, holds {first}–{last}). "
+                f"Each sub-skill can still be installed on its own.")
     block = (f"{GALLERY_START}\n<table>\n<tr>\n" + "\n".join(cells)
-             + f"\n</tr>\n</table>\n{GALLERY_END}")
+             + f"\n</tr>\n</table>{note}\n{GALLERY_END}")
     start, end = text.index(GALLERY_START), text.index(GALLERY_END) + len(GALLERY_END)
     new = text[:start] + block + text[end:]
     if new != text:
