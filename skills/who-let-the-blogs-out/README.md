@@ -6,7 +6,7 @@
 <!-- skill-family:start -->
 **The family:** these skills are parts of this one, each also installable on its own.
 
-<p><a href="../../skills/blog-topic-interview/"><img src="../../docs/media/blog-topic-interview/thumb.svg" width="140" align="top" alt="Blog Topic Interview"></a><a href="../../skills/seo-blog-writer/"><img src="../../docs/media/seo-blog-writer/thumb.svg" width="140" align="top" alt="SEO Blog Writer"></a><a href="../../skills/ai-writing-detector/"><img src="../../docs/media/ai-writing-detector/thumb.svg" width="140" align="top" alt="AI Writing Detector"></a></p>
+<p><a href="../../skills/blog-topic-interview/"><img src="../../docs/media/blog-topic-interview/thumb.svg" width="140" align="top" alt="Blog Topic Interview: Your real take, captured before drafting."></a><a href="../../skills/seo-blog-writer/"><img src="../../docs/media/seo-blog-writer/thumb.svg" width="140" align="top" alt="SEO Blog Writer: A post that deserves to rank."></a><a href="../../skills/ai-writing-detector/"><img src="../../docs/media/ai-writing-detector/thumb.svg" width="140" align="top" alt="AI Writing Detector: Scores how AI-written your text reads."></a></p>
 <!-- skill-family:end -->
 
 > **TL;DR:** A blog system that remembers each client. It interviews the real author, keeps every claim inside the evidence, scores every draft before you see it, and writes the finished post into your site's files. It never deploys or publishes on its own.

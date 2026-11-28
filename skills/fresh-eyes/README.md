@@ -6,7 +6,7 @@
 <!-- skill-family:start -->
 **The family:** these skills are parts of this one, each also installable on its own.
 
-<p><a href="../../skills/cover-story/"><img src="../../docs/media/cover-story/thumb.svg" width="140" align="top" alt="Cover Story"></a></p>
+<p><a href="../../skills/cover-story/"><img src="../../docs/media/cover-story/thumb.svg" width="140" align="top" alt="Cover Story: Says what it is. Never says how it works."></a></p>
 <!-- skill-family:end -->
 
 > **TL;DR:** Hand it your README, link or app and it tries the thing like someone who has never seen it, using only what you gave it. Every confusion gets written down before it's solved, so you see the questions you can no longer see yourself.

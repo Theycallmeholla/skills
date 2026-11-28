@@ -6,7 +6,7 @@
 <!-- skill-family:start -->
 **The family:** these skills are parts of this one, each also installable on its own.
 
-<p><a href="../../skills/hot-seat/"><img src="../../docs/media/hot-seat/thumb.svg" width="140" align="top" alt="Hot Seat"></a><a href="../../skills/napkin/"><img src="../../docs/media/napkin/thumb.svg" width="140" align="top" alt="Napkin"></a><a href="../../skills/connotation-cop/"><img src="../../docs/media/connotation-cop/thumb.svg" width="140" align="top" alt="Connotation Cop"></a><a href="../../skills/whiteboard-help/"><img src="../../docs/media/whiteboard-help/thumb.svg" width="140" align="top" alt="Whiteboard Help"></a></p>
+<p><a href="../../skills/hot-seat/"><img src="../../docs/media/hot-seat/thumb.svg" width="140" align="top" alt="Hot Seat: One question at a time until your plan holds up."></a><a href="../../skills/napkin/"><img src="../../docs/media/napkin/thumb.svg" width="140" align="top" alt="Napkin: Throwaway code that settles one design question."></a><a href="../../skills/connotation-cop/"><img src="../../docs/media/connotation-cop/thumb.svg" width="140" align="top" alt="Connotation Cop: Settles what your project's words mean."></a><a href="../../skills/whiteboard-help/"><img src="../../docs/media/whiteboard-help/thumb.svg" width="140" align="top" alt="Whiteboard Help: The whiteboard system on one page."></a></p>
 <!-- skill-family:end -->
 
 > **TL;DR:** For an idea too big for one session, Claude puts every open decision on a GitHub Issues board as its own ticket, works the ones that don't need you, and stops with a short note when one does. Once nothing is left to decide, say "snapshot the board" and it writes it all up as a spec, decision record or handoff.

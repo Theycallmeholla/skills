@@ -6,7 +6,7 @@
 <!-- skill-family:start -->
 **The family:** these skills are parts of this one, each also installable on its own.
 
-<p><a href="../../skills/test-suggest/"><img src="../../docs/media/test-suggest/thumb.svg" width="140" align="top" alt="Test Suggest"></a></p>
+<p><a href="../../skills/test-suggest/"><img src="../../docs/media/test-suggest/thumb.svg" width="140" align="top" alt="Test Suggest: Names the exact tests worth writing, and why."></a></p>
 <!-- skill-family:end -->
 
 > **TL;DR:** Point it at a repo and ask if it's well tested. You get a report that puts every module on a risk-versus-coverage grid, so the untested payments code shows up long before the untested logging code.
